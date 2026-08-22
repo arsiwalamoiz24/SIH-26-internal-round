@@ -241,3 +241,145 @@ export function getEvidenceGrid(): EvidenceGridData {
 export function getBaselineStats() {
   return scienceData.baselineStats;
 }
+
+export interface PhysicsEvidenceScore {
+  score: number;
+  rank: number;
+  rankOf: number;
+  deltaPv: number;
+  deltaCpr: number;
+  deltaTRatio: number;
+  deltaSerdExcluded: number;
+  serdExclusionReason: string;
+  weighting: string;
+  notWhat: string;
+  provenance: ProvenanceMetadata;
+}
+
+export function getPhysicsEvidenceScore(): PhysicsEvidenceScore {
+  const pes = scienceData.primaryTarget.physicsEvidenceScore;
+  return {
+    score: pes.score,
+    rank: pes.rank,
+    rankOf: pes.rankOf,
+    deltaPv: pes.deltaPv,
+    deltaCpr: pes.deltaCpr,
+    deltaTRatio: pes.deltaTRatio,
+    deltaSerdExcluded: pes.deltaSerdExcluded,
+    serdExclusionReason: pes.serdExclusionReason,
+    weighting: pes.weighting,
+    notWhat: pes.notWhat,
+    provenance: {
+      source_type: "REAL",
+      dataset: pes.source,
+    },
+  };
+}
+
+export interface MlAnomalyScore {
+  model: string;
+  nSamples: number;
+  features: string[];
+  anomalyScore: number;
+  anomalyRank: number;
+  anomalyRankOf: number;
+  isAnomalyLabel: boolean;
+  circularityWarning: string;
+  provenance: ProvenanceMetadata;
+}
+
+export function getMlAnomalyScore(): MlAnomalyScore {
+  const ml = scienceData.primaryTarget.mlAnomalyScore;
+  return {
+    model: ml.model,
+    nSamples: ml.nSamples,
+    features: ml.features,
+    anomalyScore: ml.anomalyScore,
+    anomalyRank: ml.anomalyRank,
+    anomalyRankOf: ml.anomalyRankOf,
+    isAnomalyLabel: ml.isAnomalyLabel,
+    circularityWarning: ml.circularityWarning,
+    provenance: {
+      source_type: "REAL",
+      dataset: ml.source,
+    },
+  };
+}
+
+export interface DopSummary {
+  linearPolDopMean: number;
+  linearPolDopMedian: number;
+  hybridPolDopMean: number;
+  eigenvaluePurityWholeWindow: number;
+  nValidPx: number;
+  acquisition: string;
+  bestSupportedFormulation: string;
+  calibrationApplied: string;
+  note: string;
+  provenance: ProvenanceMetadata;
+}
+
+export function getDopSummary(): DopSummary {
+  const dop = scienceData.primaryTarget.dop.candidateSpecific;
+  return {
+    linearPolDopMean: dop.linearPolDopMean,
+    linearPolDopMedian: dop.linearPolDopMedian,
+    hybridPolDopMean: dop.hybridPolDopMean,
+    eigenvaluePurityWholeWindow: dop.eigenvaluePurityWholeWindow,
+    nValidPx: dop.nValidPx,
+    acquisition: dop.acquisition,
+    bestSupportedFormulation: dop.bestSupportedFormulation,
+    calibrationApplied: dop.calibrationApplied,
+    note: dop.note,
+    provenance: {
+      source_type: "REAL",
+      dataset: dop.source,
+    },
+  };
+}
+
+export interface TerrainStats {
+  windowSizeKm: number;
+  slope: {
+    meanDegWholeWindow: number;
+    medianDegWholeWindow: number;
+    maxDegWholeWindow: number;
+    pctSafeLt10deg: number;
+    pctCaution10to20deg: number;
+    pctHazardGte20deg: number;
+    meanDegPsrInterior: number;
+    pctHazardGte20degPsrInterior: number;
+    meanDegApproachTerrain: number;
+    pctHazardGte20degApproachTerrain: number;
+    thresholdCaveat: string;
+  };
+  elevation: {
+    meanM: number;
+    minM: number;
+    maxM: number;
+    rangeM: number;
+  };
+  roughnessTri: {
+    meanTriM: number;
+    medianTriM: number;
+    meanTriMPsrInterior: number;
+    meanTriMApproachTerrain: number;
+  };
+  interpretation: string;
+  provenance: ProvenanceMetadata;
+}
+
+export function getTerrainStats(): TerrainStats {
+  const t = scienceData.primaryTarget.terrain;
+  return {
+    windowSizeKm: t.windowSizeKm,
+    slope: t.slope,
+    elevation: t.elevation,
+    roughnessTri: t.roughnessTri,
+    interpretation: t.interpretation,
+    provenance: {
+      source_type: "REAL",
+      dataset: t.source,
+    },
+  };
+}

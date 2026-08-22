@@ -9,6 +9,9 @@ import {
   getDrillSites,
   getVolumeEstimate,
   getRoverPaths,
+  getPhysicsEvidenceScore,
+  getMlAnomalyScore,
+  getDopSummary,
 } from "@/lib/api";
 import 'material-symbols';
 
@@ -22,6 +25,9 @@ export default function IceDetection() {
   const drillSites = getDrillSites();
   const volume = getVolumeEstimate(assumedIcePct);
   const paths = getRoverPaths();
+  const evidenceScore = getPhysicsEvidenceScore();
+  const mlAnomaly = getMlAnomalyScore();
+  const dop = getDopSummary();
 
   const gaugeOffset = 282.7 * (1 - confidence.overall / 100);
 
@@ -208,6 +214,39 @@ export default function IceDetection() {
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Physics Evidence Score / DOP / ML Anomaly */}
+        <div className="bg-surface-container-lowest tech-border mx-1 rounded flex flex-col overflow-hidden shadow-sm shrink-0">
+          <div className="px-4 py-2 tech-border-b bg-surface flex justify-between items-center shrink-0">
+            <h3 className="font-data-md text-data-md text-on-surface m-0 uppercase text-[11px] tracking-wider">
+              Multi-Track Evidence (Module 1)
+            </h3>
+            <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 uppercase font-bold">
+              REAL PIPELINE
+            </span>
+          </div>
+          <div className="p-3 flex flex-col gap-2 font-mono text-[11px]">
+            <div className="flex justify-between items-center p-2 bg-surface-container-low rounded border border-outline-variant">
+              <span className="text-on-surface-variant">Physics Evidence Score</span>
+              <span className="text-primary font-bold">
+                {evidenceScore.score.toFixed(2)} <span className="text-outline font-normal">(rank {evidenceScore.rank}/{evidenceScore.rankOf})</span>
+              </span>
+            </div>
+            <div className="flex justify-between items-center p-2 bg-surface-container-low rounded border border-outline-variant">
+              <span className="text-on-surface-variant">Candidate DOP (linear-pol)</span>
+              <span className="text-on-surface font-semibold">
+                {dop.linearPolDopMean.toFixed(3)} <span className="text-outline font-normal">(n={dop.nValidPx.toLocaleString()} px)</span>
+              </span>
+            </div>
+            <div className="flex justify-between items-center p-2 bg-surface-container-low rounded border border-outline-variant">
+              <span className="text-on-surface-variant">Isolation Forest Anomaly Rank</span>
+              <span className="text-on-surface font-semibold">{mlAnomaly.anomalyRank} of {mlAnomaly.anomalyRankOf}</span>
+            </div>
+            <p className="text-[9px] text-outline leading-relaxed mt-1">
+              Evidence score is a <strong>ranking within our own 7-candidate shortlist</strong>, not an ice probability. ML anomaly features are derived from the same Pv computation as the shortlist itself &mdash; {mlAnomaly.circularityWarning.split(". ")[1] || "not an independent confirmation."}
+            </p>
           </div>
         </div>
 

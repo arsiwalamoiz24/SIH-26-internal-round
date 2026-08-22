@@ -333,6 +333,91 @@
       },
       "formula": "Volume = CraterArea * HighPvFraction * PenetrationDepth * AssumedIceFraction"
     },
+    "physicsEvidenceScore": {
+      "source_type": "REAL",
+      "source": "PRISM/outputs/objective1/evidence_score/physics_evidence_score.json (Track I)",
+      "score": 1.0,
+      "rankOf": 7,
+      "rank": 1,
+      "metricsUsed": ["Pv (interior-surroundings delta)", "CPR (interior-surroundings delta)", "T-Ratio (interior-surroundings delta)"],
+      "deltaPv": 0.08067774772644043,
+      "deltaCpr": 0.09867048263549805,
+      "deltaTRatio": 0.12076115608215332,
+      "deltaSerdExcluded": -0.05618870258331299,
+      "serdExclusionReason": "SERD delta is negative for this candidate (lower inside PSR) while Pv/CPR/T-Ratio are positive -- inconsistent directionality, reported but not summed into the score.",
+      "weighting": "Unweighted mean (1/3 each) of min-max normalized deltas across the 7-candidate shortlist. Documented default, not a literature-calibrated weighting.",
+      "notWhat": "NOT a probability of ice. A relative ranking within PRISM's own 7-candidate shortlist only -- not validated against any independent ice-confirmed site."
+    },
+    "mlAnomalyScore": {
+      "source_type": "REAL",
+      "source": "PRISM/outputs/objective1/ml/isolation_forest_results.json (Track J)",
+      "model": "sklearn.ensemble.IsolationForest",
+      "nSamples": 336,
+      "features": ["area_km2", "px_with_radar_data", "high_tier_fraction", "moderate_plus_fraction"],
+      "anomalyScore": 0.005606031542763956,
+      "anomalyRankOf": 336,
+      "anomalyRank": 40,
+      "isAnomalyLabel": true,
+      "circularityWarning": "All 4 features are derived from the same Y4R Pv computation that already produced this candidate's shortlist ranking. This is NOT an independent evidence source -- it cannot be claimed to independently validate the candidate's Pv-based selection."
+    },
+    "dop": {
+      "source_type": "REAL",
+      "candidateSpecific": {
+        "status": "RESOLVED",
+        "acquisition": "ch2_sar_ncxl_20220318t135736694_d_fp_d18",
+        "source": "PRISM/outputs/objective1/dop/candidate_dop.json (Track C follow-up)",
+        "linearPolDopMean": 0.6804845929145813,
+        "linearPolDopMedian": 0.7082269191741943,
+        "hybridPolDopMean": 0.5935717847805299,
+        "eigenvaluePurityWholeWindow": 0.908509373664856,
+        "nValidPx": 488000,
+        "pctNan": 0.0,
+        "bestSupportedFormulation": "linear-pol (HH/VV) Stokes-covariance DOP",
+        "calibrationApplied": "XML bias_real/bias_imag subtraction only (per-polarization). No gain-imbalance or phase-orthogonality correction applied.",
+        "note": "Physics evidence score and ML anomaly score above were NOT recomputed to include this DOP value."
+      },
+      "pipelineValidationNonCandidate": {
+        "status": "NON-CANDIDATE VALIDATION -- different (2025-10-25) acquisition, does not cover this candidate",
+        "source": "PRISM/outputs/objective1/dop/dop_validation_results.json (Track C)",
+        "linearPolDopMean": 0.6667532324790955,
+        "hybridPolDopMean": 0.5736534908353637,
+        "eigenvaluePurityWholeWindow": 0.6297502517700195
+      }
+    },
+    "terrain": {
+      "source_type": "REAL",
+      "source": "PRISM/outputs/objective2/SP_840980_0797630_terrain_stats.json (Track G, real NASA LOLA 20m/px DEM, GDAL /vsicurl/ windowed remote read)",
+      "windowSizeKm": 10.0,
+      "slope": {
+        "meanDegWholeWindow": 10.715764045715332,
+        "medianDegWholeWindow": 8.005621910095215,
+        "maxDegWholeWindow": 59.308616638183594,
+        "percentiles5_25_50_75_95": [1.3963342130184173, 4.180033445358276, 8.005621910095215, 15.411922454833984, 26.70850067138671],
+        "pctSafeLt10deg": 59.894,
+        "pctCaution10to20deg": 19.9252,
+        "pctHazardGte20deg": 20.1808,
+        "meanDegPsrInterior": 22.075857162475586,
+        "pctHazardGte20degPsrInterior": 78.63204631034677,
+        "meanDegApproachTerrain": 8.830344200134277,
+        "pctHazardGte20degApproachTerrain": 10.479726137285812,
+        "thresholdCaveat": "Safe(<10)/caution(10-20)/hazard(>=20 deg) thresholds carried over verbatim from an earlier notebook, author-flagged as 'crude' -- NOT independently validated against any lander/rover specification."
+      },
+      "elevation": {
+        "meanM": -3493.114013671875,
+        "minM": -4410.65966796875,
+        "maxM": -2668.5537109375,
+        "rangeM": 1742.10595703125
+      },
+      "roughnessTri": {
+        "method": "Riley, Degloria & Elliot (1999) Terrain Ruggedness Index",
+        "meanTriM": 3.015211597623698,
+        "medianTriM": 2.1797027587890625,
+        "meanTriMPsrInterior": 6.293287354510409,
+        "meanTriMApproachTerrain": 2.4711538220839913
+      },
+      "interpretation": "This is a SAFETY/HAZARD profile, not ice evidence. It is deliberately NOT combined into the physics evidence score. Reported honestly even though unfavorable: 78.6% of the PSR interior itself exceeds the (unvalidated) 20-degree hazard threshold, versus 10.5% of the surrounding approach terrain. A high radar ice-evidence score does not imply an easy landing site.",
+      "notIncluded": "Optical (OHRC) boulder/hazard detection is separate, unfinished work (Member 3 / Objective 2 CV pipeline) -- not part of this terrain dataset."
+    },
     "landingSites": [
       {
         "id": "site-alpha",

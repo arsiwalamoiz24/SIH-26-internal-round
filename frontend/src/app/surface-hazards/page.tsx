@@ -2,34 +2,16 @@
 "use client";
 
 import { useState } from "react";
-import { getTargetCrater } from "@/lib/api";
+import { getTargetCrater, getTerrainStats } from "@/lib/api";
 import "material-symbols";
 
 type Basemap = "optical" | "elevation" | "slope" | "geology";
 
 const BASEMAPS: { id: Basemap; label: string }[] = [
   { id: "optical", label: "OPTICAL CONTEXT" },
-  { id: "elevation", label: "ELEVATION (REF)" },
+  { id: "elevation", label: "ELEVATION (REAL)" },
   { id: "slope", label: "RADAR ROUGHNESS" },
   { id: "geology", label: "GEOLOGY (REF)" },
-];
-
-const TERRAIN_STATS = [
-  { label: "MEAN ELEV (REF)", value: "-2.10 km" },
-  { label: "MEAN SLOPE (REF)", value: "7.8°" },
-  { label: "MAX ELEV (REF)", value: "+0.45 km" },
-  { label: "RADAR ROUGHNESS", value: "0.28 (Pevn)" },
-];
-
-const SLOPE_BARS = [
-  { h: "25%", color: "bg-[#10B981]" },
-  { h: "65%", color: "bg-[#10B981]" },
-  { h: "100%", color: "bg-[#10B981]" },
-  { h: "75%", color: "bg-[#10B981]" },
-  { h: "35%", color: "bg-[#10B981]" },
-  { h: "20%", color: "bg-hazard-warning" },
-  { h: "10%", color: "bg-hazard-warning" },
-  { h: "5%", color: "bg-hazard-critical" },
 ];
 
 const COMPOSITION = [
@@ -53,14 +35,6 @@ const ILLUMINATION = [
   { label: "SHADOW COVERAGE", value: "65%" },
 ];
 
-const SUMMARY = [
-  { label: "MAPPED AREA", value: "14.2 km²" },
-  { label: "TARGET ELEVATION", value: "-2.10 km (Ref)" },
-  { label: "LOLA AVG. SLOPE", value: "7.8° (Ref)" },
-  { label: "RADAR PIXEL COUNT", value: "22,810 (Real)" },
-  { label: "RADAR AGREEMENT", value: "HIGH (+ΔPv)", accent: true },
-];
-
 const FEATURES = [
   { name: "Target PSR Interior", type: "Shadowed Basin", elev: "-2.1 km", size: "14.2 km²", conf: 93 },
   { name: "North Rim Plateau", type: "Landing Zone Alpha", elev: "+0.2 km", size: "2.4 km", conf: 96 },
@@ -82,6 +56,8 @@ const LOGS = [
   { t: "T+00:02:48", tone: "ok", msg: "Volume scattering anomaly ΔPv = +0.081 isolated" },
   { t: "T+00:01:42", tone: "info", msg: "Optical context reference registered to SP_840980" },
   { t: "T+00:01:18", tone: "ok", msg: "LOLA PSR polygon boundary synchronized" },
+  { t: "T+00:00:52", tone: "ok", msg: "LOLA 20m/px DEM slope/elevation/TRI computed (Track G)" },
+  { t: "T+00:00:11", tone: "info", msg: "PSR-interior hazard flagged: 78.6% exceeds 20° threshold" },
 ];
 
 const MAP_LABELS = [
@@ -112,6 +88,7 @@ const MAP_SRC =
 
 export default function SurfaceMap() {
   const target = getTargetCrater();
+  const terrain = getTerrainStats();
   const [basemap, setBasemap] = useState<Basemap>("optical");
   const [selected, setSelected] = useState(FEATURES[0].name);
   const [showGrid, setShowGrid] = useState(true);
@@ -123,8 +100,36 @@ export default function SurfaceMap() {
     radarPvMean: `${target.pvMeanInside} (PSR)`,
     radarPvAnomaly: `+${target.pvAnomaly} (ΔPv)`,
     cprAnomaly: `+${target.cprAnomaly} (CPR)`,
-    roughness: "MODERATE (Pevn)",
+    roughness: `${terrain.roughnessTri.meanTriM.toFixed(2)}m TRI (LOLA)`,
   };
+
+  const TERRAIN_STATS = [
+    { label: "MEAN ELEV (LOLA)", value: `${(terrain.elevation.meanM / 1000).toFixed(2)} km` },
+    { label: "MEAN SLOPE (LOLA)", value: `${terrain.slope.meanDegWholeWindow.toFixed(1)}°` },
+    { label: "PSR INTERIOR SLOPE", value: `${terrain.slope.meanDegPsrInterior.toFixed(1)}°` },
+    { label: "ROUGHNESS (TRI)", value: `${terrain.roughnessTri.meanTriM.toFixed(2)} m` },
+  ];
+
+  const slopeMaxDeg = 30;
+  const SLOPE_BARS = [
+    { label: "MIN", deg: 0 },
+    { label: "P5", deg: 1.4 },
+    { label: "P25", deg: 4.2 },
+    { label: "MEDIAN", deg: 8.0 },
+    { label: "P75", deg: 15.4 },
+    { label: "P95", deg: 26.7 },
+  ].map((b) => ({
+    h: `${Math.max(4, Math.round((Math.min(b.deg, slopeMaxDeg) / slopeMaxDeg) * 100))}%`,
+    color: b.deg < 10 ? "bg-[#10B981]" : b.deg < 20 ? "bg-hazard-warning" : "bg-hazard-critical",
+  }));
+
+  const SUMMARY: { label: string; value: string; accent?: boolean; warn?: boolean }[] = [
+    { label: "MAPPED AREA", value: `${target.areaKm2} km²` },
+    { label: "MEAN ELEVATION", value: `${(terrain.elevation.meanM / 1000).toFixed(2)} km (LOLA)` },
+    { label: "AVG. SLOPE", value: `${terrain.slope.meanDegWholeWindow.toFixed(1)}° (LOLA)` },
+    { label: "PSR INTERIOR HAZARD", value: `${terrain.slope.pctHazardGte20degPsrInterior.toFixed(1)}%`, warn: true },
+    { label: "RADAR AGREEMENT", value: "HIGH (+ΔPv)", accent: true },
+  ];
 
   return (
     <main className="flex-1 flex flex-col overflow-hidden bg-background h-[calc(100vh-80px)]">
@@ -281,7 +286,7 @@ export default function SurfaceMap() {
         {/* Analysis column */}
         <section className="w-[32%] bg-surface-container-lowest flex flex-col overflow-y-auto min-h-0">
           <div className="p-3 flex flex-col gap-3">
-            <Panel title="Radar Surface &amp; Terrain (Ref)" icon="analytics">
+            <Panel title="Radar Surface &amp; Terrain (Real LOLA DEM)" icon="analytics">
               <div className="grid grid-cols-2 p-3 gap-3">
                 {TERRAIN_STATS.map((s) => (
                   <div key={s.label}>
@@ -294,7 +299,7 @@ export default function SurfaceMap() {
               </div>
             </Panel>
 
-            <Panel title="LOLA Slope Distribution (Ref)" icon="bar_chart">
+            <Panel title="LOLA Slope Distribution (Real, 20m/px)" icon="bar_chart">
               <div className="p-3">
                 <div className="flex items-end h-14 gap-1 mb-2 border-b border-outline-variant pb-1">
                   {SLOPE_BARS.map((b, i) => (
@@ -302,23 +307,27 @@ export default function SurfaceMap() {
                   ))}
                 </div>
                 <div className="flex justify-between font-data-sm text-[9px] text-on-surface-variant mb-2 font-mono">
-                  <span>0°</span>
-                  <span>10° (Safe)</span>
-                  <span>20°+ (Steep)</span>
+                  <span>min</span>
+                  <span>10° (safe)</span>
+                  <span>20°+ (steep)</span>
+                  <span>p95</span>
                 </div>
-                <div className="flex justify-between font-data-sm text-[11px] font-mono">
+                <div className="flex justify-between font-data-sm text-[11px] font-mono flex-wrap gap-y-1">
                   <div>
-                    <span className="text-on-surface-variant">LOLA MEAN:</span>{" "}
-                    <span className="text-on-surface font-semibold">7.8°</span>
+                    <span className="text-on-surface-variant">MEAN:</span>{" "}
+                    <span className="text-on-surface font-semibold">{terrain.slope.meanDegWholeWindow.toFixed(1)}°</span>
                   </div>
                   <div>
                     <span className="text-on-surface-variant">MAX:</span>{" "}
-                    <span className="text-on-surface font-semibold">15.6°</span>
+                    <span className="text-on-surface font-semibold">{terrain.slope.maxDegWholeWindow.toFixed(1)}°</span>
                   </div>
                   <div>
                     <span className="text-on-surface-variant">SAFE AREA:</span>{" "}
-                    <span className="text-[#10B981] font-bold">84%</span>
+                    <span className="text-[#10B981] font-bold">{terrain.slope.pctSafeLt10deg.toFixed(1)}%</span>
                   </div>
+                </div>
+                <div className="mt-2 pt-2 border-t border-outline-variant text-[9px] font-mono text-amber-700 bg-amber-50 -mx-3 -mb-3 px-3 py-2 rounded-b">
+                  PSR interior (the actual ice-candidate floor) is steeper: mean {terrain.slope.meanDegPsrInterior.toFixed(1)}°, {terrain.slope.pctHazardGte20degPsrInterior.toFixed(1)}% exceeds the 20° hazard threshold, vs {terrain.slope.pctHazardGte20degApproachTerrain.toFixed(1)}% on the surrounding approach terrain. {terrain.slope.thresholdCaveat}
                 </div>
               </div>
             </Panel>
@@ -371,7 +380,9 @@ export default function SurfaceMap() {
                 {s.label}
               </div>
               <div
-                className={`font-data-sm text-xs font-mono font-semibold ${s.accent ? "text-[#10B981]" : "text-on-surface"}`}
+                className={`font-data-sm text-xs font-mono font-semibold ${
+                  s.accent ? "text-[#10B981]" : s.warn ? "text-hazard-critical" : "text-on-surface"
+                }`}
               >
                 {s.value}
               </div>
