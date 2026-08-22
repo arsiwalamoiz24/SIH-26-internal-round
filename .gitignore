@@ -1,0 +1,20 @@
+# Python virtual environment
+/venv/
+__pycache__/
+*.pyc
+
+# Large raw/derived satellite data — never commit to git
+/data/
+
+# Local-only scripts (contain API credentials — do not commit)
+/scripts/local_only/
+
+# OS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editor
+.vscode/*
+!.vscode/launch.json

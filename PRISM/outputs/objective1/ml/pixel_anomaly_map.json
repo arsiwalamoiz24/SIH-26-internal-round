@@ -1,0 +1,33 @@
+{
+  "purpose": "Track J-v2 -- genuine per-pixel Isolation Forest, real independent Pv/CPR/SERD/T-Ratio bands as features (not Pv-tier-derived aggregates like Track J-v1).",
+  "candidate_id": "SP_840980_0797630",
+  "not_a_supervised_classifier": true,
+  "no_ground_truth_labels_used": true,
+  "model": "sklearn.ensemble.IsolationForest",
+  "hyperparameters": {
+    "n_estimators": 200,
+    "contamination": "auto",
+    "random_state": 42
+  },
+  "features": [
+    "Pv",
+    "CPR",
+    "SERD",
+    "T-Ratio"
+  ],
+  "n_pixels_total": 69696,
+  "n_pixels_valid": 69696,
+  "window_shape_px": [
+    264,
+    264
+  ],
+  "pixel_size_m": 25.0,
+  "source": "data/raw/candidate_window/candidate_window_arrays.npz (real Y4R+L3C mosaic bands, GDAL /vsicurl/ windowed remote read, verified against PHYSICS_RESULTS.json)",
+  "ice_likelihood_definition": "Min-max normalized (0-1) Isolation Forest anomaly score across this window's valid pixels. Higher = more anomalous relative to the rest of THIS window, not a calibrated ice probability.",
+  "psr_interior_vs_surroundings": {
+    "n_px_inside_psr": 22772,
+    "n_px_outside_psr_in_window": 46924,
+    "mean_ice_likelihood_inside_psr": 0.1937548965215683,
+    "mean_ice_likelihood_outside_psr": 0.17714861035346985
+  }
+}

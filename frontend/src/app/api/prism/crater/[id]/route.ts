@@ -21,5 +21,9 @@ export async function GET(
     confidenceBudget: scienceData.primaryTarget.confidenceBudget,
     volumeModel: scienceData.primaryTarget.volumeModel,
     evidenceGrid: scienceData.primaryTarget.evidenceGrid,
+    physicsEvidenceScore: scienceData.primaryTarget.physicsEvidenceScore,
+    mlAnomalyScore: scienceData.primaryTarget.mlAnomalyScore,
+    dop: scienceData.primaryTarget.dop,
+    terrain: scienceData.primaryTarget.terrain,
   });
 }

@@ -10,5 +10,8 @@ export async function GET() {
     },
     confidenceBudget: scienceData.primaryTarget.confidenceBudget,
     baselineStats: scienceData.baselineStats,
+    physicsEvidenceScore: scienceData.primaryTarget.physicsEvidenceScore,
+    mlAnomalyScore: scienceData.primaryTarget.mlAnomalyScore,
+    dop: scienceData.primaryTarget.dop,
   });
 }
