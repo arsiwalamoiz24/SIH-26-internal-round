@@ -12,6 +12,7 @@ import {
   getPhysicsEvidenceScore,
   getMlAnomalyScore,
   getDopSummary,
+  getPixelAnomalyScore,
 } from "@/lib/api";
 import 'material-symbols';
 
@@ -28,6 +29,7 @@ export default function IceDetection() {
   const evidenceScore = getPhysicsEvidenceScore();
   const mlAnomaly = getMlAnomalyScore();
   const dop = getDopSummary();
+  const pixelAnomaly = getPixelAnomalyScore();
 
   const gaugeOffset = 282.7 * (1 - confidence.overall / 100);
 
@@ -109,7 +111,7 @@ export default function IceDetection() {
               </div>
             )}
             <div className="text-[8px] text-outline font-mono mt-1">
-              {showBayesian ? "PRISM Model-Derived • Assumptions Exposed" : "Real DFSAR CPR Product"}
+              {showBayesian ? "Isolation Forest • Real Pv/CPR/SERD/T-Ratio pixels" : "Real DFSAR CPR Product"}
             </div>
           </div>
 
@@ -241,11 +243,17 @@ export default function IceDetection() {
               </span>
             </div>
             <div className="flex justify-between items-center p-2 bg-surface-container-low rounded border border-outline-variant">
-              <span className="text-on-surface-variant">Isolation Forest Anomaly Rank</span>
+              <span className="text-on-surface-variant">Isolation Forest Anomaly Rank (PSR-level)</span>
               <span className="text-on-surface font-semibold">{mlAnomaly.anomalyRank} of {mlAnomaly.anomalyRankOf}</span>
             </div>
+            <div className="flex justify-between items-center p-2 bg-surface-container-low rounded border border-outline-variant">
+              <span className="text-on-surface-variant">Isolation Forest, per-pixel (n={pixelAnomaly.nPixelsValid.toLocaleString()})</span>
+              <span className="text-on-surface font-semibold">
+                {pixelAnomaly.meanIceLikelihoodInsidePsr.toFixed(3)} <span className="text-outline font-normal">vs {pixelAnomaly.meanIceLikelihoodOutsidePsr.toFixed(3)} outside</span>
+              </span>
+            </div>
             <p className="text-[9px] text-outline leading-relaxed mt-1">
-              Evidence score is a <strong>ranking within our own 7-candidate shortlist</strong>, not an ice probability. ML anomaly features are derived from the same Pv computation as the shortlist itself &mdash; {mlAnomaly.circularityWarning.split(". ")[1] || "not an independent confirmation."}
+              Evidence score is a <strong>ranking within our own 7-candidate shortlist</strong>, not an ice probability. PSR-level ML anomaly features are derived from the same Pv computation as the shortlist itself, so that rank is not independent. The per-pixel run above uses independent real Pv/CPR/SERD/T-Ratio bands per pixel &mdash; the PSR-interior vs. surroundings separation is real but modest, not a dramatic signal.
             </p>
           </div>
         </div>

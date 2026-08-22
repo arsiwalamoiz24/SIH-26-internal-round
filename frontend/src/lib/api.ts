@@ -235,7 +235,15 @@ export function getRoverPaths(): RoverPath[] {
 }
 
 export function getEvidenceGrid(): EvidenceGridData {
-  return scienceData.primaryTarget.evidenceGrid as EvidenceGridData;
+  const eg = scienceData.primaryTarget.evidenceGrid;
+  return {
+    dimensions: eg.dimensions as [number, number],
+    description: eg.description,
+    pvGrid: eg.pvGrid,
+    cprGrid: eg.cprGrid,
+    probIceGrid: eg.probIceGrid,
+    psrMaskGrid: eg.psrMaskGrid,
+  };
 }
 
 export function getBaselineStats() {
@@ -367,6 +375,38 @@ export interface TerrainStats {
   };
   interpretation: string;
   provenance: ProvenanceMetadata;
+}
+
+export interface PixelAnomalyScore {
+  model: string;
+  features: string[];
+  featuresIndependent: boolean;
+  nPixelsValid: number;
+  windowShapePx: [number, number];
+  meanIceLikelihoodInsidePsr: number;
+  meanIceLikelihoodOutsidePsr: number;
+  definition: string;
+  note: string;
+  provenance: ProvenanceMetadata;
+}
+
+export function getPixelAnomalyScore(): PixelAnomalyScore {
+  const p = scienceData.primaryTarget.pixelAnomalyScore;
+  return {
+    model: p.model,
+    features: p.features,
+    featuresIndependent: p.featuresIndependent,
+    nPixelsValid: p.nPixelsValid,
+    windowShapePx: p.windowShapePx as [number, number],
+    meanIceLikelihoodInsidePsr: p.meanIceLikelihoodInsidePsr,
+    meanIceLikelihoodOutsidePsr: p.meanIceLikelihoodOutsidePsr,
+    definition: p.definition,
+    note: p.note,
+    provenance: {
+      source_type: "REAL",
+      dataset: p.source,
+    },
+  };
 }
 
 export function getTerrainStats(): TerrainStats {
