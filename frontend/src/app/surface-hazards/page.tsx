@@ -3,6 +3,8 @@
 
 import { useState } from "react";
 import { getTargetCrater } from "@/lib/api";
+import { REAL_CANDIDATE } from "@/data/prismDemoData";
+import { IllustrativeBanner } from "@/components/prism/IllustrativeBanner";
 import "material-symbols";
 
 type Basemap = "optical" | "elevation" | "slope" | "geology";
@@ -14,11 +16,13 @@ const BASEMAPS: { id: Basemap; label: string }[] = [
   { id: "geology", label: "GEOLOGY (REF)" },
 ];
 
+// Elevation figures are illustrative reference values (no real DEM elevation output in the
+// pipeline for this candidate). Slope/roughness are the real pipeline values where available.
 const TERRAIN_STATS = [
-  { label: "MEAN ELEV (REF)", value: "-2.10 km" },
-  { label: "MEAN SLOPE (REF)", value: "7.8°" },
-  { label: "MAX ELEV (REF)", value: "+0.45 km" },
-  { label: "RADAR ROUGHNESS", value: "0.28 (Pevn)" },
+  { label: "MEAN ELEV (ILLUSTRATIVE)", value: "-2.10 km" },
+  { label: "MEAN SLOPE (REAL)", value: `${REAL_CANDIDATE.terrain.meanSlopeDeg.toFixed(1)}°` },
+  { label: "MAX ELEV (ILLUSTRATIVE)", value: "+0.45 km" },
+  { label: "TERRAIN ROUGHNESS TRI (REAL)", value: `${REAL_CANDIDATE.terrain.triMeters.toFixed(1)} m` },
 ];
 
 const SLOPE_BARS = [
@@ -70,12 +74,14 @@ const FEATURES = [
 ];
 
 const SOURCES = [
-  { icon: "satellite", label: "Chandrayaan-2 DFSAR L-Band (Live)" },
-  { icon: "layers", label: "NASA LOLA PSR Survey (Live)" },
-  { icon: "public", label: "Optical Context — Reference Basemap (OHRC pending)" },
-  { icon: "memory", label: "PRISM Radar Roughness & Likelihood Model" },
+  { icon: "satellite", label: "Chandrayaan-2 DFSAR L-Band (real pipeline output)" },
+  { icon: "layers", label: "NASA LOLA PSR Survey (real terrain source)" },
+  { icon: "public", label: "Optical Context — Reference Basemap (illustrative, not live imagery)" },
+  { icon: "memory", label: "PRISM Radar Roughness & Likelihood Model (illustrative)" },
 ];
 
+// Illustrative demo log — timestamps and events are staged for UI walkthroughs, not a real
+// telemetry/processing feed.
 const LOGS = [
   { t: "T+00:04:32", tone: "ok", msg: "DFSAR L-band full-res window (265x253) loaded" },
   { t: "T+00:03:15", tone: "info", msg: "Yamaguchi Y4R decomposition layers validated" },
@@ -123,7 +129,7 @@ export default function SurfaceMap() {
     radarPvMean: `${target.pvMeanInside} (PSR)`,
     radarPvAnomaly: `+${target.pvAnomaly} (ΔPv)`,
     cprAnomaly: `+${target.cprAnomaly} (CPR)`,
-    roughness: "MODERATE (Pevn)",
+    roughness: `${REAL_CANDIDATE.terrain.triMeters.toFixed(1)} m TRI (Real)`,
   };
 
   return (
@@ -142,6 +148,9 @@ export default function SurfaceMap() {
               <p className="font-data-sm text-data-sm text-on-surface-variant tracking-wider uppercase text-[11px]">
                 Optical Context (OHRC Pending) • LOLA Slope Reference • DFSAR Radar Anomaly • FR-2
               </p>
+              <div className="mt-1.5 max-w-xl">
+                <IllustrativeBanner detail="Elevation, mineralogy, geology units, illumination window, feature confidence scores, and the processing log below are illustrative placeholder content for UI demonstration, not per-candidate pipeline output." />
+              </div>
             </div>
             <div className="text-right">
               <div className="flex items-center justify-end gap-2 mb-0.5">
@@ -382,7 +391,7 @@ export default function SurfaceMap() {
         <div className="flex-1 flex divide-x divide-outline-variant overflow-hidden">
           <div className="w-1/2 flex flex-col p-3 overflow-hidden">
             <div className="font-data-sm text-data-sm text-on-surface-variant uppercase tracking-wider mb-1.5 text-[11px] font-bold">
-              Identified Crater Morphological Units ({target.psrId})
+              Identified Crater Morphological Units — Illustrative ({target.psrId})
             </div>
             <div className="overflow-y-auto flex-1 border border-outline-variant rounded bg-surface mb-6">
               <table className="w-full text-left border-collapse font-mono text-[11px]">
@@ -439,7 +448,7 @@ export default function SurfaceMap() {
 
           <div className="w-1/4 flex flex-col p-3 overflow-hidden">
             <div className="font-data-sm text-data-sm text-on-surface-variant uppercase tracking-wider mb-1.5 text-[11px] font-bold">
-              Scientific Processing Log
+              Scientific Processing Log (Illustrative Demo)
             </div>
             <div className="border border-outline-variant rounded bg-surface h-[125px] p-2 overflow-y-auto font-data-sm text-[10px] font-mono space-y-1">
               {LOGS.map((e) => (

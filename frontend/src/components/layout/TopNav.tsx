@@ -7,6 +7,7 @@ import clsx from "clsx";
 
 const navLinks = [
   { href: "/", label: "Overview" },
+  { href: "/candidate/SP_840980_0797630", label: "Candidate Report" },
   { href: "/ice-detection", label: "Ice Detection" },
   { href: "/surface-hazards", label: "Surface Map" },
   { href: "/simulation", label: "Simulation" },

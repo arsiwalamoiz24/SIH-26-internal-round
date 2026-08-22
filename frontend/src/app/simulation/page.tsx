@@ -189,7 +189,8 @@ export default function SimulationPage() {
                 </span>
               </div>
               <div className="text-[10px] text-on-surface-variant mt-0.5">
-                Telemetry dynamically sampled from underlying Chandrayaan-2 DFSAR radar grid
+                Illustrative telemetry model anchored to the candidate&apos;s real Pv-inside value —
+                not live sensor data. Trajectory shown is schematic, not to scale.
               </div>
             </div>
 
@@ -222,7 +223,7 @@ export default function SimulationPage() {
                   </span>
                 </div>
               </div>
-              <span className="text-[9px] font-mono text-outline font-bold">DATA-DRIVEN</span>
+              <span className="text-[9px] font-mono text-outline font-bold">ILLUSTRATIVE MODEL</span>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-5">

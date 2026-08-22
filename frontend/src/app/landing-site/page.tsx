@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { getLandingSites, getTargetCrater, LandingSite } from "@/lib/api";
+import { IllustrativeBanner } from "@/components/prism/IllustrativeBanner";
 import "material-symbols";
 
 export default function LandingSitePage() {
@@ -16,7 +17,7 @@ export default function LandingSitePage() {
     <main className="flex-1 p-4 flex gap-4 overflow-hidden bg-[#f8f9fa] h-[calc(100vh-80px)]">
       {/* ===================== LEFT COLUMN (~58%) ===================== */}
       <section className="w-[58%] flex flex-col gap-3 h-full min-h-0">
-        <div className="shrink-0">
+        <div className="shrink-0 flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <h1 className="text-[24px] font-semibold text-[#002a5d] m-0 leading-tight">
               Landing Site Selection ({target.psrId})
@@ -28,6 +29,7 @@ export default function LandingSitePage() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737782] mt-1">
             RADAR SURFACE SAFETY • P(ICE) PROXIMITY • LOLA REFERENCE BASELINE • FR-3
           </p>
+          <IllustrativeBanner detail="The basemap image is a stylized reference, not satellite imagery, and site marker positions on it are schematic (not plotted to exact coordinates)." />
         </div>
 
         {/* Hero Map */}
@@ -223,11 +225,11 @@ export default function LandingSitePage() {
             </div>
             <div className="bg-[#f3f4f5] border border-[#d9dadb] rounded px-2.5 py-1.5">
               <span className="text-[9px] uppercase text-[#737782] block mb-0.5">RADAR ROUGHNESS</span>
-              <span className="block text-[13px] font-medium text-[#002a5d]">
-                {selected.safetyScore > 85 ? "LOW (Pevn)" : "MODERATE"}
+              <span className="block text-[12px] font-medium text-amber-700">
+                Illustrative proxy
               </span>
-              <span className="text-[9px] text-[#016a61]">
-                {selected.safetyScore > 85 ? "Smooth approach" : "Blocky facet"}
+              <span className="text-[9px] text-[#8a6d1a]">
+                Derived from safety score, not a measured roughness metric
               </span>
             </div>
           </div>
@@ -240,36 +242,36 @@ export default function LandingSitePage() {
             <div>
               <div className="flex justify-between text-[11px] font-mono text-[#434751] mb-1">
                 <span>SLOPE SAFETY (40%)</span>
-                <span>{selected.scoringBreakdown?.slopeSafetyScore || 95}/100</span>
+                <span>{selected.scoringBreakdown?.slopeSafetyScore ?? "—"}/100</span>
               </div>
               <div className="h-1 bg-[#e1e3e4] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-[#003F87] rounded-full"
-                  style={{ width: `${selected.scoringBreakdown?.slopeSafetyScore || 95}%` }}
+                  style={{ width: `${selected.scoringBreakdown?.slopeSafetyScore ?? 0}%` }}
                 />
               </div>
             </div>
             <div>
               <div className="flex justify-between text-[11px] font-mono text-[#434751] mb-1">
                 <span>ICE PROXIMITY (35%)</span>
-                <span>{selected.scoringBreakdown?.iceProximityScore || 88}/100</span>
+                <span>{selected.scoringBreakdown?.iceProximityScore ?? "—"}/100</span>
               </div>
               <div className="h-1 bg-[#e1e3e4] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-[#4D93EA] rounded-full"
-                  style={{ width: `${selected.scoringBreakdown?.iceProximityScore || 88}%` }}
+                  style={{ width: `${selected.scoringBreakdown?.iceProximityScore ?? 0}%` }}
                 />
               </div>
             </div>
             <div>
               <div className="flex justify-between text-[11px] font-mono text-[#434751] mb-1">
                 <span>POWER / SUNLIGHT (25%)</span>
-                <span>{selected.scoringBreakdown?.powerSunlightScore || 92}/100</span>
+                <span>{selected.scoringBreakdown?.powerSunlightScore ?? "—"}/100</span>
               </div>
               <div className="h-1 bg-[#e1e3e4] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-[#7FB2F0] rounded-full"
-                  style={{ width: `${selected.scoringBreakdown?.powerSunlightScore || 92}%` }}
+                  style={{ width: `${selected.scoringBreakdown?.powerSunlightScore ?? 0}%` }}
                 />
               </div>
             </div>

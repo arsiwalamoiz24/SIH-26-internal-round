@@ -3,6 +3,8 @@
 import { useState } from "react";
 import PathImage from "@/assets/path.png";
 import { getRoverPaths, getTargetCrater, RoverPath } from "@/lib/api";
+import { REAL_CANDIDATE } from "@/data/prismDemoData";
+import { IllustrativeBanner } from "@/components/prism/IllustrativeBanner";
 
 export default function HazardTraverse() {
   const target = getTargetCrater();
@@ -61,44 +63,40 @@ export default function HazardTraverse() {
       </section>
 
       <section className="w-[320px] flex flex-col gap-3 h-full min-h-0 shrink-0">
+        <IllustrativeBanner detail="The traverse cost breakdown below (shadow exposure %, roughness tier, P(Ice) yield) is a static illustrative weighting, not computed from the pipeline for each path." />
+
         <div className="bg-white border border-[#d1d5db] rounded p-3 shrink-0 shadow-sm">
           <div className="flex justify-between items-center mb-2">
             <span className="text-[12px] font-semibold text-[#111827] font-mono">
               RADAR HAZARD SUMMARY
             </span>
-            <span className="text-[9px] font-mono text-outline uppercase font-bold">REAL DFSAR</span>
+            <span className="text-[9px] font-mono text-outline uppercase font-bold">
+              REAL PIPELINE (SP_840980_0797630)
+            </span>
           </div>
           <div className="grid grid-cols-2 gap-1.5">
             <div className="bg-[#f9fafb] border border-[#e5e7eb] rounded px-2 py-1.5">
               <div className="text-[9px] text-[#9ca3af] uppercase tracking-wider font-mono">
-                Radar Roughness
+                Terrain Roughness (TRI)
               </div>
               <div className="text-[14px] font-mono font-semibold text-[#111827]">
-                0.28 <span className="text-[10px] text-[#6b7280]">(Pevn/Ptot)</span>
+                {REAL_CANDIDATE.terrain.triMeters.toFixed(1)} <span className="text-[10px] text-[#6b7280]">m</span>
               </div>
             </div>
             <div className="bg-[#f9fafb] border border-[#e5e7eb] rounded px-2 py-1.5">
               <div className="text-[9px] text-[#9ca3af] uppercase tracking-wider font-mono">
-                LOLA Max Slope
+                Mean PSR Slope
               </div>
               <div className="text-[14px] font-mono font-semibold text-[#111827]">
-                11.4° <span className="text-[10px] text-[#6b7280]">Ref</span>
+                {REAL_CANDIDATE.terrain.meanSlopeDeg.toFixed(1)}° <span className="text-[10px] text-[#6b7280]">Real</span>
               </div>
             </div>
-            <div className="bg-[#f9fafb] border border-[#e5e7eb] rounded px-2 py-1.5">
-              <div className="text-[9px] text-[#9ca3af] uppercase tracking-wider font-mono">
-                Approach Pass
+            <div className="bg-[#fffbeb] border border-amber-200 rounded px-2 py-1.5 col-span-2">
+              <div className="text-[9px] text-amber-700 uppercase tracking-wider font-mono">
+                Approach Pass &amp; Terrain Clearance
               </div>
-              <div className="text-[14px] font-mono font-semibold text-[#111827]">
-                48 <span className="text-[10px] text-[#6b7280]">m</span>
-              </div>
-            </div>
-            <div className="bg-[#f9fafb] border border-[#e5e7eb] rounded px-2 py-1.5">
-              <div className="text-[9px] text-[#9ca3af] uppercase tracking-wider font-mono">
-                Terrain Clearance
-              </div>
-              <div className="text-[14px] font-mono font-semibold text-emerald-600">
-                94%
+              <div className="text-[12px] font-mono font-semibold text-amber-800">
+                Illustrative only — not present in pipeline output
               </div>
             </div>
           </div>
@@ -110,7 +108,7 @@ export default function HazardTraverse() {
             <span className="text-[12px] font-semibold text-[#111827] font-mono">
               TRAVERSE COST BREAKDOWN
             </span>
-            <span className="text-[9px] font-mono text-outline font-bold">PARETO COST</span>
+            <span className="text-[9px] font-mono text-outline font-bold">ILLUSTRATIVE MODEL</span>
           </div>
 
           <div className="flex flex-col gap-2 font-mono">
