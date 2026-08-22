@@ -1,0 +1,53 @@
+{
+  "purpose": "Track G-v2 regional -- overview-resolution hazard map across the full south-polar PSR-catalog extent, all 336 radar-covered PSRs.",
+  "scope_decision": "Overview resolution (1500x1500, matching Objective 1's own Y4R screening convention), not full native 20m/px -- see DECISIONS.md for the timed cost/value tradeoff (full-res regional would take 2+ hours).",
+  "overview_size_px": 1500,
+  "overview_px_size_m": 405.3333333333333,
+  "native_px_size_m": 20.0,
+  "decimation_factor": 20.266666666666666,
+  "n_psrs_evaluated": 336,
+  "n_psrs_in_candidate_table": 336,
+  "regional_slope_deg": {
+    "label": "Sobel slope, overview resolution, whole south-polar extent",
+    "n_px": 2250000,
+    "min": 0.002847979594762697,
+    "max": 34.2167252153505,
+    "mean": 8.244359128170613,
+    "median": 6.899870088995492,
+    "std": 6.1378696360239084
+  },
+  "regional_roughness_rms_m": {
+    "label": "RMS roughness, overview resolution",
+    "n_px": 2250000,
+    "min": 0.8157143946690191,
+    "max": 378.452275582952,
+    "mean": 83.77483054684882,
+    "median": 69.49728220143929,
+    "std": 60.799759915098086
+  },
+  "regional_illumination_fraction": {
+    "label": "24-position sun ray-cast illumination fraction, overview resolution",
+    "n_px": 2250000,
+    "min": 0.0,
+    "max": 0.75,
+    "mean": 0.0005707222222222222,
+    "median": 0.0,
+    "std": 0.007517924151816719
+  },
+  "regional_hazard_score": {
+    "label": "Combined hazard score, overview resolution",
+    "n_px": 2250000,
+    "min": 0.08944614320591764,
+    "max": 0.9987876195285164,
+    "mean": 0.4866637241588437,
+    "median": 0.4606703779994773,
+    "std": 0.1129531817149232
+  },
+  "primary_candidate": {
+    "PSR_ID": "SP_840980_0797630",
+    "regional_hazard_rank": "309 of 336 (1 = lowest/safest hazard)",
+    "note": "This overview-resolution rank is a coarse regional screen, not a replacement for the full-res per-candidate result in SP_840980_0797630_hazard_map_v2.json."
+  },
+  "runtime_seconds": 33.3,
+  "per_psr_csv": "regional_hazard_per_psr.csv"
+}

@@ -5,6 +5,15 @@ Extracts quantitative results, baseline distributions, and target crater rasters
 directly from data_processing.ipynb outputs.
 Computes transparent derived models (Probabilistic Ice Likelihood, Indicative Volumetric Yield,
 Geometric Landing Sites, and Pareto Paths) with explicit assumptions and provenance tracking.
+
+STALE -- DO NOT RE-RUN WITHOUT READING THIS FIRST (as of 2026-08-23):
+This is the script that *originally* generated frontend/src/data/prism_science_data.json.
+Since then, that JSON has been extensively hand-edited to add real pipeline results this
+script does not produce or know about (Physics Evidence Score, DOP, Track G-v2 terrain/
+illumination/hazard, the real per-pixel Isolation Forest evidence grid, etc. -- see
+DECISIONS.md). Re-running this script and overwriting prism_science_data.json with its
+output would silently discard all of that. Kept for reference (it's still an accurate
+record of how the *original* derived-model numbers were computed), not as a live generator.
 """
 
 import json

@@ -1,0 +1,26 @@
+{
+  "purpose": "Track J-v2 shortlist -- per-pixel Isolation Forest, real independent Pv/CPR/SERD/T-Ratio bands.",
+  "candidate_id": "SP_842420_0421060",
+  "candidate_lat": -84.242,
+  "candidate_lon": 42.106,
+  "model": "sklearn.ensemble.IsolationForest",
+  "features": [
+    "Pv",
+    "CPR",
+    "SERD",
+    "T-Ratio"
+  ],
+  "n_pixels_valid": 49770,
+  "window_shape_px": [
+    264,
+    264
+  ],
+  "pixel_size_m": 25.0,
+  "source": "Real Y4R+L3C mosaic bands via /vsicurl/ windowed remote read (shared team Drive)",
+  "psr_interior_vs_surroundings": {
+    "n_px_inside_psr": 27850,
+    "n_px_outside_psr_in_window": 21920,
+    "mean_ice_likelihood_inside_psr": 0.18924494087696075,
+    "mean_ice_likelihood_outside_psr": 0.19618509709835052
+  }
+}

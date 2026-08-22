@@ -1,0 +1,60 @@
+{
+  "candidate_id": "SP_832640_0090770",
+  "candidate_lat": -83.264,
+  "candidate_lon": 9.077,
+  "window_buffer_m": 5000,
+  "pixel_size_m": 20.0,
+  "dem_source": {
+    "elevation_product": "LDEM_80S_20MPP_ADJ.TIF",
+    "provider": "NASA GSFC PGDA",
+    "resolution_m_per_px": 20,
+    "access_method": "GDAL /vsicurl/ windowed remote read"
+  },
+  "slope_deg": {
+    "label": "Sobel-gradient slope from LDEM",
+    "n_px": 250000,
+    "min": 0.014598379648664114,
+    "max": 41.97706322767196,
+    "mean": 19.750291030315736,
+    "median": 21.232675068401317,
+    "std": 10.09789101175223
+  },
+  "roughness_rms_m": {
+    "label": "5x5 local RMS elevation roughness",
+    "n_px": 250000,
+    "min": 0.11520228100639156,
+    "max": 22.760234454317718,
+    "mean": 10.5041256295342,
+    "median": 10.9590222505365,
+    "std": 5.640940036583517
+  },
+  "illumination_fraction": {
+    "label": "Fraction of 24 sun positions illuminated",
+    "n_px": 250000,
+    "min": 0.0,
+    "max": 0.75,
+    "mean": 0.017977,
+    "median": 0.0,
+    "std": 0.03661939716567953
+  },
+  "hazard_score": {
+    "label": "Weighted hazard = (slope_norm + roughness_norm + (1-illum))/3",
+    "n_px": 250000,
+    "min": 0.09878945131085468,
+    "max": 0.9979513082196347,
+    "mean": 0.6370378331527267,
+    "median": 0.6596363988328611,
+    "std": 0.16812573466955563,
+    "pct_safe_lt0.33": 0.0996,
+    "pct_caution_0.33to0.66": 49.9312,
+    "pct_hazard_gte0.66": 49.9692
+  },
+  "psr_interior_vs_approach": {
+    "n_px_inside_psr": 81234,
+    "mean_hazard_inside_psr": 0.7475622713610595,
+    "mean_illum_frac_inside_psr": 0.0,
+    "n_px_outside_psr_in_window": 168766,
+    "mean_hazard_outside_psr_in_window": 0.5838378864015107,
+    "mean_illum_frac_outside_psr_in_window": 0.02663006766765818
+  }
+}

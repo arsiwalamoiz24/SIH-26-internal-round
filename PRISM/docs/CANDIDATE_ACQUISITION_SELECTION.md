@@ -1,3 +1,15 @@
+## ADDENDUM 3 (2026-08-23): OHRC scene discovery — same problem, same fix, not yet done
+
+This document is about finding the right **DFSAR** acquisition; the same discovery problem now blocks **OHRC** (the optical imagery needed for boulder/hazard detection — see `ML_METHODS.md` for the full YOLOv8 status). PRADAN's product search is hard to use for this because it requires already knowing the product ID/date — exactly what's unknown when you only have a target coordinate.
+
+**Same fix that worked for DFSAR in Addendum 2 below applies here: CH2Browse (`chmapbrowse.issdc.gov.in`)**, the map-based footprint browser, lets you visually locate footprints over the candidate's lat/lon (−84.098°, 79.764°) instead of guessing product IDs. Note §4 below found this tool required an authenticated ISSDC session at the time it was first checked — but Addendum 2 confirms the team obtained legitimate authenticated PRADAN access this session, which should also unlock CH2Browse (same ISSDC login).
+
+**Apply the same lesson learned the hard way in Addendum 2's step 3**: when checking whether a candidate OHRC scene actually covers `SP_840980_0797630`, use the label's true rotated footprint corners (`image_upper_left/upper_right/lower_right/lower_left_mapX/mapY`), not the loose axis-aligned bounding box (`upper_left/upper_right/lower_right/lower_left` without the `image_` prefix) — the latter gave a false-positive containment match for DFSAR and would likely do the same for OHRC. Confirm with a second independent check if the product has a geometry/grid CSV, same as the DFSAR resolution did.
+
+**Status: not yet done.** This addendum documents where to look, not a completed acquisition. The OHRC scene currently in this project (`ch2_ohr_ncp_20251010T0942085687_d_img_d18`) remains confirmed NOT to cover the candidate (see `ML_METHODS.md`, `PROJECT_STATUS.md` §3.4).
+
+---
+
 ## ADDENDUM 2 (2026-08-22, same-day follow-up): RESOLVED — covering acquisition found, confirmed, and downloaded
 
 **User obtained legitimate authenticated PRADAN access this session.** Using it:

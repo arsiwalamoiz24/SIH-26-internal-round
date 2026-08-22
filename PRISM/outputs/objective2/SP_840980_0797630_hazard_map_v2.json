@@ -1,0 +1,73 @@
+{
+  "candidate_id": "SP_840980_0797630",
+  "candidate_lat": -84.098,
+  "candidate_lon": 79.764,
+  "window_buffer_m": 5000,
+  "pixel_size_m": 20.0,
+  "bug_fix_note": "The source notebook (obj2_probably.ipynb) intended to load elevation but actually read LDSM_80S_20MPP_ADJ.TIF (NASA's precomputed SLOPE raster), confirmed by its printed value range (0.007-59.3) exactly matching this project's own prior slope stats. This script fixes that by reading LDEM_80S_20MPP_ADJ.TIF (elevation, meters) instead. All formulas below are otherwise unchanged from the source notebook.",
+  "dem_source": {
+    "elevation_product": "LDEM_80S_20MPP_ADJ.TIF",
+    "provider": "NASA GSFC PGDA",
+    "resolution_m_per_px": 20,
+    "access_method": "GDAL /vsicurl/ windowed remote read (no full download performed)"
+  },
+  "slope_deg": {
+    "label": "Sobel-gradient slope from LDEM",
+    "n_px": 250000,
+    "min": 0.006635198831769746,
+    "max": 59.30872747104277,
+    "mean": 10.705702226940218,
+    "median": 7.99350905492706,
+    "std": 8.316266585755951
+  },
+  "roughness_rms_m": {
+    "label": "5x5 local RMS elevation roughness",
+    "n_px": 250000,
+    "min": 0.10916191870917819,
+    "max": 27.52059364698018,
+    "mean": 5.492890247327669,
+    "median": 3.954590998540029,
+    "std": 4.409690065803385
+  },
+  "illumination_fraction": {
+    "label": "Fraction of 24 (8 azimuth x 3 elevation) sun positions illuminated",
+    "n_px": 250000,
+    "min": 0.0,
+    "max": 0.75,
+    "mean": 0.0017463333333333332,
+    "median": 0.0,
+    "std": 0.01281948551143055
+  },
+  "hazard_score": {
+    "label": "Weighted hazard = (slope_norm + roughness_norm + (1-illum))/3, equal weights",
+    "n_px": 250000,
+    "min": 0.1520880817596421,
+    "max": 0.9976164923743518,
+    "mean": 0.45835816957739356,
+    "median": 0.424128904937356,
+    "std": 0.10061869426465761,
+    "pct_safe_lt0.33": 0.3804,
+    "pct_caution_0.33to0.66": 95.3668,
+    "pct_hazard_gte0.66": 4.252800000000001,
+    "weighting_note": "Equal 1/3 weighting is a documented default (same convention as the Physics Evidence Score elsewhere in this project), not literature-calibrated."
+  },
+  "cross_check_vs_track_g_v1_ldsm_slope": {
+    "track_g_v1_ldsm_mean_deg": 10.715764045715332,
+    "track_g_v2_sobel_mean_deg": 10.705702226940218,
+    "abs_diff_deg": 0.010061818775113807,
+    "track_g_v1_ldsm_median_deg": 8.005621910095215,
+    "track_g_v2_sobel_median_deg": 7.99350905492706,
+    "note": "Two independent slope methods (NASA-precomputed LDSM vs. this script's own Sobel-gradient computation from LDEM elevation) on the same window -- agreement supports both being correct; large disagreement would flag a bug in one of them."
+  },
+  "psr_interior_vs_approach": {
+    "n_px_inside_psr": 35586,
+    "mean_hazard_inside_psr": 0.5966665300285743,
+    "pct_hazard_gte0.66_inside_psr": 8.000337211262856,
+    "mean_illum_frac_inside_psr": 0.0,
+    "n_px_outside_psr_in_window": 214414,
+    "mean_hazard_outside_psr_in_window": 0.4354033190778194,
+    "pct_hazard_gte0.66_outside_psr_in_window": 3.630826345294617,
+    "mean_illum_frac_outside_psr_in_window": 0.002036169901840987,
+    "note": "PSR interior = the actual ice-candidate floor (should be near-zero illumination by definition -- that's what makes it a PSR); 'outside' is the surrounding approach terrain a lander must cross."
+  }
+}
