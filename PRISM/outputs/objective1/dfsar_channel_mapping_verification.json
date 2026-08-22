@@ -1,0 +1,221 @@
+{
+  "n100_reproduction": {
+    "n_lines": 100,
+    "lines_per_group": 25,
+    "best_mapping": {
+      "G0": "HV",
+      "G1": "HH",
+      "G2": "VV",
+      "G3": "VH"
+    },
+    "best_fit_error": 0.38900554979140956,
+    "original_mapping": {
+      "G0": "HV",
+      "G1": "HH",
+      "G2": "VV",
+      "G3": "VH"
+    },
+    "original_fit_error": 0.38900554979140956,
+    "original_mapping_rank_out_of_24": 1,
+    "original_mapping_per_pol_detail": {
+      "HV": {
+        "group": "G0",
+        "stats": {
+          "std_real": 4.088129623590096,
+          "std_imag": 4.367772124994213,
+          "bias_real": 0.1666796875,
+          "bias_imag": 3.0494921875
+        },
+        "fit_error": 0.004099762677490202
+      },
+      "HH": {
+        "group": "G1",
+        "stats": {
+          "std_real": 14.594783901537165,
+          "std_imag": 14.582970486877162,
+          "bias_real": 0.490234375,
+          "bias_imag": 3.4412109375
+        },
+        "fit_error": 0.28879519276692783
+      },
+      "VV": {
+        "group": "G2",
+        "stats": {
+          "std_real": 12.243035440917263,
+          "std_imag": 11.917218754504441,
+          "bias_real": 3.8320703125,
+          "bias_imag": 5.3241796875
+        },
+        "fit_error": 0.08856942145437559
+      },
+      "VH": {
+        "group": "G3",
+        "stats": {
+          "std_real": 5.192017225616047,
+          "std_imag": 5.1735652160456755,
+          "bias_real": -1.5909375,
+          "bias_imag": 1.295546875
+        },
+        "fit_error": 0.0075411728926159695
+      }
+    },
+    "top_5_mappings": [
+      {
+        "mapping": {
+          "G0": "HV",
+          "G1": "HH",
+          "G2": "VV",
+          "G3": "VH"
+        },
+        "total_fit_error": 0.38900554979140956
+      },
+      {
+        "mapping": {
+          "G0": "VH",
+          "G1": "HH",
+          "G2": "VV",
+          "G3": "HV"
+        },
+        "total_fit_error": 5.739060408698263
+      },
+      {
+        "mapping": {
+          "G0": "HV",
+          "G1": "VV",
+          "G2": "HH",
+          "G3": "VH"
+        },
+        "total_fit_error": 11.735774308354479
+      },
+      {
+        "mapping": {
+          "G0": "HV",
+          "G1": "VH",
+          "G2": "VV",
+          "G3": "HH"
+        },
+        "total_fit_error": 13.324332104708049
+      },
+      {
+        "mapping": {
+          "G0": "HH",
+          "G1": "HV",
+          "G2": "VV",
+          "G3": "VH"
+        },
+        "total_fit_error": 13.896347886487847
+      }
+    ]
+  },
+  "n4000_larger_sample": {
+    "n_lines": 4000,
+    "lines_per_group": 1000,
+    "best_mapping": {
+      "G0": "HV",
+      "G1": "HH",
+      "G2": "VV",
+      "G3": "VH"
+    },
+    "best_fit_error": 0.3816787772743451,
+    "original_mapping": {
+      "G0": "HV",
+      "G1": "HH",
+      "G2": "VV",
+      "G3": "VH"
+    },
+    "original_fit_error": 0.3816787772743451,
+    "original_mapping_rank_out_of_24": 1,
+    "original_mapping_per_pol_detail": {
+      "HV": {
+        "group": "G0",
+        "stats": {
+          "std_real": 4.014175832153048,
+          "std_imag": 4.2187706140537315,
+          "bias_real": 0.2083154296875,
+          "bias_imag": 2.94173828125
+        },
+        "fit_error": 0.0008506336549638006
+      },
+      "HH": {
+        "group": "G1",
+        "stats": {
+          "std_real": 14.329986086167112,
+          "std_imag": 14.38005658392587,
+          "bias_real": 0.5109482421875,
+          "bias_imag": 3.3397451171875
+        },
+        "fit_error": 0.22478955079655577
+      },
+      "VV": {
+        "group": "G2",
+        "stats": {
+          "std_real": 12.589116573093092,
+          "std_imag": 12.123341469365386,
+          "bias_real": 4.01158203125,
+          "bias_imag": 5.3489560546875
+        },
+        "fit_error": 0.15527135272442552
+      },
+      "VH": {
+        "group": "G3",
+        "stats": {
+          "std_real": 5.164271040040405,
+          "std_imag": 5.138944045378044,
+          "bias_real": -1.54825,
+          "bias_imag": 1.2132138671875
+        },
+        "fit_error": 0.0007672400984000425
+      }
+    },
+    "top_5_mappings": [
+      {
+        "mapping": {
+          "G0": "HV",
+          "G1": "HH",
+          "G2": "VV",
+          "G3": "VH"
+        },
+        "total_fit_error": 0.3816787772743451
+      },
+      {
+        "mapping": {
+          "G0": "VH",
+          "G1": "HH",
+          "G2": "VV",
+          "G3": "HV"
+        },
+        "total_fit_error": 5.692719205012542
+      },
+      {
+        "mapping": {
+          "G0": "HV",
+          "G1": "VV",
+          "G2": "HH",
+          "G3": "VH"
+        },
+        "total_fit_error": 12.31970385286982
+      },
+      {
+        "mapping": {
+          "G0": "HV",
+          "G1": "VH",
+          "G2": "VV",
+          "G3": "HH"
+        },
+        "total_fit_error": 12.95883382713125
+      },
+      {
+        "mapping": {
+          "G0": "HH",
+          "G1": "HV",
+          "G2": "VV",
+          "G3": "VH"
+        },
+        "total_fit_error": 13.357488034833663
+      }
+    ]
+  },
+  "best_mapping_stable_across_sample_sizes": true,
+  "original_mapping_is_best_fit_at_n100": true,
+  "original_mapping_is_best_fit_at_n4000": true
+}

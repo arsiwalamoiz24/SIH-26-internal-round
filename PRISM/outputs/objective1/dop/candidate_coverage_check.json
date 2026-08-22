@@ -1,0 +1,44 @@
+{
+  "purpose": "Phase E candidate-coverage check for candidate-level DOP from the raw DFSAR L0A-RAW product",
+  "raw_product": "data/ch2_sar_nrxl_20251025t211236510_d_fp_d18/data/raw/20251025/ch2_sar_nrxl_20251025t211236510_d_r0a_xx_fp_xx_d18.dat",
+  "raw_product_xml": "ch2_sar_nrxl_20251025t211236510_d_r0a_xx_fp_xx_d18.xml",
+  "acquisition_date": "2025-10-25T21:12:36.616Z to 2025-10-25T21:14:03.719Z",
+  "product_id": "2575411",
+  "candidate": {
+    "id": "SP_840980_0797630",
+    "lat_deg": -84.098,
+    "lon_deg": 79.764
+  },
+  "footprint_source": "isda:Geometry_Parameters block in the raw .dat XML label (upper_left/upper_right/lower_left/lower_right/centre lat/lon)",
+  "footprint_corners_deg": {
+    "UL": [-84.502295, -23.217621],
+    "UR": [-84.556978, -22.521599],
+    "LR": [-86.567711, -77.521892],
+    "LL": [-86.482727, -77.422285],
+    "center": [-85.998683, -43.600595]
+  },
+  "distance_method": "Haversine great-circle distance on a sphere of radius 1,737,400 m (isda:semi_major_radius = isda:semi_minor_radius, eccentricity 0 per the same XML)",
+  "geodesic_distance_candidate_to_footprint_km": {
+    "to_UL": 270.430,
+    "to_UR": 267.862,
+    "to_LR": 277.886,
+    "to_LL": 280.336,
+    "to_center": 265.706,
+    "minimum_over_all_corners_and_center": 265.706
+  },
+  "scene_extent_km_for_context": {
+    "UL_to_UR_cross_track_top": 2.607,
+    "LL_to_LR_cross_track_bottom": 2.583,
+    "UL_to_LL_along_track_left": 135.444,
+    "UR_to_LR_along_track_right": 135.448
+  },
+  "independent_corroboration": {
+    "method": "Sub-satellite point computed from the geometry CSV's first ephemeris row (Lunar Fixed Frame x,y,z -> spherical lat/lon), using the same sphere radius.",
+    "geometry_csv": "geometry/raw/20251025/ch2_sar_nrxl_20251025t211236510_g_oat_xx_fp_xx_d18.csv",
+    "sub_satellite_point_row1": {"lat_deg": -84.979, "lon_deg": -6.342, "time_utc": "2025-10-25T21:12:27.346", "altitude_m": 94375.7},
+    "conclusion": "Ephemeris-derived ground track longitude (~-6 deg at acquisition start, sweeping toward the XML corner longitudes -23 to -77 deg) is self-consistent with the XML footprint corners and independently confirms the acquisition track is nowhere near candidate longitude +79.764 deg."
+  },
+  "verdict": "CANDIDATE OUTSIDE ACQUISITION FOOTPRINT",
+  "verdict_detail": "The candidate is ~266-280 km from every footprint corner and from the scene center. The scene itself is a narrow strip only ~135 km long (along-track) by ~2.6 km wide (cross-track/swath, consistent with the XML isda:swath=4850 m and the instrument description's L-band footprint of ~22.5-34 km). The candidate is roughly 2x the scene's own along-track length away from the nearest edge, and >100x the scene's cross-track width away. This is not a marginal/boundary case attributable to geolocation uncertainty (the product's own stated geolocation precision is not close to hundreds of km) -- it is a clear, unambiguous non-overlap.",
+  "conclusion_for_dop_pipeline": "Phases F-J (candidate window extraction, calibration for the candidate window, candidate-level DOP calculation, DOP validation, comparison with Pv/CPR/SERD/T-Ratio/PSR for the candidate) CANNOT proceed for this raw product / candidate pair. This is the sole raw DFSAR product present under PRISM/data (per task instructions, no other copy was searched for or downloaded). No candidate-level DOP can be scientifically computed from the currently available raw DFSAR data."
+}

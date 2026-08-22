@@ -1,0 +1,72 @@
+{
+  "candidate_id": "SP_840980_0797630",
+  "candidate_lat": -84.098,
+  "candidate_lon": 79.764,
+  "candidate_xy_south_polar_stereographic_m": [
+    176275.8778046456,
+    31831.392554179583
+  ],
+  "window_buffer_m": 5000,
+  "window_size_km": 10.0,
+  "dem_source": {
+    "slope_product": "LDSM_80S_20MPP_ADJ.TIF",
+    "elevation_product": "LDEM_80S_20MPP_ADJ.TIF",
+    "provider": "NASA GSFC PGDA",
+    "url_base": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/",
+    "server_last_modified": "2023-06-03 (per HTTP header, both files)",
+    "resolution_m_per_px": 20,
+    "crs": "PROJCS[\"Moon (2015) - Sphere / Ocentric / South Polar\",GEOGCS[\"Moon (2015) - Sphere / Ocentric\",DATUM[\"Moon (2015) - Sphere\",SPHEROID[\"Moon (2015) - Sphere\",1737400,0,AUTHORITY[\"IAU\",\"30100\"]],AUTHORITY[\"IAU\",\"30100\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"30100\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"30100\"]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"30135\"]]",
+    "access_method": "GDAL /vsicurl/ windowed remote read (no full download performed)"
+  },
+  "slope_stats": {
+    "n_px": 250000,
+    "min_deg": 0.00700597558170557,
+    "max_deg": 59.308616638183594,
+    "mean_deg": 10.715764045715332,
+    "median_deg": 8.005621910095215,
+    "std_deg": 8.312474250793457,
+    "percentiles_5_25_50_75_95": [
+      1.3963342130184173,
+      4.180033445358276,
+      8.005621910095215,
+      15.411922454833984,
+      26.70850067138671
+    ],
+    "pct_safe_lt10deg": 59.894000000000005,
+    "pct_caution_10to20deg": 19.9252,
+    "pct_hazard_gte20deg": 20.180799999999998,
+    "threshold_source": "Carried over verbatim from obj2 (1).ipynb cell 33. Original author's own inline comment: 'crude thresholds - refine once you overlay actual PSR boundary'. NOT independently validated against any lander/rover specification in Phase 1.",
+    "psr_interior_vs_approach": {
+      "n_px_inside_psr": 35586,
+      "mean_deg_inside_psr": 22.075857162475586,
+      "median_deg_inside_psr": 23.116682052612305,
+      "pct_hazard_gte20deg_inside_psr": 78.63204631034677,
+      "n_px_outside_psr_in_window": 214414,
+      "mean_deg_outside_psr_in_window": 8.830344200134277,
+      "pct_hazard_gte20deg_outside_psr_in_window": 10.479726137285812,
+      "note": "PSR interior = the actual ice-candidate floor; 'outside psr in window' includes the crater rim/walls a lander must cross to reach the interior. These are reported separately because they can have very different hazard profiles."
+    }
+  },
+  "elevation_stats": {
+    "n_px": 250000,
+    "min_m": -4410.65966796875,
+    "max_m": -2668.5537109375,
+    "mean_m": -3493.114013671875,
+    "std_m": 285.36871337890625,
+    "elevation_range_m": 1742.10595703125,
+    "note": "NEW in Phase 1 -- not present in any audited notebook. LDEM was downloaded in obj2 (1).ipynb cell 30 but never opened/used anywhere in that notebook."
+  },
+  "roughness_tri_stats": {
+    "method": "Riley, Degloria & Elliot (1999) Terrain Ruggedness Index: mean absolute elevation difference between each cell and its 8 immediate neighbors, computed on the native 20 m/px LDEM grid.",
+    "cellsize_m": 20.0,
+    "mean_tri_m": 3.015211597623698,
+    "median_tri_m": 2.1797027587890625,
+    "max_tri_m": 38.770843505859375,
+    "note": "NEW in Phase 1 -- roughness/TRI was entirely absent from all audited notebooks.",
+    "psr_interior_vs_approach": {
+      "mean_tri_m_inside_psr": 6.293287354510409,
+      "mean_tri_m_outside_psr_in_window": 2.4711538220839913
+    }
+  },
+  "figure": "SP_840980_0797630_terrain_composite.png"
+}

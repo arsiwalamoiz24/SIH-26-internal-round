@@ -1,0 +1,25 @@
+{
+  "H1_weak_signal_hypothesis": {
+    "median_power_ratio_nan_over_finite_across_shortlist": [
+      1.3324713232561847,
+      1.1919041968455735,
+      0.24560023151220603,
+      0.9944012379647117,
+      0.7032556535424792
+    ],
+    "mean_ratio": 0.8935265286242309,
+    "interpretation": "ratio << 1 across the shortlist would support H1 (SERD NaN occurs in low-power/shadow pixels); ratio ~= 1 would refute it"
+  },
+  "H2_cpr_extremity_hypothesis": {
+    "median_cpr_diff_nan_minus_finite_across_shortlist": [
+      0.6781597137451172,
+      0.6477624177932739,
+      0.3884587287902832,
+      0.3648245334625244,
+      0.5146562457084656
+    ],
+    "mean_diff": 0.5187723278999329,
+    "interpretation": "a large, consistent negative or positive offset would support H2; near-zero would refute it"
+  },
+  "spatial_pattern": "see pct_nan_inside_psr vs pct_nan_outside_psr per PSR in serd_nan_hypothesis_test.csv"
+}
