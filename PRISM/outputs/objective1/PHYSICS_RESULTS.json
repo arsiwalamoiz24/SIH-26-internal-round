@@ -1,0 +1,230 @@
+{
+  "candidate_id": "SP_840980_0797630",
+  "candidate_coordinate_deg": {
+    "lat": -84.098,
+    "lon": 79.764
+  },
+  "generated": "2026-08-22, PRISM implementation session",
+  "category_legend": "Every block below is labeled CANDIDATE-SPECIFIC or NON-CANDIDATE VALIDATION, per task instruction. Source file is always given.",
+  "georeferencing_verification": {
+    "category": "CANDIDATE-SPECIFIC",
+    "source": "outputs/objective1/candidate_physics/georeferencing_check.json (Track B)",
+    "verdict": "PASS",
+    "round_trip_error_deg": 1.4210854715202004e-14
+  },
+  "radar_physics": {
+    "category": "CANDIDATE-SPECIFIC",
+    "source": "outputs/objective1/candidate_physics/candidate_physics_summary.json (Track A), from Y4R L4-MOSAIC + CPR/SERD/T-Ratio L3C-MOSAIC (2025-06-30, 602 contributing acquisitions 2019-09-22 to 2023-10-18)",
+    "Pv": {
+      "label": "pv -- full candidate window",
+      "n_total_px": 69696,
+      "n_valid_px": 69696,
+      "n_nan_px": 0,
+      "pct_nan": 0.0,
+      "mean": 0.4543111324310303,
+      "median": 0.46922242641448975,
+      "std": 0.18231303989887238,
+      "min": 0.0018215194577351213,
+      "max": 0.8747578859329224,
+      "p5": 0.15638545528054237,
+      "p10": 0.20224815607070923,
+      "p25": 0.3082430735230446,
+      "p50": 0.46922241151332855,
+      "p75": 0.6020031720399857,
+      "p90": 0.6866860091686249,
+      "p95": 0.7289053648710251
+    },
+    "CPR": {
+      "label": "cpr -- full candidate window",
+      "n_total_px": 69696,
+      "n_valid_px": 69696,
+      "n_nan_px": 0,
+      "pct_nan": 0.0,
+      "mean": 0.5649844408035278,
+      "median": 0.5424538850784302,
+      "std": 0.2838287055492401,
+      "min": 0.02974885143339634,
+      "max": 1.8524895906448364,
+      "p5": 0.15980390459299088,
+      "p10": 0.20794948935508728,
+      "p25": 0.33309726417064667,
+      "p50": 0.5424538850784302,
+      "p75": 0.7705226540565491,
+      "p90": 0.9548531174659729,
+      "p95": 1.0580154955387115
+    },
+    "SERD": {
+      "label": "serd -- full candidate window",
+      "n_total_px": 69696,
+      "n_valid_px": 69696,
+      "n_nan_px": 0,
+      "pct_nan": 0.0,
+      "mean": 0.6729207038879395,
+      "median": 0.6690033674240112,
+      "std": 0.14428898692131042,
+      "min": 0.13411842286586761,
+      "max": 0.996553361415863,
+      "p5": 0.43975505232810974,
+      "p10": 0.4854252487421036,
+      "p25": 0.566267341375351,
+      "p50": 0.6690033674240112,
+      "p75": 0.7885993123054504,
+      "p90": 0.8654277920722961,
+      "p95": 0.8993397355079651
+    },
+    "T_Ratio": {
+      "label": "tratio -- full candidate window",
+      "n_total_px": 69696,
+      "n_valid_px": 69696,
+      "n_nan_px": 0,
+      "pct_nan": 0.0,
+      "mean": 0.5707418918609619,
+      "median": 0.5297855138778687,
+      "std": 0.3121434450149536,
+      "min": 0.014421517960727215,
+      "max": 2.1893296241760254,
+      "p5": 0.14830465987324715,
+      "p10": 0.19709713757038116,
+      "p25": 0.3207572475075722,
+      "p50": 0.5297854840755463,
+      "p75": 0.7750668525695801,
+      "p90": 1.0050158500671387,
+      "p95": 1.1446832120418549
+    },
+    "relative_percentiles_in_mosaic": {
+      "Pv": 93.90888766236904,
+      "CPR": 97.20055281658718,
+      "SERD": 4.261376063745663,
+      "T_Ratio": 95.80992400029359
+    }
+  },
+  "serd_nan_investigation": {
+    "category": "CANDIDATE-SPECIFIC finding (candidate has 0% SERD NaN) + NON-CANDIDATE full-mosaic characterization",
+    "source": "docs/SERD_NAN_ANALYSIS.md, outputs/objective1/candidate_physics/serd_nan_analysis.json (Track F)",
+    "candidate_serd_nan_pct": 0.0,
+    "global_mosaic_serd_nan_pct": 43.2372,
+    "verdict": "~99.99% OF SERD NAN IS SHARED OUTSIDE-MOSAIC-COVERAGE MASKING (co-occurs with CPR/T-Ratio/Y4R-power NaN); A SMALL RESIDUAL (~0.01% of NaN pixels, but a large share of shortlist-PSR-window NaN) IS SERD-SPECIFIC AND CPR-CORRELATED"
+  },
+  "dop_pipeline_validation": {
+    "category": "NON-CANDIDATE VALIDATION -- 2025-10-25 acquisition does NOT cover the candidate",
+    "source": "docs/DOP_VALIDATION_RESULTS.md, outputs/objective1/dop/dop_validation_results.json (Track C)",
+    "linear_pol_dop_mean": 0.6667532324790955,
+    "hybrid_pol_dop_mean": 0.5736534908353637,
+    "eigenvalue_purity_whole_window": 0.6297502517700195,
+    "best_supported_formulation": "linear-pol (HH/VV) Stokes-covariance DOP -- see formula_comparison in the source JSON"
+  },
+  "candidate_specific_dop": {
+    "category": "CANDIDATE-SPECIFIC",
+    "status": "RESOLVED (follow-up session, authenticated PRADAN access)",
+    "acquisition": "ch2_sar_ncxl_20220318t135736694_d_fp_d18",
+    "source": "docs/DOP_VALIDATION_RESULTS.md, docs/CANDIDATE_ACQUISITION_SELECTION.md, outputs/objective1/dop/candidate_dop.json, candidate_acquisition.json",
+    "containment_evidence": "True rotated image-footprint corners (20 km margin) + actual Level-1A Grid CSV nearest sample (91 m)",
+    "linear_pol_dop_mean": 0.6804845929145813,
+    "linear_pol_dop_median": 0.7082269191741943,
+    "hybrid_pol_dop_mean": 0.5935717847805299,
+    "eigenvalue_purity_whole_window": 0.908509373664856,
+    "n_valid_px": 488000,
+    "pct_nan": 0.0,
+    "best_supported_formulation": "linear-pol (HH/VV) Stokes-covariance DOP -- same rationale as docs/DOP_VALIDATION_RESULTS.md (standard construction, no synthesis assumption); hybrid-pol and eigenvalue-purity reported as cross-checks.",
+    "calibration_applied": "XML bias_real/bias_imag subtraction only (per-polarization, from this product's own PDS4 label). No gain-imbalance or phase-orthogonality correction applied -- same limitation as the non-candidate validation run.",
+    "false_positive_lesson": "An earlier screening pass this session used loose bounding-box corners and produced a false-positive containment for a different acquisition (ch2_sar_ncxl_20191106t114537878, 4.88GB, downloaded then deleted after the Grid CSV showed it actually misses the candidate by ~75km). Corrected method (true image-footprint corners + Grid CSV) used for the final result.",
+    "note": "Physics evidence score and ML anomaly score (below) were NOT recomputed to include this DOP value -- they retain their pre-DOP state."
+  },
+  "terrain": {
+    "category": "CANDIDATE-SPECIFIC",
+    "source": "outputs/objective2/SP_840980_0797630_terrain_stats.json (Track G, real LOLA 20m/px DEM via GDAL /vsicurl/ windowed remote read, no full download)",
+    "slope_stats": {
+      "n_px": 250000,
+      "min_deg": 0.00700597558170557,
+      "max_deg": 59.308616638183594,
+      "mean_deg": 10.715764045715332,
+      "median_deg": 8.005621910095215,
+      "std_deg": 8.312474250793457,
+      "percentiles_5_25_50_75_95": [
+        1.3963342130184173,
+        4.180033445358276,
+        8.005621910095215,
+        15.411922454833984,
+        26.70850067138671
+      ],
+      "pct_safe_lt10deg": 59.894000000000005,
+      "pct_caution_10to20deg": 19.9252,
+      "pct_hazard_gte20deg": 20.180799999999998,
+      "threshold_source": "Carried over verbatim from obj2 (1).ipynb cell 33. Original author's own inline comment: 'crude thresholds - refine once you overlay actual PSR boundary'. NOT independently validated against any lander/rover specification in Phase 1.",
+      "psr_interior_vs_approach": {
+        "n_px_inside_psr": 35586,
+        "mean_deg_inside_psr": 22.075857162475586,
+        "median_deg_inside_psr": 23.116682052612305,
+        "pct_hazard_gte20deg_inside_psr": 78.63204631034677,
+        "n_px_outside_psr_in_window": 214414,
+        "mean_deg_outside_psr_in_window": 8.830344200134277,
+        "pct_hazard_gte20deg_outside_psr_in_window": 10.479726137285812,
+        "note": "PSR interior = the actual ice-candidate floor; 'outside psr in window' includes the crater rim/walls a lander must cross to reach the interior. These are reported separately because they can have very different hazard profiles."
+      }
+    },
+    "elevation_stats": {
+      "n_px": 250000,
+      "min_m": -4410.65966796875,
+      "max_m": -2668.5537109375,
+      "mean_m": -3493.114013671875,
+      "std_m": 285.36871337890625,
+      "elevation_range_m": 1742.10595703125,
+      "note": "NEW in Phase 1 -- not present in any audited notebook. LDEM was downloaded in obj2 (1).ipynb cell 30 but never opened/used anywhere in that notebook."
+    },
+    "roughness_tri_stats": {
+      "method": "Riley, Degloria & Elliot (1999) Terrain Ruggedness Index: mean absolute elevation difference between each cell and its 8 immediate neighbors, computed on the native 20 m/px LDEM grid.",
+      "cellsize_m": 20.0,
+      "mean_tri_m": 3.015211597623698,
+      "median_tri_m": 2.1797027587890625,
+      "max_tri_m": 38.770843505859375,
+      "note": "NEW in Phase 1 -- roughness/TRI was entirely absent from all audited notebooks.",
+      "psr_interior_vs_approach": {
+        "mean_tri_m_inside_psr": 6.293287354510409,
+        "mean_tri_m_outside_psr_in_window": 2.4711538220839913
+      }
+    },
+    "threshold_caveat": "Safe(<10)/caution(10-20)/hazard(>=20 deg) thresholds are carried over verbatim from obj2 (1).ipynb, author-flagged as 'crude' -- NOT validated mission thresholds."
+  },
+  "psr_info": {
+    "category": "CANDIDATE-SPECIFIC",
+    "source": "LOLA_PSR_75S_120M_82S_060M_5KM2_FINAL shapefile (LRO/LOLA South Pole PSR catalog)",
+    "area_km2": 14.234
+  },
+  "physics_evidence_score": {
+    "category": "CANDIDATE-SPECIFIC (ranking within PRISM's own 7-candidate shortlist)",
+    "source": "outputs/objective1/evidence_score/physics_evidence_score.json (Track I)",
+    "score": 1.0,
+    "rank_of_7": 1,
+    "note": "NOT a probability of ice. Unweighted mean of min-max-normalized Pv/CPR/T-Ratio interior-surroundings deltas, ranked across the 7-candidate shortlist. SERD and DOP explicitly excluded (see source JSON)."
+  },
+  "ml_anomaly_score": {
+    "category": "CANDIDATE-SPECIFIC ranking, NON-INDEPENDENT features (circularity caveat)",
+    "source": "outputs/objective1/ml/isolation_forest_results.json (Track J)",
+    "status": "IMPLEMENTED (unsupervised, Isolation Forest, N=336 PSRs)",
+    "anomaly_rank": "40 of 336",
+    "circularity_warning": "All 4 features are derived from the same Y4R Pv computation that already produced this candidate's shortlist ranking (src/radar_pipeline.py). This is NOT an independent evidence source -- an Isolation Forest anomaly finding here CANNOT be claimed to 'independently validate' the candidate's Pv-based selection, and this script makes no such claim. It is included to satisfy the task's request for an ML pipeline skeleton with a real, adequately sized sample (336 PSRs), not as independent confirmation."
+  },
+  "cnn_yolo_status": {
+    "category": "N/A -- not run",
+    "yolov8": "PLANNED / NOT TRAINED",
+    "cnn": "PLANNED / NOT TRAINED",
+    "source": "src/cnn_yolo_interface.py (Track K)"
+  },
+  "data_confidence_summary": {
+    "radar_physics_Pv_CPR_SERD_TRatio": "HIGH -- real ISRO PDS4 mosaic products, verified georeferencing, reproduces prior independent run to within ~0.01-0.02",
+    "candidate_specific_DOP": "MODERATE-HIGH -- real covering acquisition, confirmed via true footprint + Grid CSV (91m), bias-centering calibration only (no gain/phase correction), single acquisition/window",
+    "DOP_pipeline_method": "MODERATE-HIGH -- formulas transcribed verbatim, channel mapping mostly CONFIRMED (HH is LIKELY, weaker fit), no phase/gain calibration applied",
+    "terrain": "HIGH -- real NASA LOLA 20m/px DEM, but hazard THRESHOLDS are explicitly unvalidated",
+    "physics_evidence_score": "MODERATE -- real inputs, transparent method, but equal-weighting is a documented default, not literature-derived; ranking is only within PRISM's own 7-candidate shortlist",
+    "ml_anomaly_score": "LOW-MODERATE -- real Isolation Forest on real data, but features are not independent of the candidate's own selection criterion (circularity caveat)"
+  },
+  "limitations": [
+    "No independent ground-truth ice confirmation exists for this candidate.",
+    "Candidate-specific DOP is now available but the physics evidence score and ML anomaly score have not been recomputed to include it.",
+    "SERD is excluded from the evidence-score sum due to inconsistent (negative) directionality relative to Pv/CPR/T-Ratio, not resolved by any source in this project.",
+    "Terrain hazard thresholds are explicitly unvalidated (author-flagged 'crude').",
+    "Physics evidence score equal-weighting is a documented default absent a literature-justified weighting scheme.",
+    "ML anomaly score uses features that are not independent of the Pv-based candidate selection (circularity caveat, explicitly not claimed as validation).",
+    "Candidate DOP calibration is bias-centering only (no gain-imbalance/phase-orthogonality correction)."
+  ]
+}

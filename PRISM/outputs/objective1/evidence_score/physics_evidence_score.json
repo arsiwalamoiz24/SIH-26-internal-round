@@ -1,0 +1,153 @@
+{
+  "purpose": "Track I -- transparent, documented Physics Evidence Score. NOT a probability of ice. NOT a validated mission threshold.",
+  "candidate_id": "SP_840980_0797630",
+  "method": {
+    "metrics_used_in_score": [
+      "Pv (interior-surroundings delta)",
+      "CPR (interior-surroundings delta)",
+      "T-Ratio (interior-surroundings delta)"
+    ],
+    "metrics_reported_but_excluded_from_score": {
+      "SERD": "Interior-surroundings delta is NEGATIVE for the primary candidate (lower inside PSR) while Pv/CPR/T-Ratio are positive -- inconsistent directionality that this project's own analysis (docs/CANDIDATE_PHYSICS_RESULTS.md Section 5, PROJECT_STATUS.md Section 1) does not resolve. Reported per-candidate, not summed into the score.",
+      "DOP": "No candidate-specific DOP exists (BLOCKED -- see dop_status). Not estimated or substituted."
+    },
+    "normalization": "Min-max normalization of each metric's PSR-interior-minus-local-surroundings delta, ACROSS THE 7-CANDIDATE SHORTLIST (not against an absolute/literature threshold, since none was found for this product). This makes the score a RELATIVE ranking within PRISM's own known evidence set, not an absolute ice probability.",
+    "weighting": "Unweighted (equal 1/3, 1/3, 1/3) mean of the 3 normalized deltas. This is a DOCUMENTED DEFAULT -- no literature source available to this project justifies a different weighting scheme. If a scientifically justified weighting becomes available, it should replace this default, not be layered on top of it silently.",
+    "terrain_and_psr": "PSR membership is a binary precondition already satisfied by construction (all 7 shortlist candidates are LOLA-catalog PSRs). Terrain (slope/roughness) is reported separately for the primary candidate only (Track G) and is NOT combined into this score -- see terrain_profile below and its interpretation note."
+  },
+  "shortlist_ranking": [
+    {
+      "PSR_ID": "SP_840980_0797630",
+      "lat": -84.098,
+      "lon": 79.764,
+      "area_km2": 14.234,
+      "delta_pv": 0.08067774772644043,
+      "delta_cpr": 0.09867048263549805,
+      "delta_tratio": 0.12076115608215332,
+      "delta_serd": -0.05618870258331299,
+      "norm_pv": 1.0,
+      "norm_cpr": 1.0,
+      "norm_tratio": 1.0,
+      "physics_evidence_score": 1.0,
+      "rank": 1
+    },
+    {
+      "PSR_ID": "SP_832640_0090770",
+      "lat": -83.264,
+      "lon": 9.077,
+      "area_km2": 32.494,
+      "delta_pv": 0.02441886067390442,
+      "delta_cpr": 0.055995404720306396,
+      "delta_tratio": 0.04330641031265259,
+      "delta_serd": -0.020922541618347168,
+      "norm_pv": 0.6220345166167981,
+      "norm_cpr": 0.8318430285348432,
+      "norm_tratio": 0.7312527893787901,
+      "physics_evidence_score": 0.7283767781768105,
+      "rank": 2
+    },
+    {
+      "PSR_ID": "SP_809570_2454450",
+      "lat": -80.957,
+      "lon": 245.445,
+      "area_km2": 9.198,
+      "delta_pv": 0.04888135194778437,
+      "delta_cpr": -0.009952723979949896,
+      "delta_tratio": 0.04316738247871399,
+      "delta_serd": -0.0033965110778808594,
+      "norm_pv": 0.786381481576401,
+      "norm_cpr": 0.5719808762484906,
+      "norm_tratio": 0.7307704000532748,
+      "physics_evidence_score": 0.6963775859593887,
+      "rank": 3
+    },
+    {
+      "PSR_ID": "SP_819860_1568660",
+      "lat": -81.986,
+      "lon": 156.866,
+      "area_km2": 10.735,
+      "delta_pv": 0.00648453831672674,
+      "delta_cpr": 0.02470242977142334,
+      "delta_tratio": 0.013623535633087158,
+      "delta_serd": 0.0029749274253845215,
+      "norm_pv": 0.5015459116333608,
+      "norm_cpr": 0.7085361207889064,
+      "norm_tratio": 0.6282611689932344,
+      "physics_evidence_score": 0.6127810671385006,
+      "rank": 4
+    },
+    {
+      "PSR_ID": "SP_842420_0421060",
+      "lat": -84.242,
+      "lon": 42.106,
+      "area_km2": 25.463,
+      "delta_pv": 0.01598978042602539,
+      "delta_cpr": -0.016098439693450928,
+      "delta_tratio": -0.036520421504974365,
+      "delta_serd": -0.0033115148544311523,
+      "norm_pv": 0.5654052166558814,
+      "norm_cpr": 0.5477642844493631,
+      "norm_tratio": 0.454275075869035,
+      "physics_evidence_score": 0.5224815256580931,
+      "rank": 5
+    },
+    {
+      "PSR_ID": "SP_817950_1586580",
+      "lat": -81.795,
+      "lon": 158.658,
+      "area_km2": 43.429,
+      "delta_pv": -0.02117142081260681,
+      "delta_cpr": -0.08043086528778076,
+      "delta_tratio": -0.08973842859268188,
+      "delta_serd": 0.028683483600616455,
+      "norm_pv": 0.31574419196934844,
+      "norm_cpr": 0.2942686522574642,
+      "norm_tratio": 0.26962285323824386,
+      "physics_evidence_score": 0.29321189915501883,
+      "rank": 6
+    },
+    {
+      "PSR_ID": "SP_830080_0535120",
+      "lat": -83.008,
+      "lon": 53.512,
+      "area_km2": 22.471,
+      "delta_pv": -0.06816887855529785,
+      "delta_cpr": -0.15511071681976318,
+      "delta_tratio": -0.16744554042816162,
+      "delta_serd": 0.03995400667190552,
+      "norm_pv": 0.0,
+      "norm_cpr": 0.0,
+      "norm_tratio": 0.0,
+      "physics_evidence_score": 0.0,
+      "rank": 7
+    }
+  ],
+  "primary_candidate": {
+    "PSR_ID": "SP_840980_0797630",
+    "physics_evidence_score": 1.0,
+    "rank_of_7": 1,
+    "delta_serd_excluded_from_score": -0.05618870258331299,
+    "terrain_profile": {
+      "source": "outputs/objective2/SP_840980_0797630_terrain_stats.json (Track G, real LOLA 20m/px DEM, vsicurl windowed read)",
+      "slope_mean_deg_whole_window": 10.715764045715332,
+      "pct_hazard_gte20deg_whole_window": 20.180799999999998,
+      "slope_mean_deg_psr_interior": 22.075857162475586,
+      "pct_hazard_gte20deg_psr_interior": 78.63204631034677,
+      "pct_hazard_gte20deg_approach_terrain": 10.479726137285812,
+      "roughness_tri_mean_m_psr_interior": 6.293287354510409,
+      "threshold_source_caveat": "Carried over verbatim from obj2 (1).ipynb cell 33. Original author's own inline comment: 'crude thresholds - refine once you overlay actual PSR boundary'. NOT independently validated against any lander/rover specification in Phase 1.",
+      "interpretation": "This is a SAFETY/HAZARD profile, not ice evidence, and is deliberately NOT combined into the physics_evidence_score above. It is reported honestly even though it is UNFAVORABLE: 78.6% of the PSR interior itself exceeds the (unvalidated, author-flagged-as-crude) 20-degree hazard threshold, versus 10.5% of the surrounding approach terrain. A high radar ice-evidence score does not imply an easy landing site -- these are independent physical questions."
+    },
+    "dop_status": {
+      "candidate_specific_dop": "BLOCKED -- no acquisition covering the candidate has been confirmed (docs/CANDIDATE_ACQUISITION_SELECTION.md). Excluded from the score entirely, not estimated or substituted.",
+      "non_candidate_dop_pipeline_validation": "COMPLETE (docs/DOP_VALIDATION_RESULTS.md) -- validates the computational method only, not usable as candidate evidence."
+    }
+  },
+  "limitations": [
+    "This is a RANKING within a 7-candidate shortlist that PRISM's own screening pipeline already produced -- it is not validated against any independent ice-confirmed site (no LCROSS/M3/MiniRF-style anchor data exists in this project; see docs/REFERENCE_PROJECT_COMPARISON.md Section 6).",
+    "Equal-weight normalization is a default, not a derived or literature-calibrated weighting.",
+    "SERD and DOP are excluded from the sum for stated, non-arbitrary reasons (directionality inconsistency; data unavailability) -- not because they were unfavorable.",
+    "No statistical significance testing was performed on any interior-vs-surroundings delta.",
+    "'Physics Evidence Score' is an explicit label choice -- this is NOT called a probability of ice, per task instruction, because no calibration against ground truth exists."
+  ]
+}

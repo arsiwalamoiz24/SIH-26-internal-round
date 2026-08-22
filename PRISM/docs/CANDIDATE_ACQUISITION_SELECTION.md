@@ -1,3 +1,50 @@
+## ADDENDUM 2 (2026-08-22, same-day follow-up): RESOLVED — covering acquisition found, confirmed, and downloaded
+
+**User obtained legitimate authenticated PRADAN access this session.** Using it:
+
+### Method
+
+1. PRADAN's Map Browse spatial search (`chmapbrowse.issdc.gov.in`) was used to search DFSAR calibrated products near the candidate. This tool's AOI search returned a fixed pool of nearby products regardless of the exact query box size — useful for discovery, but its own matching logic is not precise enough to trust for final containment (confirmed empirically: identical result sets for a 0.4°×0.5° and a 1°×2.5° box).
+2. All 602 manifest acquisitions' PDS4 labels were fetched directly (via the same `browsePathConstructor` + `DisplayLabel` API the map-browse UI itself uses) and screened for real containment.
+3. **First screening attempt (WRONG, corrected):** used the label's loose axis-aligned `upper_left/upper_right/lower_right/lower_left` corners (the padded scene-envelope box). This flagged `ch2_sar_ncxl_20191106t114537878_d_fp_d18` as containing. That product (4.88 GB) was downloaded. The actual Level-1A Grid CSV then showed the true minimum distance from the candidate to any real data pixel in that scene is **~51 km** (nearest grid sample at the range-edge column) — confirmed via the label's `image_*` (true rotated footprint) corners at **~75 km**. **This was a false positive from using the wrong corner set**, not from bad data. The 4.88 GB file was deleted; nothing from it is used anywhere in this project.
+4. **Corrected method:** re-screened all 602 acquisitions using the `image_upper_left/upper_right/lower_right/lower_left_mapX/mapY` fields — the PDS4 label's **true rotated data-footprint corners**, distinct from the padded envelope box. Ray-casting point-in-polygon test in the same Moon_2000_South_Pole_Stereographic projected coordinates used throughout this project.
+
+### Result: 6 genuine hits (of 602)
+
+| Acquisition | Station | Distance to nearest true corner |
+|---|---|---:|
+| `ch2_sar_ncxl_20220318t135736694_d_fp_d18` | d18 | 19.99 km |
+| `ch2_sar_ncxl_20220414t203316934_d_fp_d18` | d18 | 15.49 km |
+| `ch2_sar_ncxl_20220829t094032861_d_fp_d32` | d32 | 18.37 km |
+| `ch2_sar_ncxl_20230404t115607693_d_fp_d32` | d32 | 14.88 km |
+| `ch2_sar_ncxl_20230404t135410450_d_fp_d32` | d32 | 18.03 km |
+| `ch2_sar_ncxl_20230915t094631520_d_fp_d32` | d32 | 13.71 km |
+
+**Selected: `ch2_sar_ncxl_20220318t135736694_d_fp_d18`** (largest margin, and station d18 per task priority). **Confirmed a second, independent way**: its actual Level-1A Grid CSV's nearest per-pixel sample to the candidate is **91 meters** away, at sample index 5 of 9 (mid-swath, not an edge case).
+
+### What was downloaded
+
+`ch2_sar_ncxl_20220318t135736694_d_fp_d18.zip`, 1,920,035,453 bytes, via PRADAN Browse-and-Download (Table View), authenticated session. Contains Level-0 is NOT included — this zip bundles Level-1A SLI (complex, `ComplexLSB8`, the product used for DOP), Level-1B GRI, and Level-2 SRI, plus geometry/browse, for this single acquisition only. No other acquisition was downloaded in full.
+
+### Candidate-specific DOP
+
+See `docs/DOP_VALIDATION_RESULTS.md` "Candidate-specific DOP status — RESOLVED this session" for full results. Headline: **linear-pol (HH/VV) Stokes DOP mean 0.680, median 0.708**, 488,000 px, 0% NaN.
+
+---
+
+## ADDENDUM 1 (2026-08-22, same-day follow-up): primary-source SIS confirms the exact grid filename
+
+The official CH2DFSAR PDS4 Data Product Archive SIS (`ch2_sar_pds_dp_archive_sis.pdf`, SAC/SIPG/MDPD/CH2/SAR/2018/04/03/v1.0) is now available locally (`C:\Users\radhe\OneDrive\Desktop\data\sarlta\document\`, part of the official `sarlta` PDS4 bundle). This is a **primary source**, not a third-party web summary, and it upgrades the confidence of everything in this document:
+
+- **Table 5.12 (PDF p.34-35), full file-naming-convention token table**, confirms: mtbb token `c`=calibrated, `xl`=L-band -- so manifest's `ncxl` = Normal-orbit-phase + Calibrated + L-band, exactly as concluded below. `p`='g' = "gridded data products under geometry directory".
+- **PDF p.47, a complete real worked example** (the SIS's own sample "Grid Product XML" label) gives, verbatim: `<file_name>ch2_sar_ncxl_20191019t011733462_g_sli_xx_fp_xx_d18.csv</file_name>` -- a Table_Delimited CSV, 4 fields (Latitude, Longitude, Slant range, incidence angle), 198,858 records. This is a **literal, direct confirmation** of the `..._g_sli_xx_fp_xx_<stn>.csv` pattern already used below -- not an inference from an abstract token list. (Table 5.12 separately lists a `prd=grd` code too; the worked example resolves that ambiguity -- the per-scene grid accompanying an SLI product keeps `prd=sli`.)
+- **Section 5.3.9 (PDF p.32-33)** confirms the `geometry/calibrated/<YYYYMMDD>/` path structure already used below.
+- Corroborated by arXiv:2104.14259 (DFSAR instrument team's own performance paper), already cited below.
+
+**No change to the predicted filenames themselves** (`outputs/objective1/dop/acquisition_coverage_candidates.json` already used this exact pattern) -- this addendum only upgrades the evidentiary confidence from "web-summarized" to "primary-source, literal worked example," and is reflected in that JSON's `sis_evidence` and `naming_convention.confidence` fields. PRADAN access remains BLOCKED (re-checked this session, same login-wall finding, §6 below unchanged).
+
+---
+
 # CANDIDATE_ACQUISITION_SELECTION — Level-1A Grid-based acquisition selection for candidate DOP
 
 **Date:** 2026-08-22 (updated, same-day follow-up to the prior BLOCKED session below `## Prior session (superseded findings)`)

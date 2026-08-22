@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:isda="http://pds.nasa.gov/pds4/isda/v1" xmlns:pds="http://pds.nasa.gov/pds4/pds/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1B00.xsd">
+    <Identification_Area>
+        <logical_identifier>urn:isro:isda:ch2_cho:sar_calibrated:ch2_sar_ncxl_20220318t135736694_d_sli_xx_fp_xx_d18</logical_identifier>
+        <version_id>1.0</version_id>
+        <title>Chandrayaan-2 Dual frequency L and S band SAR</title>
+        <information_model_version>1.11.0.0</information_model_version>
+        <product_class>Product_Observational</product_class>
+        <Modification_History>
+            <Modification_Detail>
+                <modification_date>2022-10-28</modification_date>
+                <version_id>1.0</version_id>
+                <description>PDS4 product label created by SAR DP SAC-ISRO team</description>
+            </Modification_Detail>
+        </Modification_History>
+    </Identification_Area>
+    <Observation_Area>
+        <Time_Coordinates>
+             <start_date_time>2022-03-18T13:57:36.694Z</start_date_time>
+            <stop_date_time>2022-03-18T13:59:03.128Z</stop_date_time>
+        </Time_Coordinates>
+        <Primary_Result_Summary>
+            <purpose>Science</purpose>
+            <processing_level>Calibrated</processing_level>
+        </Primary_Result_Summary>
+        <Investigation_Area>
+            <name>Chandrayaan-2</name>
+            <type>Mission</type>
+            <Internal_Reference>
+                <lidvid_reference>urn:isro:isda:context:investigation.chandrayaan-2::1.0</lidvid_reference>
+                <reference_type>data_to_investigation</reference_type>
+            </Internal_Reference>
+        </Investigation_Area>
+        <Observing_System>
+            <Observing_System_Component>
+                <name>Chandrayaan-2 orbiter</name>
+                <type>Spacecraft</type>
+            </Observing_System_Component>
+            <Observing_System_Component>
+                <name>Dual frequency L and S band SAR</name>
+                <type>Instrument</type>
+		<description>
+                Chandrayaan-2 Dual Frequency SAR operates in StripMap mode with a nominal swath of 10 Km.
+                Data is acquired in various modes i.e. Circular/Dual/Quad(Full Polarimetric).
+                The antenna beam-limited footprint varies from about 22.5 Km to 34 Km for L-band and from 11.2 Km to 16.8 Km for S-band, over the range coverage region from 16 Km to 70 Km off-nadir.
+		</description>
+            </Observing_System_Component>
+        </Observing_System>
+        <Target_Identification>
+            <name>Moon</name>
+	    <type>Satellite</type>
+            <description>Natural Satellite of Earth</description>
+        </Target_Identification>
+    <Mission_Area>
+            <isda:Product_Parameters>
+                <isda:job_id>LSRXXD18CHO1141601NNNN22077141502912_00</isda:job_id>
+                <isda:level0_dir_name>LSRXXD18CHO1141601NNNN22077141502912_V2_1</isda:level0_dir_name>
+                <isda:product_id>2238611</isda:product_id>
+                <isda:date_of_pass>2022-03-18</isda:date_of_pass>
+                <isda:imaging_orbit_number>11416</isda:imaging_orbit_number>
+                <isda:dumping_orbit_number>11416</isda:dumping_orbit_number>
+                <isda:samples_per_pixel>2</isda:samples_per_pixel>
+                <isda:bits_per_sample>32</isda:bits_per_sample>
+                <isda:bytes_per_pixel>8</isda:bytes_per_pixel>
+                <isda:product_type>L1A-SLANT-RANGE</isda:product_type>
+                <isda:input_resolution_along unit="m">24.223851</isda:input_resolution_along>
+                <isda:input_resolution_across unit="m">19.986164</isda:input_resolution_across>
+                <isda:output_line_spacing unit="m">0.516594</isda:output_line_spacing>
+                <isda:output_pixel_spacing unit="m">9.593359</isda:output_pixel_spacing>
+                <isda:image_format>GEOTIFF</isda:image_format>
+                <isda:no_scans>257831</isda:no_scans>
+                <isda:no_pixels>244</isda:no_pixels>
+                <isda:pulses_received_per_dwell>299303</isda:pulses_received_per_dwell>
+                <isda:samples_per_echo_line>1024</isda:samples_per_echo_line>
+                <isda:pulse_length unit="s">5.000000e-05</isda:pulse_length>
+                <isda:pulse_bandwidth unit="Hz">7.500000e+06</isda:pulse_bandwidth>
+                <isda:sampling_frequency unit="Hz">1.562500e+07</isda:sampling_frequency>
+                <isda:slant_range_near_edge unit="m">110952.957074</isda:slant_range_near_edge>
+                <isda:swath unit="m">5525.000000</isda:swath>
+                <isda:number_of_swst_changes>1</isda:number_of_swst_changes>
+                <isda:num_polarizations>4</isda:num_polarizations>
+                <isda:polarization_info>
+                    <isda:polarization>HH</isda:polarization>
+                    <isda:bias_real>-0.416787</isda:bias_real>
+                    <isda:bias_imag>2.583881</isda:bias_imag>
+                    <isda:standard_deviation_real>20.632784</isda:standard_deviation_real>
+                    <isda:standard_deviation_imag>20.857921</isda:standard_deviation_imag>
+                    <isda:gain_imbalance>0.989216</isda:gain_imbalance>
+                    <isda:phase_orthogonality>-5.851207</isda:phase_orthogonality>
+                    <isda:nes0_coeff_1>1.832799e-07</isda:nes0_coeff_1>
+                    <isda:nes0_coeff_0>4.693320e-04</isda:nes0_coeff_0>
+                </isda:polarization_info>
+                <isda:polarization_info>
+                    <isda:polarization>HV</isda:polarization>
+                    <isda:bias_real>-0.008448</isda:bias_real>
+                    <isda:bias_imag>2.882486</isda:bias_imag>
+                    <isda:standard_deviation_real>5.228514</isda:standard_deviation_real>
+                    <isda:standard_deviation_imag>5.275916</isda:standard_deviation_imag>
+                    <isda:gain_imbalance>0.989088</isda:gain_imbalance>
+                    <isda:phase_orthogonality>2.295663</isda:phase_orthogonality>
+                    <isda:nes0_coeff_1>6.472015e-07</isda:nes0_coeff_1>
+                    <isda:nes0_coeff_0>3.689324e-04</isda:nes0_coeff_0>
+                </isda:polarization_info>
+                <isda:polarization_info>
+                    <isda:polarization>VH</isda:polarization>
+                    <isda:bias_real>-2.128273</isda:bias_real>
+                    <isda:bias_imag>0.931289</isda:bias_imag>
+                    <isda:standard_deviation_real>6.920505</isda:standard_deviation_real>
+                    <isda:standard_deviation_imag>7.062688</isda:standard_deviation_imag>
+                    <isda:gain_imbalance>0.979635</isda:gain_imbalance>
+                    <isda:phase_orthogonality>-4.006571</isda:phase_orthogonality>
+                    <isda:nes0_coeff_1>1.491448e-07</isda:nes0_coeff_1>
+                    <isda:nes0_coeff_0>3.819210e-04</isda:nes0_coeff_0>
+                </isda:polarization_info>
+                <isda:polarization_info>
+                    <isda:polarization>VV</isda:polarization>
+                    <isda:bias_real>3.245196</isda:bias_real>
+                    <isda:bias_imag>4.689349</isda:bias_imag>
+                    <isda:standard_deviation_real>17.849372</isda:standard_deviation_real>
+                    <isda:standard_deviation_imag>17.199089</isda:standard_deviation_imag>
+                    <isda:gain_imbalance>1.037437</isda:gain_imbalance>
+                    <isda:phase_orthogonality>-1.653671</isda:phase_orthogonality>
+                    <isda:nes0_coeff_1>5.267893e-07</isda:nes0_coeff_1>
+                    <isda:nes0_coeff_0>3.002923e-04</isda:nes0_coeff_0>
+                </isda:polarization_info>
+                <isda:scene_start_time>2022-03-18T13:57:36Z</isda:scene_start_time>
+                <isda:scene_end_time>2022-03-18T13:59:03Z</isda:scene_end_time>
+                <isda:incidence_angle unit="deg">25.988676</isda:incidence_angle>
+                <isda:spacecraft_altitude unit="m">102313.000000</isda:spacecraft_altitude>
+                <isda:semi_major_radius unit="m">1737400.000000</isda:semi_major_radius>
+                <isda:semi_minor_radius unit="m">1737400.000000</isda:semi_minor_radius>
+                <isda:ellipsoid_eccentricity>0.000000</isda:ellipsoid_eccentricity>
+                <isda:imaging_mode>STRIPMAP</isda:imaging_mode>
+                <isda:node>DESCENDING</isda:node>
+                <isda:look_angle unit="deg">25.988676</isda:look_angle>
+                <isda:center_roll unit="deg">-25.990095</isda:center_roll>
+                <isda:look_direction>RIGHT</isda:look_direction>
+                <isda:pulse_repetition_frequency unit="Hz">2983.008782</isda:pulse_repetition_frequency>
+                <isda:frequency_band>L</isda:frequency_band>
+                <isda:radar_center_frequency unit="Hz">1.250000e+09</isda:radar_center_frequency>
+                <isda:l_s_joint_mode>NO</isda:l_s_joint_mode>
+                <isda:range_looks>1</isda:range_looks>
+                <isda:range_look_bandwidth unit="Hz">7500000.000000</isda:range_look_bandwidth>
+                <isda:total_processed_range_bandwidth unit="Hz">7500000.000000</isda:total_processed_range_bandwidth>
+                <isda:azimuth_looks>1</isda:azimuth_looks>
+                <isda:azimuth_look_bandwidth unit="Hz">1070.830170</isda:azimuth_look_bandwidth>
+                <isda:total_processed_azimuth_bandwidth unit="Hz">1070.830170</isda:total_processed_azimuth_bandwidth>
+                <isda:range_window>HAMMING</isda:range_window>
+                <isda:range_window_coefficient>0.700000</isda:range_window_coefficient>
+                <isda:azimuth_window>HAMMING</isda:azimuth_window>
+                <isda:azimuth_window_coefficient>1.000000</isda:azimuth_window_coefficient>
+                <isda:zero_doppler_time_first_line unit="s">1647611856.694876</isda:zero_doppler_time_first_line>
+                <isda:zero_doppler_time_last_line unit="s">1647611943.128078</isda:zero_doppler_time_last_line>
+                <isda:doppler_centroid unit="Hz">148.963831</isda:doppler_centroid>
+                <isda:doppler_rate_coeff_0>187.024564</isda:doppler_rate_coeff_0>
+                <isda:doppler_rate_coeff_1>0.003375</isda:doppler_rate_coeff_1>
+                <isda:doppler_rate_coeff_2>-0.009302</isda:doppler_rate_coeff_2>
+                <isda:calibration_constant>80.000000</isda:calibration_constant>
+                <isda:replica_used>DATA_REPLICA</isda:replica_used>
+                <isda:remarks>Ok</isda:remarks>
+                <isda:geo_error_quality_flag>1</isda:geo_error_quality_flag>
+                <isda:geo_error_time_meters>-1208.109162</isda:geo_error_time_meters>
+                <isda:geo_error_time_seconds>-0.783963</isda:geo_error_time_seconds>
+                <isda:geo_error_range_meters>-6.227481</isda:geo_error_range_meters>
+                <isda:software_version_sar>O1.2.00</isda:software_version_sar>
+                <isda:software_version_sar_date>2022-10-28</isda:software_version_sar_date>
+                <isda:software_version_radiometer>O1.1.01</isda:software_version_radiometer>
+                <isda:software_version_radiometer_date>2022-10-28</isda:software_version_radiometer_date>
+                <isda:software_version_pds4>O1.1.01</isda:software_version_pds4>
+                <isda:software_version_pds4_date>2022-10-28</isda:software_version_pds4_date>
+            </isda:Product_Parameters>
+            <isda:Geometry_Parameters>
+                <isda:upper_left_latitude unit="deg">-80.353633</isda:upper_left_latitude>
+                <isda:upper_left_longitude unit="deg">80.321119</isda:upper_left_longitude>
+                <isda:upper_right_latitude unit="deg">-80.343446</isda:upper_right_latitude>
+                <isda:upper_right_longitude unit="deg">79.437320</isda:upper_right_longitude>
+                <isda:lower_right_latitude unit="deg">-84.737961</isda:lower_right_latitude>
+                <isda:lower_right_longitude unit="deg">77.874282</isda:lower_right_longitude>
+                <isda:lower_left_latitude unit="deg">-84.754919</isda:lower_left_latitude>
+                <isda:lower_left_longitude unit="deg">80.043736</isda:lower_left_longitude>
+                <isda:centre_latitude unit="deg">-82.516073</isda:centre_latitude>
+                <isda:centre_longitude unit="deg">76.918116</isda:centre_longitude>
+            </isda:Geometry_Parameters>
+        </Mission_Area>
+    </Observation_Area>
+<File_Area_Observational>
+        <File>
+            <file_name>ch2_sar_ncxl_20220318t135736694_d_sli_xx_fp_hh_d18.tif</file_name>
+            <local_identifier>DATA_FILE</local_identifier>
+            <creation_date_time>2022-12-03T13:23:42Z</creation_date_time>
+            <file_size unit="byte">505381628</file_size>
+            <md5_checksum>c3fd0c011ad330a3eb97670fb83f022e</md5_checksum>
+            <comment>This product contains Slant range complex image product</comment>
+        </File>
+        <Array_2D_Image>
+            <offset unit="byte">2095516</offset>
+            <axes>2</axes>
+            <axis_index_order>Last Index Fastest</axis_index_order>
+            <Element_Array>
+                <data_type>ComplexLSB8</data_type>
+            </Element_Array>
+            <Axis_Array>
+                <axis_name>Line</axis_name>
+                <elements>257831</elements>
+                <sequence_number>1</sequence_number>
+            </Axis_Array>
+            <Axis_Array>
+                <axis_name>Sample</axis_name>
+                <elements>244</elements>
+                <sequence_number>2</sequence_number>
+            </Axis_Array>
+        </Array_2D_Image>
+    </File_Area_Observational>
+    <File_Area_Observational>
+        <File>
+            <file_name>ch2_sar_ncxl_20220318t135736694_d_sli_xx_fp_hv_d18.tif</file_name>
+            <creation_date_time>2022-12-03T13:23:54Z</creation_date_time>
+            <file_size unit="byte">505381628</file_size>
+            <md5_checksum>95e68f7541b4015e2c80b8e3df962a86</md5_checksum>
+            <comment>This product contains Slant range complex image product</comment>
+        </File>
+        <Array_2D_Image>
+            <offset unit="byte">2095516</offset>
+            <axes>2</axes>
+            <axis_index_order>Last Index Fastest</axis_index_order>
+            <Element_Array>
+                <data_type>ComplexLSB8</data_type>
+            </Element_Array>
+            <Axis_Array>
+                <axis_name>Line</axis_name>
+                <elements>257831</elements>
+                <sequence_number>1</sequence_number>
+            </Axis_Array>
+            <Axis_Array>
+                <axis_name>Sample</axis_name>
+                <elements>244</elements>
+                <sequence_number>2</sequence_number>
+            </Axis_Array>
+        </Array_2D_Image>
+    </File_Area_Observational>
+    <File_Area_Observational>
+        <File>
+            <file_name>ch2_sar_ncxl_20220318t135736694_d_sli_xx_fp_vh_d18.tif</file_name>
+            <creation_date_time>2022-12-03T13:25:10Z</creation_date_time>
+            <file_size unit="byte">505381628</file_size>
+            <md5_checksum>de9178b9f2d5390f367364a61d7f97f1</md5_checksum>
+            <comment>This product contains Slant range complex image product</comment>
+        </File>
+        <Array_2D_Image>
+            <offset unit="byte">2095516</offset>
+            <axes>2</axes>
+            <axis_index_order>Last Index Fastest</axis_index_order>
+            <Element_Array>
+                <data_type>ComplexLSB8</data_type>
+            </Element_Array>
+            <Axis_Array>
+                <axis_name>Line</axis_name>
+                <elements>257831</elements>
+                <sequence_number>1</sequence_number>
+            </Axis_Array>
+            <Axis_Array>
+                <axis_name>Sample</axis_name>
+                <elements>244</elements>
+                <sequence_number>2</sequence_number>
+            </Axis_Array>
+        </Array_2D_Image>
+    </File_Area_Observational>
+    <File_Area_Observational>
+        <File>
+            <file_name>ch2_sar_ncxl_20220318t135736694_d_sli_xx_fp_vv_d18.tif</file_name>
+            <creation_date_time>2022-12-03T13:25:31Z</creation_date_time>
+            <file_size unit="byte">505381628</file_size>
+            <md5_checksum>0d19b55e916a42caf666457ba532bb74</md5_checksum>
+            <comment>This product contains Slant range complex image product</comment>
+        </File>
+        <Array_2D_Image>
+            <offset unit="byte">2095516</offset>
+            <axes>2</axes>
+            <axis_index_order>Last Index Fastest</axis_index_order>
+            <Element_Array>
+                <data_type>ComplexLSB8</data_type>
+            </Element_Array>
+            <Axis_Array>
+                <axis_name>Line</axis_name>
+                <elements>257831</elements>
+                <sequence_number>1</sequence_number>
+            </Axis_Array>
+            <Axis_Array>
+                <axis_name>Sample</axis_name>
+                <elements>244</elements>
+                <sequence_number>2</sequence_number>
+            </Axis_Array>
+        </Array_2D_Image>
+    </File_Area_Observational>
+</Product_Observational>

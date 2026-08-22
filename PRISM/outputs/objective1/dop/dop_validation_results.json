@@ -1,0 +1,97 @@
+{
+  "warning": "NON-CANDIDATE DOP PIPELINE VALIDATION ONLY. This acquisition (2025-10-25) does NOT cover SP_840980_0797630. See docs/DOP_VALIDATION.md.",
+  "raw_product": "data/ch2_sar_nrxl_20251025t211236510_d_fp_d18/data/raw/20251025/ch2_sar_nrxl_20251025t211236510_d_r0a_xx_fp_xx_d18.dat",
+  "window": {
+    "line_start_per_channel": 150000,
+    "line_count": 3000,
+    "sample_start": 0,
+    "sample_count": 1024,
+    "local_covariance_window_px": 5,
+    "eigenvalue_purity_tile_px": [
+      30,
+      32
+    ],
+    "n_eigenvalue_purity_tiles": 3200
+  },
+  "formulas": {
+    "linear_pol_stokes_dop": "S1=<|HH|^2>+<|VV|^2>, S2=<|HH|^2>-<|VV|^2>, S3=2Re(<HH*conj(VV)>), S4=-2Im(<HH*conj(VV)>), DOP=sqrt(S2^2+S3^2+S4^2)/S1, local mean over 5x5 px window",
+    "hybrid_pol_stokes_dop": "LH=(HH+j*HV)/sqrt(2), LV=(VH+j*VV)/sqrt(2) [Raney-style left-circular-Tx synthesis], then identical Stokes/DOP formula on (LH,LV)",
+    "eigenvalue_purity": "k=[HH,HV,VH,VV] per pixel, C=(k^H k)/N over a tile, eig=eigvalsh(C) clipped>=0, p=eig/sum(eig), purity=sqrt(max(0,(4*sum(p^2)-1)/3))",
+    "source": "Transcribed unchanged from notebooks/objective1_y4r_polarimetry.ipynb.ipynb STEP 26-35, 46-48 (see docs/DOP_VALIDATION_RESULTS.md for line-by-line citation)"
+  },
+  "linear_pol_dop": {
+    "n_total_px": 3072000,
+    "n_valid_px": 3072000,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.6667532324790955,
+    "median": 0.6818482875823975,
+    "std": 0.11391708254814148,
+    "min": 0.021969465538859367,
+    "max": 1.0000001192092896,
+    "p5": 0.45603558719158177,
+    "p25": 0.6008056700229645,
+    "p50": 0.6818483173847198,
+    "p75": 0.7483108639717102,
+    "p95": 0.8234568417072295
+  },
+  "hybrid_pol_dop": {
+    "n_total_px": 3072000,
+    "n_valid_px": 3072000,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.5736534908353637,
+    "median": 0.5891692614459649,
+    "std": 0.13842973660883248,
+    "min": 0.010237438013898089,
+    "max": 1.0000000000000002,
+    "p5": 0.3199534201045544,
+    "p25": 0.4880571701154904,
+    "p50": 0.5891692614459649,
+    "p75": 0.6738932683700812,
+    "p95": 0.7706125648878774
+  },
+  "eigenvalue_purity_tiled_dop": {
+    "n_total_px": 3200,
+    "n_valid_px": 3200,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.6108613405562937,
+    "median": 0.6378162205219269,
+    "std": 0.07577755143525784,
+    "min": 0.3590979278087616,
+    "max": 0.7225438356399536,
+    "p5": 0.44315995275974274,
+    "p25": 0.5885205566883087,
+    "p50": 0.6378162205219269,
+    "p75": 0.6628629714250565,
+    "p95": 0.6877437502145767
+  },
+  "eigenvalue_purity_whole_window": 0.6297502517700195,
+  "comparison_to_prior_notebook_patch": {
+    "prior_notebook_values_25x1024_patch_non_geolocated": {
+      "linear_pol_covariance": 0.629,
+      "hybrid_pol": 0.557,
+      "eigenvalue_purity_4x4": 0.643,
+      "note": "These are the values referenced in PROJECT_STATUS.md / docs/DOP_VALIDATION.md as diagnostics on an arbitrary, non-geolocated first-100-lines-derived patch. NOT reused as results here -- shown only for numerical comparison."
+    },
+    "this_run_values": {
+      "linear_pol_mean": 0.6667532324790955,
+      "linear_pol_median": 0.6818482875823975,
+      "hybrid_pol_mean": 0.5736534908353637,
+      "hybrid_pol_median": 0.5891692614459649,
+      "eigenvalue_purity_whole_window": 0.6297502517700195,
+      "eigenvalue_purity_tiled_mean": 0.6108613405562937,
+      "eigenvalue_purity_tiled_median": 0.6378162205219269,
+      "window": "3000x1024 px, mid-scene lines [150000:153000), all 1024 samples"
+    },
+    "agreement_note": "This run's window is ~123x larger (3000x1024 vs 25x1024) and at a different scene location than the prior notebook patch, and is expected to differ numerically -- it is NOT a reproduction of the same patch, it is an independent, larger-scale validation run of the same three formulas. Rough order-of-magnitude agreement (all three still land in the 0.4-0.7 range) supports that the formulas and reader are behaving consistently; exact numerical match was never expected and is not the validation criterion."
+  },
+  "formula_comparison": {
+    "linear_pol_vs_hybrid_pol_mean_abs_diff": 0.0930997416437318,
+    "linear_pol_vs_purity_mean_abs_diff": 0.03700298070907593,
+    "hybrid_pol_vs_purity_mean_abs_diff": 0.056096760934655876,
+    "which_is_best_supported": "Linear-pol (HH/VV) Stokes-covariance DOP is the best-supported formulation for this product: HH/VV are the two polarizations with CONFIRMED/LIKELY channel-mapping (docs/RAW_DFSAR_VALIDATION.md), it is the standard, textbook dual-pol DOP construction (Stokes parameters from a genuine spatial covariance estimate, not single-pixel), and it requires no additional synthesis step. Hybrid-pol depends on the SAME HH/VV/HV/VH inputs plus an additional circular-synthesis assumption (LH/LV construction), so it inherits all of linear-pol's channel-mapping uncertainty (including the weaker HH fit) without adding independent information -- it is retained here as a cross-check, not preferred. The eigenvalue-purity diagnostic uses all 4 channels directly (no synthesis) but answers a different physical question (how concentrated the scattering is in the dominant eigen-mode of the full 4x4 covariance, not the classical 2-parameter DOP) and is most useful as an independent cross-check rather than a primary DOP estimate."
+  },
+  "channel_mapping_confidence_caveat": "G1->HH is LIKELY (weakest quantitative fit of the 4 channels, see docs/RAW_DFSAR_VALIDATION.md Section 5) -- all 3 formulations here use HH, so all inherit this reduced confidence to some degree; linear-pol and hybrid-pol also use VV/HV/VH (CONFIRMED/LIKELY)."
+}

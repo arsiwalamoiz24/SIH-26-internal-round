@@ -1,0 +1,284 @@
+{
+  "n_sites_total": 13,
+  "n_positive": 8,
+  "n_control": 5,
+  "n_no_coverage_north_pole": 2,
+  "n_tested_positive": 7,
+  "n_tested_control": 4,
+  "Pv": {
+    "positive": {
+      "n": 7,
+      "mean": 0.2715442840542112,
+      "median": 0.2504585087299347,
+      "std": 0.061617434503709635,
+      "min": 0.21351587772369385,
+      "max": 0.40098801255226135,
+      "values": [
+        0.2172471433877945,
+        0.2889484465122223,
+        0.30135008692741394,
+        0.22830191254615784,
+        0.21351587772369385,
+        0.2504585087299347,
+        0.40098801255226135
+      ]
+    },
+    "control": {
+      "n": 4,
+      "mean": 0.28620992600917816,
+      "median": 0.2865159213542938,
+      "std": 0.02277209005405628,
+      "min": 0.25792524218559265,
+      "max": 0.31388261914253235,
+      "values": [
+        0.3024577498435974,
+        0.25792524218559265,
+        0.27057409286499023,
+        0.31388261914253235
+      ]
+    }
+  },
+  "CPR": {
+    "positive": {
+      "n": 7,
+      "mean": 0.27911384190831867,
+      "median": 0.24951638281345367,
+      "std": 0.09559862272051592,
+      "min": 0.1662776619195938,
+      "max": 0.47999095916748047,
+      "values": [
+        0.1662776619195938,
+        0.29675668478012085,
+        0.32239580154418945,
+        0.2382054328918457,
+        0.20065397024154663,
+        0.24951638281345367,
+        0.47999095916748047
+      ]
+    },
+    "control": {
+      "n": 4,
+      "mean": 0.280842375010252,
+      "median": 0.2862389087677002,
+      "std": 0.027653986027310003,
+      "min": 0.2399839609861374,
+      "max": 0.3109077215194702,
+      "values": [
+        0.3008572459220886,
+        0.2399839609861374,
+        0.27162057161331177,
+        0.3109077215194702
+      ]
+    }
+  },
+  "SERD": {
+    "positive": {
+      "n": 7,
+      "mean": 0.8055348822048732,
+      "median": 0.8218520879745483,
+      "std": 0.04582513376001112,
+      "min": 0.7071439623832703,
+      "max": 0.8504892587661743,
+      "values": [
+        0.8483705520629883,
+        0.7915645241737366,
+        0.7913923859596252,
+        0.8279314041137695,
+        0.8504892587661743,
+        0.8218520879745483,
+        0.7071439623832703
+      ]
+    },
+    "control": {
+      "n": 4,
+      "mean": 0.7977452278137207,
+      "median": 0.7970166206359863,
+      "std": 0.01573049092678351,
+      "min": 0.7789834141731262,
+      "max": 0.8179642558097839,
+      "values": [
+        0.7863414883613586,
+        0.8179642558097839,
+        0.807691752910614,
+        0.7789834141731262
+      ]
+    }
+  },
+  "T_Ratio": {
+    "positive": {
+      "n": 7,
+      "mean": 0.2990433893033436,
+      "median": 0.2690185308456421,
+      "std": 0.10284498206509993,
+      "min": 0.19979813694953918,
+      "max": 0.5248854756355286,
+      "values": [
+        0.19979813694953918,
+        0.3051011264324188,
+        0.3380916714668274,
+        0.24672573804855347,
+        0.20968304574489594,
+        0.2690185308456421,
+        0.5248854756355286
+      ]
+    },
+    "control": {
+      "n": 4,
+      "mean": 0.2994874268770218,
+      "median": 0.30609433352947235,
+      "std": 0.024869990946554326,
+      "min": 0.2605549991130829,
+      "max": 0.32520604133605957,
+      "values": [
+        0.31633108854293823,
+        0.2605549991130829,
+        0.29585757851600647,
+        0.32520604133605957
+      ]
+    }
+  },
+  "physics_evidence_score_analog": {
+    "positive": {
+      "n": 7,
+      "mean": 0.5728032957276789,
+      "median": 0.5402763057644036,
+      "std": 0.1945734658748199,
+      "min": 0.32043682549263736,
+      "max": 0.9202217203259934,
+      "values": [
+        0.32043682549263736,
+        0.6623556341389939,
+        0.7190413365389569,
+        0.4768632207094081,
+        0.37042802712335815,
+        0.5402763057644036,
+        0.9202217203259934
+      ]
+    },
+    "control": {
+      "n": 4,
+      "mean": 0.6359197019401758,
+      "median": 0.6500643192342934,
+      "std": 0.071892047129289,
+      "min": 0.5297590276113852,
+      "max": 0.7137911416807313,
+      "values": [
+        0.6884027820605142,
+        0.5297590276113852,
+        0.6117258564080726,
+        0.7137911416807313
+      ]
+    }
+  },
+  "pooled_ranking_by_evidence_score": [
+    {
+      "rank": 1,
+      "site_id": "Shackleton",
+      "category": "positive",
+      "physics_evidence_score_analog": 0.9202217203259934,
+      "pv_mean": 0.40098801255226135,
+      "cpr_mean": 0.47999095916748047,
+      "in_psr_catalog": true
+    },
+    {
+      "rank": 2,
+      "site_id": "De_Gerlache",
+      "category": "positive",
+      "physics_evidence_score_analog": 0.7190413365389569,
+      "pv_mean": 0.30135008692741394,
+      "cpr_mean": 0.32239580154418945,
+      "in_psr_catalog": false
+    },
+    {
+      "rank": 3,
+      "site_id": "Wiechert",
+      "category": "control",
+      "physics_evidence_score_analog": 0.7137911416807313,
+      "pv_mean": 0.31388261914253235,
+      "cpr_mean": 0.3109077215194702,
+      "in_psr_catalog": false
+    },
+    {
+      "rank": 4,
+      "site_id": "Amundsen",
+      "category": "control",
+      "physics_evidence_score_analog": 0.6884027820605142,
+      "pv_mean": 0.3024577498435974,
+      "cpr_mean": 0.3008572459220886,
+      "in_psr_catalog": false
+    },
+    {
+      "rank": 5,
+      "site_id": "Faustini",
+      "category": "positive",
+      "physics_evidence_score_analog": 0.6623556341389939,
+      "pv_mean": 0.2889484465122223,
+      "cpr_mean": 0.29675668478012085,
+      "in_psr_catalog": true
+    },
+    {
+      "rank": 6,
+      "site_id": "Idelson_L",
+      "category": "control",
+      "physics_evidence_score_analog": 0.6117258564080726,
+      "pv_mean": 0.27057409286499023,
+      "cpr_mean": 0.27162057161331177,
+      "in_psr_catalog": false
+    },
+    {
+      "rank": 7,
+      "site_id": "Sverdrup",
+      "category": "positive",
+      "physics_evidence_score_analog": 0.5402763057644036,
+      "pv_mean": 0.2504585087299347,
+      "cpr_mean": 0.24951638281345367,
+      "in_psr_catalog": true
+    },
+    {
+      "rank": 8,
+      "site_id": "Hedervari",
+      "category": "control",
+      "physics_evidence_score_analog": 0.5297590276113852,
+      "pv_mean": 0.25792524218559265,
+      "cpr_mean": 0.2399839609861374,
+      "in_psr_catalog": false
+    },
+    {
+      "rank": 9,
+      "site_id": "Haworth",
+      "category": "positive",
+      "physics_evidence_score_analog": 0.4768632207094081,
+      "pv_mean": 0.22830191254615784,
+      "cpr_mean": 0.2382054328918457,
+      "in_psr_catalog": true
+    },
+    {
+      "rank": 10,
+      "site_id": "Shoemaker",
+      "category": "positive",
+      "physics_evidence_score_analog": 0.37042802712335815,
+      "pv_mean": 0.21351587772369385,
+      "cpr_mean": 0.20065397024154663,
+      "in_psr_catalog": true
+    },
+    {
+      "rank": 11,
+      "site_id": "LCROSS_Cabeus",
+      "category": "positive",
+      "physics_evidence_score_analog": 0.32043682549263736,
+      "pv_mean": 0.2172471433877945,
+      "cpr_mean": 0.1662776619195938,
+      "in_psr_catalog": true
+    }
+  ],
+  "systematic_separation_check": {
+    "positive_mean_score": 0.5728032957276789,
+    "control_mean_score": 0.6359197019401758,
+    "positive_median_score": 0.5402763057644036,
+    "control_median_score": 0.6500643192342934,
+    "n_positive_above_control_median": 3,
+    "verdict": "Positive sites do NOT score higher on average than control sites in this sample -- reported honestly, this does NOT support the hypothesis that PRISM's radar evidence score systematically separates independently-identified ice sites from checked-negative controls."
+  },
+  "dop_coverage_note": "DOP was not computed for any of these 13 reference sites. Doing so would require repeating the acquisition-hunt-and-download workflow used for the original candidate (search 602-manifest true-image-footprint corners + Grid CSV, download ~1-5GB per confirmed acquisition) for each site -- not attempted in this task, per explicit scope.",
+  "m3_pixel_level_data_availability": "INSUFFICIENT for quantitative pixel-level validation. Li et al. 2018 PNAS (the only M3 ice-detection publication located) presents ice detections only as a map/figure (SI Appendix Fig. S5, ice exposures overlain on Diviner temperature map) with NO machine-readable coordinate table of individual ice-bearing pixels in the main text or the full 23-page SI Appendix (verified by downloading and full-text-searching the actual SI PDF this session, outputs/validation/refs/pnas.1802345115.sapp.pdf). This validation instead uses CRATER-LEVEL references (named craters the paper reports positive/negative for), which is a real, documented approximation, not the pixel-level dataset the task requested."
+}

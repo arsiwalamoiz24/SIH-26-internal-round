@@ -1,0 +1,108 @@
+{
+  "purpose": "Track J -- unsupervised Isolation Forest anomaly scoring, feature-table skeleton for future multi-sensor ML.",
+  "not_a_supervised_classifier": true,
+  "no_ground_truth_labels_used": true,
+  "model": "sklearn.ensemble.IsolationForest",
+  "hyperparameters": {
+    "n_estimators": 200,
+    "contamination": "auto",
+    "random_state": 42
+  },
+  "n_samples": 336,
+  "features": [
+    "area_km2",
+    "px_with_radar_data",
+    "high_tier_fraction",
+    "moderate_plus_fraction"
+  ],
+  "circularity_warning": "All 4 features are derived from the same Y4R Pv computation that already produced this candidate's shortlist ranking (src/radar_pipeline.py). This is NOT an independent evidence source -- an Isolation Forest anomaly finding here CANNOT be claimed to 'independently validate' the candidate's Pv-based selection, and this script makes no such claim. It is included to satisfy the task's request for an ML pipeline skeleton with a real, adequately sized sample (336 PSRs), not as independent confirmation.",
+  "candidate_result": {
+    "PSR_ID": "SP_840980_0797630",
+    "anomaly_score": 0.005606031542763956,
+    "anomaly_rank_of": "40 of 336",
+    "iforest_anomaly_label": true
+  },
+  "top_10_anomalies": [
+    {
+      "PSR_ID": "SP_874930_3578760",
+      "lat": -87.493,
+      "lon": 357.877,
+      "area_km2": 1017.976,
+      "anomaly_score": 0.28965614998642486,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_880260_0452790",
+      "lat": -88.026,
+      "lon": 45.279,
+      "area_km2": 1075.518,
+      "anomaly_score": 0.2490039678251058,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_871460_0840750",
+      "lat": -87.146,
+      "lon": 84.075,
+      "area_km2": 663.959,
+      "anomaly_score": 0.2170059596386057,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_821760_0111040",
+      "lat": -82.174,
+      "lon": 11.11,
+      "area_km2": 300.589,
+      "anomaly_score": 0.21292647902820472,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_850230_1826070",
+      "lat": -85.023,
+      "lon": 182.607,
+      "area_km2": 371.657,
+      "anomaly_score": 0.17176616702516223,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_838910_1184700",
+      "lat": -83.891,
+      "lon": 118.47,
+      "area_km2": 326.804,
+      "anomaly_score": 0.16525013446219627,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_835240_0910150",
+      "lat": -83.524,
+      "lon": 91.015,
+      "area_km2": 439.222,
+      "anomaly_score": 0.16202730563950674,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_882490_2164550",
+      "lat": -88.249,
+      "lon": 216.455,
+      "area_km2": 548.953,
+      "anomaly_score": 0.15758110661880664,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_806880_0857630",
+      "lat": -80.688,
+      "lon": 85.763,
+      "area_km2": 300.24,
+      "anomaly_score": 0.1571495165708342,
+      "is_anomaly_iforest_label": true
+    },
+    {
+      "PSR_ID": "SP_844580_3134320",
+      "lat": -84.458,
+      "lon": 313.432,
+      "area_km2": 315.029,
+      "anomaly_score": 0.1424232372520532,
+      "is_anomaly_iforest_label": true
+    }
+  ],
+  "what_would_make_this_independent": "Adding terrain (slope/roughness), thermal (DIVINER-derived max temperature), or optical (OHRC/TMC brightness) features computed at this same 336-PSR scale would make this a genuinely independent/complementary feature set, per the task's own guidance. None of these currently exist at 336-PSR scale in this project -- terrain exists for exactly 1 PSR (the primary candidate, Track G), and no covering OHRC/thermal data exists for the candidate at all (PROJECT_STATUS.md Section 3.4)."
+}

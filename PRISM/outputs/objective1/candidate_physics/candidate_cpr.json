@@ -1,0 +1,98 @@
+{
+  "candidate_id": "SP_840980_0797630",
+  "candidate_lat_deg": -84.098,
+  "candidate_lon_deg": 79.764,
+  "source_products": {
+    "y4r_l4_mosaic": "ch2_sar_ndxl_20250630my4rspwest_d_fp_xxx (evn/vol/odd/hlx GeoTIFFs)",
+    "l3c_cpr_mosaic": "ch2_sar_ndxl_20250630mpcpspwest_d_fp_xxx (cpr/srd/trt GeoTIFFs)",
+    "processing_level": "L4-MOSAIC / L3C-MOSAIC (Derived), mosaic date 2025-06-30",
+    "psr_shapefile": "LOLA_PSR_75S_120M_82S_060M_5KM2_FINAL (LRO/LOLA South Pole PSR catalog, secondary/interior mask only)"
+  },
+  "window": {
+    "candidate_id": "SP_840980_0797630",
+    "candidate_lat_lon_deg": [
+      -84.098,
+      79.764
+    ],
+    "candidate_projected_xy_m": [
+      176275.8778046456,
+      31831.392554179583
+    ],
+    "half_window_m": 3300.0,
+    "window_bounds_m": [
+      172975.8778046456,
+      28531.392554179583,
+      179575.8778046456,
+      35131.39255417958
+    ],
+    "window_shape_px": [
+      264,
+      264
+    ],
+    "pixel_size_m": 25.0,
+    "crs": "Moon_2000_South_Pole_Stereographic (sphere r=1737400m)",
+    "psr_polygon_available": true,
+    "psr_area_km2": 14.234
+  },
+  "result": {
+    "window": {
+      "label": "cpr -- full candidate window",
+      "n_total_px": 69696,
+      "n_valid_px": 69696,
+      "n_nan_px": 0,
+      "pct_nan": 0.0,
+      "mean": 0.5649844408035278,
+      "median": 0.5424538850784302,
+      "std": 0.2838287055492401,
+      "min": 0.02974885143339634,
+      "max": 1.8524895906448364,
+      "p5": 0.15980390459299088,
+      "p10": 0.20794948935508728,
+      "p25": 0.33309726417064667,
+      "p50": 0.5424538850784302,
+      "p75": 0.7705226540565491,
+      "p90": 0.9548531174659729,
+      "p95": 1.0580154955387115
+    },
+    "psr_interior": {
+      "label": "cpr -- PSR interior (secondary split)",
+      "n_total_px": 69696,
+      "n_valid_px": 22772,
+      "n_nan_px": 0,
+      "pct_nan": 0.0,
+      "mean": 0.6333925724029541,
+      "median": 0.6352668404579163,
+      "std": 0.2529922127723694,
+      "min": 0.03922669589519501,
+      "max": 1.6072372198104858,
+      "p5": 0.23307742327451705,
+      "p10": 0.30546401143074037,
+      "p25": 0.4526631087064743,
+      "p50": 0.6352668404579163,
+      "p75": 0.7990662604570389,
+      "p90": 0.9611076951026921,
+      "p95": 1.0544126808643342
+    },
+    "psr_surroundings": {
+      "label": "cpr -- PSR surroundings within window (secondary split)",
+      "n_total_px": 69696,
+      "n_valid_px": 46924,
+      "n_nan_px": 0,
+      "pct_nan": 0.0,
+      "mean": 0.5317863821983337,
+      "median": 0.47545507550239563,
+      "std": 0.29192301630973816,
+      "min": 0.02974885143339634,
+      "max": 1.8524895906448364,
+      "p5": 0.15083940252661704,
+      "p10": 0.18873202949762344,
+      "p25": 0.28844764828681946,
+      "p50": 0.47545507550239563,
+      "p75": 0.7475962340831757,
+      "p90": 0.952098995447159,
+      "p95": 1.0595308303833009
+    },
+    "window_mean_relative_percentile_in_mosaic_overview": 97.20055281658718,
+    "nodata_value_in_source_raster": null
+  }
+}

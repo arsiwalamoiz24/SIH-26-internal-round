@@ -1,0 +1,69 @@
+{
+  "purpose": "Full-mosaic SERD NaN characterization (Track F), extending the shortlist-only H1/H2 test in src/serd_nan_investigation.py",
+  "source_product": "ch2_sar_ndxl_20250630mpcpspwest_d_srd_xx_fp_xx_xxx.tif (L3C-MOSAIC SERD band)",
+  "global_stats": {
+    "raster_shape_w_h": [
+      24181,
+      24794
+    ],
+    "n_total_px": 599543714,
+    "n_valid_px": 340317714,
+    "n_nan_px": 259226000,
+    "pct_nan": 43.2372,
+    "srd_nodata_metadata": null,
+    "cpr_nan_pct": 43.2329,
+    "trt_nan_pct": 43.2328,
+    "y4r_total_power_invalid_pct": 43.3004
+  },
+  "cooccurrence_with_other_bands": {
+    "P(cpr_nan | srd_nan)": 0.9998896792759986,
+    "P(cpr_nan | srd_valid)": 8.3304508797917e-06,
+    "P(trt_nan | srd_nan)": 0.9998949680973359,
+    "P(trt_nan | srd_valid)": 2.90610790832945e-06,
+    "P(y4r_power_invalid | srd_nan)": 0.999898648283737,
+    "P(y4r_power_invalid | srd_valid)": 0.0011895795703423184,
+    "interpretation": "If SERD NaN were caused by the same masking as CPR/T-Ratio NaN or by Y4R zero-power pixels, these conditional probabilities would be near 1.0 (far above the unconditional rate). Values close to the unconditional NaN rates would instead indicate SERD's NaN mask is largely INDEPENDENT of those other bands' invalid pixels. (Compare the computed P(...) values above against unconditional_rates below to see which case holds.)",
+    "unconditional_rates": {
+      "cpr_nan_pct": 0.432329,
+      "trt_nan_pct": 0.432328,
+      "y4r_power_invalid_pct": 0.43300400000000006
+    }
+  },
+  "H1_weak_signal_hypothesis_full_mosaic": {
+    "median_power_at_srd_nan": 2.854716463218665e-10,
+    "median_power_at_srd_finite": 2.302961710221041e-10,
+    "ratio_median_nan_over_finite": 1.2395848035812378
+  },
+  "H2_cpr_extremity_hypothesis_full_mosaic": {
+    "median_cpr_at_srd_nan": 0.9711845517158508,
+    "median_cpr_at_srd_finite": 0.22233761847019196,
+    "mean_cpr_at_srd_nan": 0.9812142252922058,
+    "mean_cpr_at_srd_finite": 0.2531454563140869,
+    "n_px_srd_nan_with_valid_cpr": 28598,
+    "n_px_srd_finite_with_valid_cpr": 340314879,
+    "fraction_cpr_gt_1_at_srd_nan": 0.4690887474648577,
+    "fraction_cpr_gt_1_at_srd_finite": 0.002220546460444358
+  },
+  "spatial_clustering_block_analysis": {
+    "block_size_px": 200,
+    "block_size_km": 5.0,
+    "n_blocks": 14760,
+    "block_nan_fraction_mean": 0.4242658019065857,
+    "block_nan_fraction_std": 0.44288983941078186,
+    "block_nan_fraction_min": 0.0,
+    "block_nan_fraction_max": 1.0,
+    "pct_blocks_all_nan": 29.55962059620596,
+    "pct_blocks_all_valid": 37.493224932249326,
+    "interpretation": "A high block_nan_fraction_std relative to the mean, plus a large pct_blocks_all_nan / pct_blocks_all_valid (bimodal), indicates SERD NaN occurs in spatially CONTIGUOUS regions (consistent with per-orbit-strip masking or a geometry-dependent processing artifact), rather than being randomly scattered pixel noise."
+  },
+  "residual_specific_nan_analysis": {
+    "n_srd_nan_px_total": 259226000,
+    "n_srd_nan_px_with_valid_cpr_and_y4r_power": 28598,
+    "pct_of_total_srd_nan_that_is_residual_specific": 0.011,
+    "meaning": "The other ~99.99% of SERD-NaN pixels also have NaN/invalid CPR AND invalid Y4R power -- i.e. they sit outside the mosaic's actual per-pixel radar coverage (the mosaic raster is a square bounding box; only part of it is covered by the 602 contributing passes), and are masked identically across all bands. This residual set is the SERD-specific NaN behavior actually worth explaining."
+  },
+  "candidate_specific_note": "The candidate SP_840980_0797630 itself has 0% SERD NaN in both the PSR-polygon window (outputs/objective1/serd_nan_investigation.csv) and the coordinate-based window (outputs/objective1/candidate_physics/candidate_serd.json) -- the global NaN problem characterized here does not block candidate-specific SERD, it affects OTHER regions of the mosaic (up to 53.9% NaN for shortlist candidate SP_817950_1586580).",
+  "verdict": "~99.99% OF SERD NAN IS SHARED OUTSIDE-MOSAIC-COVERAGE MASKING (co-occurs with CPR/T-Ratio/Y4R-power NaN); A SMALL RESIDUAL (~0.01% of NaN pixels, but a large share of shortlist-PSR-window NaN) IS SERD-SPECIFIC AND CPR-CORRELATED",
+  "verdict_detail": "Co-occurrence analysis shows P(cpr_nan | srd_nan) = 0.9999 and P(trt_nan | srd_nan) = 0.9999, both far above the unconditional NaN rate (~0.4323) -- meaning the vast majority (99.99%) of SERD's 43.2% global NaN fraction is SHARED with CPR/T-Ratio/Y4R-power invalidity: it is simply the region of the mosaic's square raster bounding box that no contributing pass actually imaged (outside-coverage masking, applied consistently across all L3C/L4 bands), not a SERD-specific processing anomaly. The remaining 0.011% of SERD-NaN pixels (28,598 px) DO have valid CPR and Y4R power -- for exactly this residual set, H2 (CPR-extremity) is supported: median CPR at these SERD-NaN pixels (0.971) is much higher than at SERD-valid pixels (0.222), and the fraction of CPR>1 pixels is 46.9% at SERD-NaN vs 0.2% at SERD-valid -- consistent with the shortlist-level result in serd_nan_verdict.json (positive median_cpr_diff in all 5 PSRs with any NaN; those shortlist PSR windows sit inside the actual coverage area, so they sample this residual, CPR-correlated behavior almost exclusively, which is why the shortlist-level NaN fractions, up to 53.9%, look far larger than the global 43.2% -- shortlist windows are small and PSR-selected, not a random sample of the whole raster). H1 (weak Y4R power) is NOT well supported for the residual set -- the median-power ratio is 1.240 (close to 1). Spatial blocks are bimodal (many fully-NaN, many fully-valid 5x5 km blocks) at the whole-mosaic level, consistent with large contiguous outside-coverage regions rather than scattered pixel noise. Taken together: (a) most SERD NaN = expected outside-coverage masking shared across all bands; (b) the smaller residual, CPR-correlated SERD-specific NaN is most consistent with EXPECTED PRODUCT MASKING tied to a CPR-range validity criterion in ISRO's own SERD algorithm (e.g. valid only below some CPR threshold), not a read error or a PRISM processing bug -- but the exact SERD formula/masking rule itself is not documented in the locally available CH2DFSAR SIS and was not independently confirmed against ISRO source code.",
+  "not_done": "NaN values were NOT filled/imputed anywhere. No SERD formula was assumed or reverse-engineered."
+}

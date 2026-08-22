@@ -1,0 +1,38 @@
+{
+  "raster_crs_wkt": "PROJCS[\"Moon_2000_South_Pole_Stereographic\",GEOGCS[\"GCS_Moon_2000\",DATUM[\"D_Moon_2000\",SPHEROID[\"Moon_2000_IAU_IAG\",1737400,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"103878\"]]",
+  "raster_crs_summary": "Moon_2000_South_Pole_Stereographic, sphere r=1737400m, lat_of_origin=-90, central_meridian=0 (read directly from GeoTIFF header, not assumed)",
+  "y4r_cpr_crs_match": true,
+  "y4r_cpr_bounds_match": true,
+  "transform_method": "pyproj.Transformer, geographic-Moon-sphere -> raster CRS, always_xy=True",
+  "candidate_lonlat_input": [
+    79.764,
+    -84.098
+  ],
+  "candidate_projected_xy_m": [
+    176275.8778046456,
+    31831.392554179583
+  ],
+  "round_trip_lonlat_deg": [
+    79.764,
+    -84.09799999999998
+  ],
+  "round_trip_max_abs_error_deg": 1.4210854715202004e-14,
+  "candidate_inside_raster_bounds": true,
+  "candidate_pixel_col_row": [
+    19273.331864185824,
+    11343.594437832817
+  ],
+  "candidate_inside_raster_pixel_grid": true,
+  "raster_shape_w_h": [
+    24181,
+    24794
+  ],
+  "raster_bounds_m": [
+    -305557.4188,
+    -304428.7465,
+    298967.5812,
+    315421.2535
+  ],
+  "longitude_wrapping_note": "Mosaic spans the full 360 deg south-polar cap in a projected (not geographic-grid) CRS, so there is no antimeridian/0-360-vs-180 ambiguity for point placement here -- the projection itself is longitude-continuous around the pole. Verified by round-trip error below.",
+  "verdict": "PASS"
+}

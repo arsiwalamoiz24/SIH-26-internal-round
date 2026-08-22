@@ -1,0 +1,84 @@
+{
+  "category": "CANDIDATE-SPECIFIC DOP",
+  "candidate_id": "SP_840980_0797630",
+  "acquisition": "ch2_sar_ncxl_20220318t135736694_d_fp_d18",
+  "window": {
+    "line_start": 218616,
+    "line_count": 2000,
+    "sample_start": 0,
+    "sample_count": 244,
+    "center_line": 219616,
+    "half_lines": 1000,
+    "line_spacing_m": 0.516594,
+    "pixel_spacing_m": 9.593359,
+    "local_covariance_window_px": 5,
+    "eigenvalue_purity_tile_px": [
+      40,
+      61
+    ]
+  },
+  "formulas": {
+    "linear_pol_stokes_dop": "S1=<|HH|^2>+<|VV|^2>, S2=<|HH|^2>-<|VV|^2>, S3=2Re(<HH*conj(VV)>), S4=-2Im(<HH*conj(VV)>), DOP=sqrt(S2^2+S3^2+S4^2)/S1, local mean over 5x5 px window",
+    "hybrid_pol_stokes_dop": "LH=(HH+j*HV)/sqrt(2), LV=(VH+j*VV)/sqrt(2), then identical Stokes/DOP formula on (LH,LV)",
+    "eigenvalue_purity": "k=[HH,HV,VH,VV] per pixel, C=(k^H k)/N over a tile, eig=eigvalsh(C) clipped>=0, p=eig/sum(eig), purity=sqrt(max(0,(4*sum(p^2)-1)/3))",
+    "source": "Identical to src/dop_validation_pipeline.py / docs/DOP_VALIDATION_RESULTS.md -- not re-derived, only re-pointed at the candidate-covering acquisition."
+  },
+  "linear_pol_dop": {
+    "n_total_px": 488000,
+    "n_valid_px": 488000,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.6804845929145813,
+    "median": 0.7082269191741943,
+    "std": 0.1830962747335434,
+    "min": 0.011868760921061039,
+    "max": 0.9994337558746338,
+    "p5": 0.33468944728374483,
+    "p25": 0.5630224049091339,
+    "p50": 0.708226889371872,
+    "p75": 0.8222893178462982,
+    "p95": 0.9314413040876388
+  },
+  "hybrid_pol_dop": {
+    "n_total_px": 488000,
+    "n_valid_px": 488000,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.5935717847805299,
+    "median": 0.6065349504207269,
+    "std": 0.1884780543208089,
+    "min": 0.008014177118119413,
+    "max": 0.9987007939541115,
+    "p5": 0.26248782197667503,
+    "p25": 0.46195363465110095,
+    "p50": 0.6065349504207269,
+    "p75": 0.7357474374281007,
+    "p95": 0.8812846300631404
+  },
+  "eigenvalue_purity_tiled_dop": {
+    "n_total_px": 200,
+    "n_valid_px": 200,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.5944819350540638,
+    "median": 0.5091638267040253,
+    "std": 0.2030390120260211,
+    "min": 0.35644787549972534,
+    "max": 0.9807695746421814,
+    "p5": 0.3749918967485428,
+    "p25": 0.41833681613206863,
+    "p50": 0.5091638267040253,
+    "p75": 0.7117842584848404,
+    "p95": 0.9643763184547424
+  },
+  "eigenvalue_purity_whole_window": 0.908509373664856,
+  "best_supported_formulation": "linear-pol (HH/VV) Stokes-covariance DOP -- same rationale as docs/DOP_VALIDATION_RESULTS.md (standard construction, no synthesis assumption); hybrid-pol and eigenvalue-purity reported as cross-checks.",
+  "calibration_applied": "XML bias_real/bias_imag subtraction only (per-polarization, from this product's own PDS4 label). No gain-imbalance or phase-orthogonality correction applied -- same limitation as the non-candidate validation run.",
+  "channel_mapping_note": "This is a Level-1A SLI product with per-polarization TIF files explicitly named _hh_/_hv_/_vh_/_vv_ in the PDS4 label and filename -- NOT the byte-level-reverse-engineered raw L0A channel mapping used in src/dfsar_raw_reader.py (that mapping, and its HH-weak-fit caveat, does not apply here; this product's polarization identity is given directly by ISRO, not inferred).",
+  "limitations": [
+    "Single acquisition, single ~2000x244 px window centered on the candidate -- not the full scene, not multi-temporal.",
+    "No gain-imbalance/phase-orthogonality calibration applied (bias-centering only).",
+    "false_positive_lesson: An earlier screening pass in this session used the loose axis-aligned bounding-box corners and produced a false-positive containment result for a DIFFERENT acquisition (ch2_sar_ncxl_20191106t114537878), which was downloaded (4.88 GB) and then found, via the correct true-image-footprint-corner test, to miss the candidate by ~75 km. That acquisition's data was deleted and is not used anywhere in this result. This acquisition's containment was verified with the corrected method AND the actual Grid CSV (91 m from nearest grid sample).",
+    "No independent ground-truth ice confirmation exists for this candidate anywhere in this project."
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "category": "CANDIDATE-SPECIFIC",
+  "candidate_id": "SP_840980_0797630",
+  "candidate_lat_lon_deg": [
+    -84.098,
+    79.764
+  ],
+  "acquisition": "ch2_sar_ncxl_20220318t135736694_d_fp_d18",
+  "product_id": "2238611",
+  "date_of_pass": "2022-03-18",
+  "station": "d18",
+  "product_type": "L1A-SLANT-RANGE",
+  "num_polarizations": 4,
+  "polarizations": [
+    "HH",
+    "HV",
+    "VH",
+    "VV"
+  ],
+  "source_zip": "C:\\Users\\radhe\\Downloads\\ch2_sar_ncxl_20220318t135736694_d_fp_d18.zip",
+  "source_zip_size_bytes": 1920035453,
+  "downloaded_via": "PRADAN authenticated session (pradan.issdc.gov.in/ch2/protected/browse.xhtml), Browse and Download > SAR",
+  "containment_evidence": {
+    "method_1_true_image_footprint_corners": {
+      "description": "Point-in-polygon ray-casting test against the PDS4 label's TRUE rotated image-footprint corners (image_upper_left/upper_right/lower_right/lower_left_mapX/mapY, Moon_2000_South_Pole_Stereographic projected meters) -- NOT the loose axis-aligned bounding-box corners (see limitations.false_positive_lesson below).",
+      "candidate_projected_xy_m": [
+        176275.8778046456,
+        31831.392554179583
+      ],
+      "image_corners_mapXY_m": {
+        "UL": [
+          288539.952468,
+          53806.778432
+        ],
+        "UR": [
+          289029.172208,
+          49295.302429
+        ],
+        "LR": [
+          156752.401304,
+          27519.245034
+        ],
+        "LL": [
+          156103.587133,
+          33526.326388
+        ]
+      },
+      "contains": true,
+      "distance_to_nearest_corner_km": 19.99,
+      "distance_to_farthest_corner_km": 114.39
+    },
+    "method_2_actual_grid_csv": {
+      "description": "Direct search of the Level-1A Grid CSV (geometry/calibrated/20220318/ch2_sar_ncxl_20220318t135736694_g_sli_xx_fp_xx_d18.csv, 8059 records x 9 samples, 32-line/32-pixel sampling interval) for the nearest actual per-pixel lat/lon sample to the candidate.",
+      "nearest_grid_point_lat_lon": [
+        -84.098961,
+        79.736375
+      ],
+      "nearest_grid_point_distance_m": 90.93,
+      "nearest_grid_record_sample_idx": [
+        6863,
+        5
+      ],
+      "sample_idx_of_9_total": "5 of 0-8 -- well inside the swath width, not at the range edge (contrast with the false-positive acquisition, which was at the last/edge sample index)",
+      "approx_image_line_sample": [
+        219616,
+        160
+      ]
+    }
+  }
+}

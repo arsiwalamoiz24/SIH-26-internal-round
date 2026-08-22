@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:isda="http://pds.nasa.gov/pds4/isda/v1" xmlns:pds="http://pds.nasa.gov/pds4/pds/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1B00.xsd">
+     <Identification_Area>
+     	<logical_identifier>urn:isro:isda:ch2_cho:sar_calibrated:ch2_sar_ncxl_20220318t135736694_d_xxx_xx_fp_xx_d18</logical_identifier>
+        <version_id>1.0</version_id>
+        <title>Chandrayaan-2 Dual frequency L and S band SAR</title>
+        <information_model_version>1.11.0.0</information_model_version>
+        <product_class>Product_Observational</product_class>
+        <Modification_History>
+            <Modification_Detail>
+                <modification_date>2022-10-28</modification_date>
+                <version_id>1.0</version_id>
+                <description>PDS4 product label created by SAR DP SAC-ISRO team</description>
+            </Modification_Detail>
+        </Modification_History>       
+    </Identification_Area>
+     <Observation_Area>
+        <Time_Coordinates>
+            <start_date_time>2022-03-18T13:57:36.694Z</start_date_time>
+            <stop_date_time>2022-03-18T13:59:03.128Z</stop_date_time>
+        </Time_Coordinates>
+        <Primary_Result_Summary>
+            <purpose>Science</purpose>
+            <processing_level>Calibrated</processing_level>
+        </Primary_Result_Summary>
+        <Investigation_Area>
+            <name>Chandrayaan-2</name>
+            <type>Mission</type>
+            <Internal_Reference>
+                <lidvid_reference>urn:isro:isda:context:investigation.chandrayaan-2::1.0</lidvid_reference>
+                <reference_type>data_to_investigation</reference_type>
+            </Internal_Reference>
+        </Investigation_Area>
+	<Observing_System>
+            <Observing_System_Component>
+                <name>Chandrayaan-2 Orbiter</name>
+                <type>Spacecraft</type>
+            </Observing_System_Component>
+            <Observing_System_Component>
+                <name>Dual frequency L and S band SAR</name>
+                <type>Instrument</type>
+		<description>
+                Chandrayaan-2 Dual Frequency SAR operates in StripMap mode with a nominal swath of 10 Km.
+                Data is acquired in various modes i.e. Circular/Dual/Quad(Full Polarimetric).
+                The antenna beam-limited footprint varies from about 22.5 Km to 34 Km for L-band and from 11.2 Km to 16.8 Km for S-band, over the range coverage region from 16 Km to 70 Km off-nadir.
+		</description>
+            </Observing_System_Component>
+        </Observing_System>
+        <Target_Identification>
+            <name>Moon</name>
+	    <type>Satellite</type>
+            <description>Natural Satellite of Earth</description>
+        </Target_Identification>
+	<Mission_Area>
+	<isda:Product_Parameters>
+		<isda:sli_grid_no_samples>9</isda:sli_grid_no_samples>
+		<isda:sli_grid_no_records>8059</isda:sli_grid_no_records>
+		<isda:sli_grid_interval_scan>32</isda:sli_grid_interval_scan>
+		<isda:sli_grid_interval_pix>32</isda:sli_grid_interval_pix>
+		<isda:gri_grid_no_samples>57</isda:gri_grid_no_samples>
+		<isda:gri_grid_no_records>3394</isda:gri_grid_no_records>
+		<isda:gri_grid_interval_scan>4</isda:gri_grid_interval_scan>
+		<isda:gri_grid_interval_pix>4</isda:gri_grid_interval_pix>
+		<isda:sri_grid_no_samples>1331</isda:sri_grid_no_samples>
+		<isda:sri_grid_no_records>264</isda:sri_grid_no_records>
+		<isda:sri_grid_interval_scan>4</isda:sri_grid_interval_scan>
+		<isda:sri_grid_interval_pix>4</isda:sri_grid_interval_pix>
+	</isda:Product_Parameters>
+	</Mission_Area>
+    </Observation_Area>
+    <File_Area_Observational>
+        <File>
+            <file_name>ch2_sar_ncxl_20220318t135736694_g_sli_xx_fp_xx_d18.csv</file_name>
+            <local_identifier>STREAM_DELIMITED_CSV_FILE_ID</local_identifier>
+            <creation_date_time>2022-12-03T13:22:22Z</creation_date_time>
+            <file_size unit="byte">3336495</file_size>
+            <records>72531</records>
+            <md5_checksum>4e9792d7865defc937da8a1cb0aa9111</md5_checksum>
+        </File>
+	<Table_Delimited>
+            <offset unit="byte">69</offset>
+            <parsing_standard_id>PDS DSV 1</parsing_standard_id>
+            <records>72531</records>
+            <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+            <field_delimiter>Comma</field_delimiter>
+            <Record_Delimited>
+                <fields>4</fields>
+                <groups>0</groups>
+                <maximum_record_length unit="byte">216</maximum_record_length>
+		<Field_Delimited>
+                    <name>Latitude</name>
+                    <field_number>1</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>degree</unit>
+                    <description>
+                        Target point location latitude(in degree).
+                    </description>
+                </Field_Delimited>
+		<Field_Delimited>
+                    <name>Longitude</name>
+                    <field_number>2</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+		     <unit>degree</unit>
+                     <description> 
+                        Target point location longitude(in degree).
+                    </description>
+	        </Field_Delimited>
+		<Field_Delimited>
+                    <name>Slant range</name>
+                    <field_number>3</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>meter</unit>
+		     <description> 
+                        Slant range at target point (in meter).
+                    </description>
+		</Field_Delimited>
+	        <Field_Delimited>
+                    <name>Incidence angle</name>
+                    <field_number>4</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>degree</unit>
+		     <description> 
+                        Incidence angle at target point (in degree).
+                    </description>
+		</Field_Delimited>
+	      </Record_Delimited>
+	</Table_Delimited>
+    </File_Area_Observational>
+    <File_Area_Observational>
+        <File>
+            <file_name>ch2_sar_ncxl_20220318t135736694_g_gri_xx_fp_xx_d18.csv</file_name>
+            <creation_date_time>2022-12-03T13:21:53Z</creation_date_time>
+            <file_size unit="byte">9286047</file_size>
+            <records>193458</records>
+            <md5_checksum>7e812b805a03d1cecfac1ab212624209</md5_checksum>
+        </File>
+	<Table_Delimited>
+            <offset unit="byte">63</offset>
+            <parsing_standard_id>PDS DSV 1</parsing_standard_id>
+            <records>193458</records>
+            <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+            <field_delimiter>Comma</field_delimiter>
+            <Record_Delimited>
+                <fields>4</fields>
+                <groups>0</groups>
+                <maximum_record_length unit="byte">216</maximum_record_length>
+		<Field_Delimited>
+                    <name>Latitude</name>
+                    <field_number>1</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>degree</unit>
+                    <description>
+                        Target point location latitude(in degree).
+                    </description>
+                </Field_Delimited>
+		<Field_Delimited>
+                    <name>Longitude</name>
+                    <field_number>2</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+		     <unit>degree</unit>
+                     <description> 
+                        Target point location longitude(in degree).
+                    </description>
+	        </Field_Delimited>
+		<Field_Delimited>
+                    <name>Slant range</name>
+                    <field_number>3</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>meter</unit>
+		     <description> 
+                        Slant range at target point.
+                    </description>
+		</Field_Delimited>
+	        <Field_Delimited>
+                    <name>Incidence angle</name>
+                    <field_number>4</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>degree</unit>
+		     <description> 
+                        Incidence angle at target point (in degree).
+                    </description>
+		</Field_Delimited>
+	      </Record_Delimited>
+	</Table_Delimited>
+    </File_Area_Observational>
+    <File_Area_Observational>
+        <File>
+            <file_name>ch2_sar_ncxl_20220318t135736694_g_sri_xx_fp_xx_d18.csv</file_name>
+            <creation_date_time>2022-12-03T13:22:20Z</creation_date_time>
+            <file_size unit="byte">17133328</file_size>
+            <records>351384</records>
+            <md5_checksum>153912c619d1e2445a6cd817a8ce9f06</md5_checksum>
+        </File>
+	<Table_Delimited>
+            <offset unit="byte">69</offset>
+            <parsing_standard_id>PDS DSV 1</parsing_standard_id>
+            <records>351384</records>
+            <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+            <field_delimiter>Comma</field_delimiter>
+            <Record_Delimited>
+                <fields>4</fields>
+                <groups>0</groups>
+                <maximum_record_length unit="byte">216</maximum_record_length>
+		<Field_Delimited>
+                    <name>Latitude</name>
+                    <field_number>1</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>degree</unit>
+                    <description>
+                        Target point location latitude(in degree).
+                    </description>
+                </Field_Delimited>
+		<Field_Delimited>
+                    <name>Longitude</name>
+                    <field_number>2</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+		     <unit>degree</unit>
+                     <description> 
+                        Target point location longitude(in degree).
+                    </description>
+	        </Field_Delimited>
+		<Field_Delimited>
+                    <name>Slant range</name>
+                    <field_number>3</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>meter</unit>
+		     <description> 
+                        Slant range at target point.
+                    </description>
+		</Field_Delimited>
+	        <Field_Delimited>
+                    <name>Incidence angle</name>
+                    <field_number>4</field_number>
+                    <data_type>ASCII_Real</data_type>
+                    <maximum_field_length unit="byte">20</maximum_field_length>
+                     <unit>degree</unit>
+		     <description> 
+                        Incidence angle at target point (in degree).
+                    </description>
+		</Field_Delimited>
+	      </Record_Delimited>
+	</Table_Delimited>
+    </File_Area_Observational>
+</Product_Observational>
