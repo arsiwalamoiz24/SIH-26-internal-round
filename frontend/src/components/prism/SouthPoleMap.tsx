@@ -55,8 +55,8 @@ export function SouthPoleMap() {
   const rings = [2, 4, 6, 8, 10];
 
   return (
-    <div className="bg-surface-container-lowest tech-border rounded h-full flex flex-col overflow-hidden">
-      <div className="flex justify-between items-center px-4 py-2 tech-border-b bg-surface shrink-0">
+    <div className="viewport-frame bg-surface h-full flex flex-col">
+      <div className="flex justify-between items-center px-4 py-2 border-b border-outline-variant shrink-0">
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-outline text-[18px]">public</span>
           <span className="font-body-md font-semibold text-on-surface uppercase tracking-wider text-[13px]">

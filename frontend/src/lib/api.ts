@@ -117,6 +117,17 @@ export interface EvidenceGridData {
   cprGrid: number[][];
   probIceGrid: number[][];
   psrMaskGrid: boolean[][];
+  elevationGridRelativeM: number[][];
+  windowHalfM: number;
+  candidateCenterXyM: [number, number];
+}
+
+export interface WideTerrainGridData {
+  gridSize: number;
+  windowHalfM: number;
+  candidateCenterXyM: [number, number];
+  elevationGridRelativeM: number[][];
+  description: string;
 }
 
 // -------------------------------------------------------------------------
@@ -243,6 +254,20 @@ export function getEvidenceGrid(): EvidenceGridData {
     cprGrid: eg.cprGrid,
     probIceGrid: eg.probIceGrid,
     psrMaskGrid: eg.psrMaskGrid,
+    elevationGridRelativeM: eg.elevationGridRelativeM,
+    windowHalfM: eg.windowHalfM,
+    candidateCenterXyM: eg.candidateCenterXyM as [number, number],
+  };
+}
+
+export function getWideTerrainGrid(): WideTerrainGridData {
+  const wt = (scienceData.primaryTarget as any).wideTerrainGrid;
+  return {
+    gridSize: wt.gridSize,
+    windowHalfM: wt.windowHalfM,
+    candidateCenterXyM: wt.candidateCenterXyM as [number, number],
+    elevationGridRelativeM: wt.elevationGridRelativeM,
+    description: wt.description,
   };
 }
 

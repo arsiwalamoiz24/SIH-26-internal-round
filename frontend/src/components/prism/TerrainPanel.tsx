@@ -1,46 +1,39 @@
 import type { TerrainStats } from "@/data/prismDemoData";
 import { TERRAIN_THRESHOLD_LABEL } from "@/data/prismDemoData";
-import { DemoDataBadge } from "./DemoDataBadge";
+import { Metric } from "./Metric";
 
+/**
+ * Asymmetric image/stat merge -- the terrain composite bleeds across
+ * most of the module width, stats sit alongside as a narrow column
+ * rather than the image being squeezed into a uniform thumbnail slot.
+ * Mostly borderless: only the image gets a thin viewport frame.
+ */
 export function TerrainPanel({ terrain, terrainImage }: { terrain: TerrainStats; terrainImage: string }) {
   return (
-    <div className="bg-surface-container-lowest tech-border rounded p-4 flex flex-col gap-3">
-      <div className="flex items-center justify-between pb-2 tech-border-b">
-        <h3 className="font-h2 text-h2 text-on-surface uppercase tracking-tight m-0">Terrain</h3>
-        <DemoDataBadge source={terrain.source} />
+    <div>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-[13px] font-semibold text-on-surface tracking-tight m-0">Terrain</h3>
+        <span className="coord-label">{terrain.hazardThresholdDeg}° hazard threshold — {TERRAIN_THRESHOLD_LABEL}</span>
       </div>
-
-      <div className="rounded-sm overflow-hidden tech-border">
-        <img src={terrainImage} alt="PSR terrain composite" className="w-full h-44 object-cover" />
-      </div>
-
-      <div className="grid grid-cols-3 gap-2">
-        <Stat label="Mean PSR Slope" value={`${terrain.meanSlopeDeg.toFixed(1)}°`} />
-        <Stat
-          label={`Slope > ${terrain.hazardThresholdDeg}°`}
-          value={`${terrain.pctExceedsHazardThreshold.toFixed(1)}%`}
-          warn
-        />
-        <Stat label="TRI" value={`${terrain.triMeters.toFixed(1)} m`} />
-      </div>
-
-      <div className="font-data-sm text-[10px] text-outline uppercase tracking-wider">
-        {terrain.hazardThresholdDeg}° hazard threshold: {TERRAIN_THRESHOLD_LABEL}
-      </div>
-    </div>
-  );
-}
-
-function Stat({ label, value, warn = false }: { label: string; value: string; warn?: boolean }) {
-  return (
-    <div className="bg-surface-container-low tech-border rounded-sm p-2 text-center">
-      <div className="font-data-sm text-[10px] uppercase tracking-wider text-outline">{label}</div>
-      <div
-        className={`text-data-md font-data-md font-semibold mono-nums mt-0.5 ${
-          warn ? "text-tertiary" : "text-on-surface"
-        }`}
-      >
-        {value}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-4 items-stretch">
+        <div className="viewport-frame">
+          <img src={terrainImage} alt="PSR terrain composite" className="w-full h-[280px] object-cover" />
+        </div>
+        <div className="flex flex-col justify-center gap-4 field-divide-h">
+          <Metric label="Mean PSR Slope" value={terrain.meanSlopeDeg.toFixed(1)} unit="°" emphasis="large" />
+          <div className="pt-4">
+            <Metric
+              label={`Slope > ${terrain.hazardThresholdDeg}°`}
+              value={terrain.pctExceedsHazardThreshold.toFixed(1)}
+              unit="%"
+              tone="warn"
+              emphasis="primary"
+            />
+          </div>
+          <div className="pt-4">
+            <Metric label="Terrain Ruggedness Index" value={terrain.triMeters.toFixed(1)} unit="m" emphasis="primary" />
+          </div>
+        </div>
       </div>
     </div>
   );

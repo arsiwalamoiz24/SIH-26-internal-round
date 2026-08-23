@@ -1,55 +1,50 @@
 import type { RealCandidate } from "@/data/prismDemoData";
-import { DemoDataBadge } from "./DemoDataBadge";
+import { Metric } from "./Metric";
 
+/**
+ * Image-led module -- the two radar composites are the actual
+ * evidentiary imagery for the candidate, so they get real size
+ * (a large primary composite + a smaller secondary one) rather than
+ * two equally-cropped thumbnails.
+ */
 export function RadarVisualizationPanel({ candidate }: { candidate: RealCandidate }) {
   return (
-    <div className="bg-surface-container-lowest tech-border rounded p-4 flex flex-col gap-3">
-      <div className="flex items-center justify-between pb-2 tech-border-b">
-        <h3 className="font-h2 text-h2 text-on-surface uppercase tracking-tight m-0">
-          Radar Visualization
-        </h3>
-        <DemoDataBadge source="real_pipeline" />
+    <div className="bento-card h-full flex flex-col">
+      <div className="bento-header">
+        <h3 className="text-[13px] font-semibold text-on-surface tracking-tight m-0">Radar Visualization</h3>
+        <span className="coord-label">Full-resolution composite</span>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <figure className="m-0 rounded-sm overflow-hidden tech-border">
-          <img
-            src={candidate.images.overview}
-            alt="Candidate overview: Pv, CPR, SERD, boundary and coordinate"
-            className="w-full h-48 object-cover"
-          />
-          <figcaption className="font-data-sm text-[10px] text-on-surface-variant p-1.5 tech-border-t">
-            Pv / CPR / SERD, candidate boundary and coordinate
-          </figcaption>
-        </figure>
-        <figure className="m-0 rounded-sm overflow-hidden tech-border">
-          <img
-            src={candidate.images.radarMetrics}
-            alt="Candidate radar metrics composite"
-            className="w-full h-48 object-cover"
-          />
-          <figcaption className="font-data-sm text-[10px] text-on-surface-variant p-1.5 tech-border-t">
-            Radar physics composite (full-resolution)
-          </figcaption>
-        </figure>
-      </div>
+      <div className="p-4 flex flex-col gap-3 flex-1">
+        <div className="grid grid-cols-[1fr_220px] gap-3 items-start">
+          <figure className="m-0 viewport-frame">
+            <img
+              src={candidate.images.radarMetrics}
+              alt="Candidate radar metrics composite"
+              className="w-full h-[280px] object-cover"
+            />
+            <figcaption className="coord-label px-2 py-1.5 border-t border-outline-variant">
+              Radar physics composite
+            </figcaption>
+          </figure>
+          <figure className="m-0 viewport-frame">
+            <img
+              src={candidate.images.overview}
+              alt="Candidate overview: Pv, CPR, SERD, boundary and coordinate"
+              className="w-full h-[280px] object-cover"
+            />
+            <figcaption className="coord-label px-2 py-1.5 border-t border-outline-variant">
+              Pv / CPR / SERD overview
+            </figcaption>
+          </figure>
+        </div>
 
-      <div className="grid grid-cols-4 gap-2 font-data-sm text-[11px]">
-        <MiniStat label="Pv" value={candidate.pv.mean} />
-        <MiniStat label="CPR" value={candidate.cpr.mean} />
-        <MiniStat label="SERD" value={candidate.serd.mean} flag />
-        <MiniStat label="T-Ratio" value={candidate.tRatio.mean} />
-      </div>
-    </div>
-  );
-}
-
-function MiniStat({ label, value, flag = false }: { label: string; value: number; flag?: boolean }) {
-  return (
-    <div className="bg-surface-container-low tech-border rounded-sm p-2 text-center">
-      <div className="text-outline uppercase text-[10px] tracking-wider">{label}</div>
-      <div className={`font-data-md text-data-md font-semibold mono-nums ${flag ? "text-error" : "text-primary"}`}>
-        {value.toFixed(3)}
+        <div className="grid grid-cols-4 field-divide pt-2 border-t border-outline-variant">
+          <Metric label="Pv" value={candidate.pv.mean.toFixed(3)} tone="accent" align="center" />
+          <Metric label="CPR" value={candidate.cpr.mean.toFixed(3)} tone="accent" align="center" />
+          <Metric label="SERD" value={candidate.serd.mean.toFixed(3)} tone="critical" align="center" />
+          <Metric label="T-Ratio" value={candidate.tRatio.mean.toFixed(3)} tone="accent" align="center" />
+        </div>
       </div>
     </div>
   );

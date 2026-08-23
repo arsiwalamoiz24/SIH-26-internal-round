@@ -19,12 +19,22 @@ export function TopNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="w-full z-50 flex justify-between items-center px-container-padding h-12 bg-surface tech-border-b shrink-0">
+    <nav className="w-full z-50 flex justify-between items-center px-6 h-[52px] bg-[#FAF8F5] border-b border-[#CCC8C1] shrink-0">
       <div className="flex items-center gap-6">
-        <div className="text-[16px] font-h2 font-black tracking-tight text-primary">
-          PRISM MISSION CONTROL
+        <div className="flex items-center gap-2">
+          {/* Lunar crescent icon */}
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-[#2E6499]">
+            <path d="M10 2a8 8 0 0 0 0 16 6 6 0 0 1 0-16z" fill="currentColor" opacity="0.85"/>
+          </svg>
+          <span className="text-[15px] font-semibold tracking-tight text-[#18150F]">
+            PRISM
+          </span>
+          <span className="text-[13px] font-normal text-[#8A8680] ml-0.5 tracking-normal">
+            Mission Dashboard
+          </span>
         </div>
-        <div className="hidden md:flex gap-1 h-12">
+
+        <div className="hidden md:flex gap-0.5 h-[52px] items-stretch">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -32,10 +42,10 @@ export function TopNav() {
                 key={link.href}
                 href={link.href}
                 className={clsx(
-                  "px-3 font-body-sm text-body-sm cursor-pointer hover:bg-surface-container-high transition-colors h-full flex items-center border-b-2",
+                  "px-3.5 text-[13px] cursor-pointer transition-colors h-full flex items-center border-b-2 rounded-none",
                   isActive
-                    ? "text-primary border-primary font-bold pb-1"
-                    : "text-on-surface-variant border-transparent"
+                    ? "text-[#2E6499] border-[#2E6499] font-semibold"
+                    : "text-[#5E5A54] border-transparent hover:text-[#18150F] hover:bg-[#F0EDE7]"
                 )}
               >
                 {link.label}
@@ -44,10 +54,11 @@ export function TopNav() {
           })}
         </div>
       </div>
-      <div className="flex items-center gap-4">
-        <Settings className="text-outline cursor-pointer hover:text-on-surface w-5 h-5" />
-        <HelpCircle className="text-outline cursor-pointer hover:text-on-surface w-5 h-5" />
-        <UserCircle className="text-outline cursor-pointer hover:text-on-surface w-5 h-5" />
+
+      <div className="flex items-center gap-3.5">
+        <Settings className="text-[#8A8680] cursor-pointer hover:text-[#18150F] w-[18px] h-[18px] transition-colors" />
+        <HelpCircle className="text-[#8A8680] cursor-pointer hover:text-[#18150F] w-[18px] h-[18px] transition-colors" />
+        <UserCircle className="text-[#8A8680] cursor-pointer hover:text-[#18150F] w-[18px] h-[18px] transition-colors" />
       </div>
     </nav>
   );

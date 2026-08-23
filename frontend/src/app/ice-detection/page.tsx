@@ -36,7 +36,7 @@ export default function IceDetection() {
   return (
     <main className="flex-1 p-grid-gutter flex gap-grid-gutter overflow-hidden bg-background h-[calc(100vh-80px)]">
       {/* Panel 1: Radar Evidence Surface & Likelihood View (50%) */}
-      <section className="w-[50%] bg-surface-container-lowest tech-border rounded flex flex-col h-full overflow-hidden relative shadow-sm">
+      <section className="w-[50%] bento-card flex flex-col h-full overflow-hidden relative">
         <TerrainVisualizer showBayesian={showBayesian} activePathId={activePathId} />
 
         {/* Header Overlay */}
@@ -46,7 +46,7 @@ export default function IceDetection() {
               <h2 className="font-h1 text-h2 text-on-surface m-0 drop-shadow-md">
                 Radar Evidence &amp; Ice Likelihood
               </h2>
-              <span className="bg-amber-500/10 text-amber-800 border border-amber-500/30 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded shadow-sm">
+              <span className="bg-primary-fixed text-on-primary-fixed-variant tech-border border text-[9px] font-mono font-bold px-1.5 py-0.5 rounded shadow-sm">
                 MODEL-DERIVED
               </span>
             </div>
@@ -56,7 +56,7 @@ export default function IceDetection() {
           </div>
 
           {/* View Mode Toggle */}
-          <div className="bg-surface-container-lowest/95 backdrop-blur-md tech-border rounded p-2 flex items-center gap-3 pointer-events-auto shadow-sm">
+          <div className="bg-surface/95 backdrop-blur-md tech-border rounded p-2 flex items-center gap-3 pointer-events-auto shadow-sm">
             <span className={`font-data-sm font-bold uppercase tracking-wide text-[11px] ${!showBayesian ? "text-primary font-black" : "text-on-surface-variant"}`}> 
               Binary CPR (&gt;1.0)
             </span>
@@ -78,7 +78,7 @@ export default function IceDetection() {
         </div>
 
         {/* Legend Overlay */}
-        <div className="absolute bottom-4 mb-3 left-4 bg-surface-container-lowest/95 p-3.5 tech-border rounded shadow-sm z-10 backdrop-blur-md pointer-events-auto flex flex-col gap-3 max-w-[240px]">
+        <div className="absolute bottom-4 mb-3 left-4 bg-surface/95 p-3.5 tech-border rounded shadow-sm z-10 backdrop-blur-md pointer-events-auto flex flex-col gap-3 max-w-[240px]">
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <span className="font-data-sm text-on-surface-variant uppercase tracking-wider font-semibold text-[10px]">
@@ -142,7 +142,7 @@ export default function IceDetection() {
         </div>
 
         {/* Coordinate Readout */}
-        <div className="absolute bottom-4 right-4 mb-3 bg-surface-container-lowest/95 p-3 tech-border rounded shadow-sm backdrop-blur-md min-w-[150px] z-10 pointer-events-auto font-mono text-[12px]">
+        <div className="absolute bottom-4 right-4 mb-3 bg-surface/95 p-3 tech-border rounded shadow-sm backdrop-blur-md min-w-[150px] z-10 pointer-events-auto font-mono text-[12px]">
           <div className="flex justify-between items-center mb-1">
             <span className="font-data-sm uppercase text-on-surface-variant text-[10px]">TARGET LAT</span>
             <span className="text-on-surface font-semibold">{Math.abs(target.latitude)}° S</span>
@@ -161,8 +161,8 @@ export default function IceDetection() {
       {/* Panel 2: Scientific Core (25%) */}
       <section className="w-[25%] flex flex-col mb-3 gap-grid-gutter h-full min-h-0 overflow-y-auto">
         {/* Science Confidence */}
-        <div className="bg-surface-container-lowest tech-border mx-1 rounded flex flex-col shrink-0 shadow-sm">
-          <div className="px-4 py-2.5 tech-border-b bg-surface flex justify-between items-center">
+        <div className="bento-card mx-1 flex flex-col shrink-0">
+          <div className="bento-header">
             <h2 className="font-h2 text-h2 text-on-surface m-0 text-[14px]">Science Confidence</h2>
             <span className="text-[9px] font-mono text-outline font-bold uppercase">SNR DERIVED</span>
           </div>
@@ -220,12 +220,12 @@ export default function IceDetection() {
         </div>
 
         {/* Physics Evidence Score / DOP / ML Anomaly */}
-        <div className="bg-surface-container-lowest tech-border mx-1 rounded flex flex-col overflow-hidden shadow-sm shrink-0">
-          <div className="px-4 py-2 tech-border-b bg-surface flex justify-between items-center shrink-0">
+        <div className="bento-card mx-1 flex flex-col overflow-hidden shrink-0">
+          <div className="bento-header shrink-0">
             <h3 className="font-data-md text-data-md text-on-surface m-0 uppercase text-[11px] tracking-wider">
               Multi-Track Evidence (Module 1)
             </h3>
-            <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 uppercase font-bold">
+            <span className="text-[9px] font-mono text-tertiary bg-surface-container px-1.5 py-0.5 rounded border tech-border uppercase font-bold">
               REAL PIPELINE
             </span>
           </div>
@@ -259,12 +259,12 @@ export default function IceDetection() {
         </div>
 
         {/* Depth-Resolved Profile */}
-        <div className="bg-surface-container-lowest tech-border mx-1 rounded flex flex-col overflow-hidden shadow-sm shrink-0">
-          <div className="px-4 py-2 tech-border-b bg-surface flex justify-between items-center shrink-0">
+        <div className="bento-card mx-1 flex flex-col overflow-hidden shrink-0">
+          <div className="bento-header shrink-0">
             <h3 className="font-data-md text-data-md text-on-surface m-0 uppercase text-[11px] tracking-wider">
               Radar Sounding / Depth Profile
             </h3>
-            <span className="text-[9px] font-mono text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 uppercase font-bold">
+            <span className="text-[9px] font-mono text-tertiary bg-surface-container px-1.5 py-0.5 rounded border tech-border uppercase font-bold">
               SINGLE-FREQ ACTIVE
             </span>
           </div>
@@ -289,12 +289,12 @@ export default function IceDetection() {
         </div>
 
         {/* Drill-Site Intelligence */}
-        <div className="bg-surface-container-lowest tech-border rounded mx-1 mb-3 shrink-0 flex flex-col overflow-hidden shadow-sm">
-          <div className="px-4 py-2 tech-border-b bg-surface flex justify-between items-center">
+        <div className="bento-card mx-1 mb-3 flex flex-col overflow-hidden shrink-0">
+          <div className="bento-header">
             <h3 className="font-data-md text-data-md text-on-surface m-0 uppercase text-[11px] tracking-wider">
               Peak Radar Anomaly Coring Targets
             </h3>
-            <span className="text-[9px] font-mono text-emerald-700 font-bold uppercase">REAL PEAKS</span>
+            <span className="text-[9px] font-mono text-primary font-bold uppercase">REAL PEAKS</span>
           </div>
           <div className="p-3 flex flex-col gap-2">
             {drillSites.map((site, index) => (
@@ -322,8 +322,8 @@ export default function IceDetection() {
       </section>
 
       {/* Panel 3: Mission Planning (25%) */}
-      <section className="w-[25%] bg-surface-container-lowest tech-border rounded flex flex-col h-full min-h-0 overflow-hidden shadow-sm">
-        <div className="px-4 py-2.5 tech-border-b bg-surface flex justify-between items-center shrink-0">
+      <section className="w-[25%] bento-card flex flex-col h-full min-h-0 overflow-hidden">
+        <div className="bento-header shrink-0">
           <h2 className="font-h2 text-h2 text-on-surface m-0 text-[14px]">Mission Planning &amp; Yield</h2>
           <span className="material-symbols-outlined text-outline-variant text-[18px]">tune</span>
         </div>
