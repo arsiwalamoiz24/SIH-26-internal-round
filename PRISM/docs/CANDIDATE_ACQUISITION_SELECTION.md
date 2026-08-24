@@ -1,4 +1,94 @@
-## ADDENDUM 3 (2026-08-23): OHRC scene discovery — same problem, same fix, not yet done
+## ADDENDUM 6 (2026-08-23, later same day): flat-crater concern resolved, real pixel cross-referencing built, QuickMap evaluated and rejected
+
+**"The ShadowCam images looked quite flat, not like a proper permanently shadowed crater"** — a fair concern given the earlier NAC false-positive history. Checked with real data rather than reassurance: ran `compute_slope` (from `terrain_algorithms.py`) on the real DEM at the exact extent the ShadowCam crop covers (±1500m) — **mean slope there is 20.77°, the steepest of any window checked** (compare: 16.07° at ±3300m, 7.93° at ±9000m — this specific spot sits on the crater's inner wall, not its floor). So the real terrain is genuinely not flat here; the ShadowCam preview *looked* flat because of an overly soft contrast stretch on my end. Re-rendered with a stronger stretch (percentile 2-98 + gamma 0.6 + local-detail unsharp mask) and the real structure is clearly visible: a sunlit, boulder-textured rim, a real shadow terminator line, fading into genuine PSR darkness. Replaced `SP_840980_0797630_shadowcam_crop_preview.png` with this version.
+
+**Real pixel-to-pixel cross-referencing built** (`PRISM/src/cross_reference_pixel.py`): given any pixel in the real ShadowCam crop, computes its real lat/lon (via the file's own embedded scene-specific projection), then looks up the corresponding point in the real LOLA DEM (native 20m/px — meets a 15-20m accuracy target) and the real per-pixel radar ice-likelihood grid (native 264×264 grid, not the coarser 48×48 display downsample — 25m/px, slightly coarser than 15-20m, reported honestly rather than rounded up to meet the target). Demonstrated end-to-end with a real pixel (row 300, col 900 of the crop): resolved to real lat/lon (−84.066213°, 79.798979°), real DEM elevation (−3879.7m), real ice-likelihood (0.1085), and a real, internally-consistent distance-from-candidate-center (972.7m, well inside the expected window).
+
+**QuickMap (`quickmap.im-ldi.com`) evaluated as a possible ShadowCam alternative — rejected.** The user exported a zip from the interactive viewer (`quickmap-lroc.png` + `.vrt`, saved to `~/Downloads/quickmap-lroc/`). Checked directly: real coverage confirmed (candidate coordinate falls inside the export's bounds, real non-blank varying pixel values), but **resolution is 151.34 m/px** — ~150x coarser than ShadowCam (0.93-2.14 m/px) and ~7.5x coarser than the 20m/px DEM. It's a flattened 8-bit RGBA screenshot of the viewer at whatever zoom/camera distance was active (this export's camera was ~1,800km out — a wide regional view), not the underlying high-resolution scientific product QuickMap itself sources from. Verdict: not competitive for candidate-level work (boulder detection, fine terrain); potentially useful only as a wide-area locator/context image, not pursued further this session.
+
+---
+
+## ADDENDUM 5 (2026-08-23, same-day follow-up): the NAC frame for the primary candidate is noise, not terrain — caught by the user, confirmed quantitatively, fixed with NASA ShadowCam
+
+**The user looked at the actual `SP_840980_0797630_nac_crop_preview.png` image and asked, correctly, "are you sure we have found what we need?"** They were right to ask. The image is flat gray fabric-like texture with faint vertical banding — no discernible surface features. Addendum 4 verified the *file* was real (non-corrupt, correct byte count, right geolocation) but never checked whether the *signal* inside it was above the noise floor. That was a real gap, not a display artifact:
+
+- **Adjacent-pixel spatial correlation: −0.077.** Real terrain features span multiple pixels and correlate strongly with their neighbors (a well-imaged scene typically shows 0.7–0.95+); near-zero-or-negative correlation is a textbook noise signature.
+- **Signal-to-noise: mean pixel value 7.6, std 15.3** — the "signal" is smaller than its own noise, so individual pixels carry no reliable brightness information.
+
+**Why, physically:** this candidate's PSR interior gets zero direct sunlight (already established by this project's own hazard-mapping pipeline). A conventional pushbroom camera — LROC NAC, and OHRC would have hit the same wall — only has faint scattered/secondary light to work with there, at the sensitivity NAC was built for that's simply below its noise floor. This isn't a bug in the acquisition method; it's a genuine physical limitation of using ordinary optical cameras on permanently shadowed interiors.
+
+### The real fix: NASA ShadowCam — a camera literally built for this exact problem
+
+ShadowCam (on Korea's Danuri/KPLO orbiter, operated by the same ASU LROC team, same `im-ldi.com` archive family) is ~200x more sensitive than LROC NAC, purpose-built to image PSR interiors using only the faint secondary-scattered light available there. Its archive (`data.im-ldi.com`, dataset `luna_shadowcam_pds`) has a real, working coordinate-search API (`/mds/search`) — reverse-engineered from its search-page JS (`metaDataSearch.js`) since the page itself is a JS single-page app with no static HTML form. Two things needed to be right before it worked:
+- The bbox query key isn't the bare field name (`pgg_search`) — it's the JS-constructed composite id `common-geography-pgg_search` (pattern: `'common-' + field.type + '-' + field.name`, found in `setupSearchForm()`). Using the bare name silently returns the whole unfiltered table (10MB+ of every record) instead of erroring.
+- Real footprint geometry comes back as a PostGIS WKB hex string per record (`pgg_search` field in the response) — decoded with `shapely.wkb.loads()`, reprojected into this project's Moon south-polar-stereographic CRS, then tested with true point-in-polygon containment (`Polygon.contains(Point(...))`) — not the axis-aligned bbox that already produced one false positive in Addendum 4 and two more in the DFSAR work (Addendum 2).
+
+**Result for the primary candidate:** 80 ShadowCam frames in the search bbox, **25 with true polygon-verified coverage**, all passing the archive's own quality-degradation flags (`status_corrupt`, `dqi_missing_data`, `dqi_uncalibratable` all false). Picked the lowest-incidence (best-lit) one: **`M015379790SE`, incidence 82.0°, 1.69 m/px.**
+
+**Crucially, this product ships as a true Cloud-Optimized GeoTIFF, already map-projected** (`M015379790S_map_raw.tif`, real CRS: polar stereographic centered on this specific scene, real affine transform, 1.79 m/px pixel size) — unlike the NAC CDR files, no approximate GCP fit was needed. Read directly via `/vsicurl/` windowed remote access (same technique as the LOLA DEM) — a ±1.5km crop was pulled around the candidate coordinates **without downloading the full 280MB file**.
+
+**Verified genuinely real, this time with the correct check run before claiming success:**
+- **Adjacent-pixel correlation: 0.994** — strong, real spatial structure. This is terrain, not noise.
+- 95.0% valid pixels, mean 0.0070, std 0.0068 (calibrated radiance units, not raw DN — different scale than the NAC comparison above, not directly comparable in magnitude, but the correlation test is scale-invariant and decisive).
+- Crop saved: `PRISM/outputs/objective_optical/SP_840980_0797630_shadowcam_crop.tif` (+ preview PNG, sent to the user directly).
+
+**Same check also run for the shortlisted `SP_842420_0421060`:** 102 frames in bbox, **23 true polygon-verified hits**, best `M018010390SE` at 83.6° incidence, 1.56 m/px — geometrically confirmed but not yet pixel-verified (unlike the primary candidate, not yet downloaded/checked for signal quality). Flagged as the next concrete step if/when optical work resumes for that candidate.
+
+### Corrected bottom line
+The NAC acquisition in Addendum 4 was real and correctly geolocated but **not usable** for the primary candidate — a genuine miss caught by the user, not by this session's own verification, which is the exact kind of gap this project's honesty culture exists to catch. **ShadowCam is the working substitute for the primary candidate specifically** — real coverage, real signal, quantitatively confirmed. The shortlisted candidate's NAC frame (Addendum 4) does carry real signal (0.423 adjacent-pixel correlation, checked in response to this same review) and remains usable as-is; ShadowCam coverage exists there too if a second/better source is wanted later.
+
+---
+
+## ADDENDUM 4 (2026-08-23, same-day follow-up): OHRC abandoned (confirmed empty), replaced with NASA LROC NAC — real coverage found and downloaded for 2 of 7 shortlisted candidates. **See Addendum 5 above: the primary-candidate result here was later found to be noise-dominated, not usable — caught by direct visual review.**
+
+**CH2Browse (Addendum 3's recommended fix) was tried and came back empty.** The user manually ran the exact CH2Browse workflow this addendum recommended — DFSAR instrument, a 4°×4° box centered on the candidate (the site enforces a hard 5° max span per axis) — and the result was **"0 to 0 of 0 entries."** Confirmed empirically, not inferred: Chandrayaan-2 OHRC has essentially no south-polar coverage near this candidate. This is a dead end for OHRC specifically, not a search-technique problem — CH2Browse is a real, working, map-based tool; it simply has nothing here.
+
+### The substitute: NASA LROC NAC (different mission, different instrument, same problem it solves)
+
+Since the actual need is *any* optical imagery covering the candidate (for boulder/hazard visual detection — OHRC was never the only possible source, just the first one tried), the same public/no-login pattern already used for the LOLA DEM (`/vsicurl/` windowed remote reads against NASA PGDA) was tried against LRO's NAC (Narrow Angle Camera) archive:
+
+- **`data.lroc.im-ldi.com`** (ASU's LROC team archive) hosts a public, no-login, per-frame product catalog with a real coordinate-based search form (`/lroc/search`, POST, bbox filters `west/east/south/north` + `observation_type` NACL/NACR).
+- **Two failure modes had to be worked around before the search actually worked**: (1) the older `wms.lroc.asu.edu` alias 302-redirects to `data.lroc.im-ldi.com`, and cookies/CSRF tokens don't carry across that redirect — search the canonical host directly. (2) The Rails form 500s or silently returns the blank form unless **every** field is submitted with its default value (including the empty date-of-year selects and `filter[product_type][]=`) — a partial POST (only the fields you care about) does not work the way it would with a typical REST API.
+- A giant pre-built "NAC South Pole mosaic" also exists (`NAC_POLE_P900S0000.zip`, 1 m/px, 189 GB) but **its `.cub` entry is DEFLATE-compressed inside the zip**, which defeats byte-range windowed reads (unlike the LOLA DEM's uncompressed/stored GeoTIFF) — decompressing to an arbitrary offset would require streaming most of the file. Confirmed by inspecting the zip's local file header (`compression method: 8`) before wasting a real download attempt. Geometrically, this mosaic's fixed 273 km square (±136.5 km from the pole) doesn't even reach either candidate anyway (both sit ~175-180 km from the pole) — abandoned in favor of individual per-frame products, which is what "the search form" above returns.
+
+### Real result: individual NAC frames, searched, containment-verified, and downloaded
+
+| Candidate | Matching frame | Resolution | Product | Size | Status |
+|---|---|---:|---|---:|---|
+| `SP_842420_0421060` | `M1500885449LC` (CDR) | **0.93 m/px** | LRO-L-LROC-3-CDR-V1.0 | 528.9 MB | Downloaded, verified (99.3% valid px) |
+| `SP_840980_0797630` (primary) | `M1524271502RC` (CDR) | **2.14 m/px** | LRO-L-LROC-3-CDR-V1.0 | 264.5 MB | Downloaded, verified |
+
+Both downloaded directly from NASA's official PDS mirror (`pds.lroc.im-ldi.com` → redirects to `pds.mcp.nasa.gov`), no login, no credentials, no scraping tricks beyond the form-submission fix above. Saved under `data/raw/lroc_nac/<candidate_id>*/` (gitignored, same convention as the project's other raw data).
+
+**A real false-positive caught and corrected mid-session — the exact same class of bug Addendum 2 already documents for DFSAR:** the first "match" found for the primary candidate (`M1526354083RE`) used an axis-aligned lat/lon **bounding-box** containment test (candidate lon/lat individually between the frame's min/max corner lon/lat). That passed, but a proper point-in-polygon test against the frame's actual 4-corner quadrilateral (projected into the same Moon south-polar-stereographic CRS used throughout this project) showed the candidate falls **outside** the true (diagonal, rotated) footprint — the loose bbox is much bigger than the narrow ~5.7 km-wide strip itself near the pole, where longitude lines compress. The false-positive file was deleted; the real match (`M1524271502RE`/`RC`) was found by re-testing candidate frames with the correct polygon method and confirmed to genuinely contain (−84.098°, 79.764°).
+
+**Lesson, stated plainly for whoever touches footprint/coverage code next in this project:** this is now the *third* time in this codebase (DFSAR raw product, DFSAR's 602-manifest predicted grid, now LROC NAC) that a loose axis-aligned bounding box gave a false-positive spatial match near the lunar pole. Always use the product's true (possibly rotated) corner geometry and a real point-in-polygon test in a projected CRS — never raw lat/lon min/max comparison — this close to a pole.
+
+### Geo-registration caveat (real, disclosed, not glossed over)
+
+LROC NAC CDR products are radiometrically calibrated but **not map-projected** — no embedded geotransform, CRS, or per-pixel lat/lon. True map-projection is normally done with ISIS3 (`spiceinit` + `cam2map`, needs SPICE kernels), which isn't available in this environment. Instead, `PRISM/src/lroc_nac_georeference.py` builds an **approximate** affine transform from the 4 published corner lat/lons (`rasterio.transform.from_gcps`), residual-checked against the same 4 corners (~30 m residual on a ~100 km frame — a good local fit), then locates and crops the candidate's approximate pixel window. This is explicitly labeled `DERIVED / APPROXIMATE` in every output JSON — it does **not** correct for lens distortion, spacecraft attitude variation along the strip, or terrain parallax, and should not be treated as pixel-accurate. Good enough to locate and crop the right neighborhood; not good enough to claim sub-pixel geolocation.
+
+### Crop extraction — real, verified, dim (as physics predicted)
+
+`PRISM/src/lroc_nac_georeference.py` was run for both candidates, producing a real crop centered on each candidate's estimated pixel window (±3 km), saved as a proper GeoTIFF (Moon south-polar-stereographic CRS, window-local affine) plus a stats JSON:
+
+| Candidate | Crop | Valid px | Mean | Std |
+|---|---:|---:|---:|---:|
+| `SP_842420_0421060` | 7034×5064 | 99.3% | (bright/dim mix, see JSON) | — |
+| `SP_840980_0797630` (primary) | 2990×1682 | 98.8% | **7.57** | 15.27 |
+
+The primary candidate's crop is **very dim** (mean pixel value ~7.6 out of a possible thousands) — consistent with this project's own hazard-mapping finding of 0% illumination inside this exact PSR's interior (`hazard_map_pipeline.py` output). The candidate's estimated pixel position also sits near this particular frame's cross-track edge (column 2369 of 2532 samples) — the polygon containment test confirms it's genuinely inside the frame, but with a thin margin, worth keeping in mind if sub-pixel precision ever matters. Full stats: `PRISM/outputs/objective_optical/*_nac_crop.json`. Contrast-stretched preview PNGs of both crops were sent to the user directly.
+
+**Correction (see Addendum 5 below): "dim but consistent with 0% illumination" undersold the actual problem.** The dimness isn't just low brightness, it's noise-floor: adjacent-pixel correlation for the primary candidate's crop is −0.077 (no real spatial structure at all — the frame is unusable for boulder/terrain visual analysis). This was caught by the user's direct visual review of the preview image, not by this session's own verification — a real process gap: file-integrity checks (non-corrupt, right size, right geolocation) were run, but a signal-quality check was not, until asked. The shortlisted candidate's crop, by contrast, does hold real signal (0.423 correlation) and remains usable. See Addendum 5 for the fix used for the primary candidate (NASA ShadowCam).
+
+### What this unblocks
+`PRISM/src/cnn_yolo_interface.py` was blocked on "no OHRC scene confirmed to cover the candidate." That specific blocker (OHRC) is now moot — real optical imagery covering both a shortlisted candidate and the primary candidate exists locally, downloaded and cropped. The other blocker (no labeled boulder/hazard training data anywhere in the project) is unchanged and still applies — see `ML_METHODS.md`.
+
+---
+
+## ADDENDUM 3 (2026-08-23): OHRC scene discovery — same problem, same fix, not yet done — SUPERSEDED, see Addendum 4 above
+
+**Status update: the fix recommended below (CH2Browse) was tried and returned zero results.** This addendum's search *method* was sound; OHRC itself simply has no coverage here. See Addendum 4 above for the real substitute (NASA LROC NAC) and what was actually found.
 
 This document is about finding the right **DFSAR** acquisition; the same discovery problem now blocks **OHRC** (the optical imagery needed for boulder/hazard detection — see `ML_METHODS.md` for the full YOLOv8 status). PRADAN's product search is hard to use for this because it requires already knowing the product ID/date — exactly what's unknown when you only have a target coordinate.
 
