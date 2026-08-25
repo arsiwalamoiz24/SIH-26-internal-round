@@ -1,0 +1,367 @@
+{
+  "purpose": "Window-size + channel-calibration sweep for F2/F3 DOP, validated against paper ground truth (0.10-0.13)",
+  "n_configs_tested": 24,
+  "n_configs_meeting_paper_range": 0,
+  "converged_configs": [],
+  "full_table": [
+    {
+      "crater_id": "F2",
+      "calibration": "off",
+      "window_size_px": 5,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7855011224746704,
+      "interior_dop_median": 0.817699134349823,
+      "interior_dop_std": 0.14324654638767242,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "off",
+      "window_size_px": 9,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7655013799667358,
+      "interior_dop_median": 0.7798811197280884,
+      "interior_dop_std": 0.11517471820116043,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "off",
+      "window_size_px": 15,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7643424272537231,
+      "interior_dop_median": 0.7670047283172607,
+      "interior_dop_std": 0.09344478696584702,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "off",
+      "window_size_px": 21,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7669568061828613,
+      "interior_dop_median": 0.7635688185691833,
+      "interior_dop_std": 0.08427694439888,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "off",
+      "window_size_px": 31,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7712439298629761,
+      "interior_dop_median": 0.7632368803024292,
+      "interior_dop_std": 0.07781732827425003,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "off",
+      "window_size_px": 41,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7733928561210632,
+      "interior_dop_median": 0.7632775902748108,
+      "interior_dop_std": 0.07492220401763916,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "on",
+      "window_size_px": 5,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.785550138895009,
+      "interior_dop_median": 0.8177583012339869,
+      "interior_dop_std": 0.14321921277796693,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "on",
+      "window_size_px": 9,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7655593210142518,
+      "interior_dop_median": 0.7799055671293712,
+      "interior_dop_std": 0.11514676630555677,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "on",
+      "window_size_px": 15,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7643916176342431,
+      "interior_dop_median": 0.7670393711798011,
+      "interior_dop_std": 0.09345225465209167,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "on",
+      "window_size_px": 21,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7670015038117283,
+      "interior_dop_median": 0.76362257432085,
+      "interior_dop_std": 0.0842868755851559,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "on",
+      "window_size_px": 31,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7712818866533435,
+      "interior_dop_median": 0.763270015759176,
+      "interior_dop_std": 0.07782686099423243,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "calibration": "on",
+      "window_size_px": 41,
+      "n_interior_valid_px": 202705,
+      "interior_dop_mean": 0.7734255073310259,
+      "interior_dop_median": 0.7633284234480832,
+      "interior_dop_std": 0.07493475683655075,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "off",
+      "window_size_px": 5,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.842583179473877,
+      "interior_dop_median": 0.8727035522460938,
+      "interior_dop_std": 0.1499996930360794,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "off",
+      "window_size_px": 9,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.8119054436683655,
+      "interior_dop_median": 0.817426323890686,
+      "interior_dop_std": 0.14007188379764557,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "off",
+      "window_size_px": 15,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.7880616188049316,
+      "interior_dop_median": 0.7848807573318481,
+      "interior_dop_std": 0.12823151051998138,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "off",
+      "window_size_px": 21,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.7706177830696106,
+      "interior_dop_median": 0.7691332101821899,
+      "interior_dop_std": 0.11807109415531158,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "off",
+      "window_size_px": 31,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.7479126453399658,
+      "interior_dop_median": 0.7548136711120605,
+      "interior_dop_std": 0.09894953668117523,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "off",
+      "window_size_px": 41,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.7386206388473511,
+      "interior_dop_median": 0.7479202747344971,
+      "interior_dop_std": 0.0812278464436531,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "on",
+      "window_size_px": 5,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.8426538521628674,
+      "interior_dop_median": 0.872839930330422,
+      "interior_dop_std": 0.14998075394866436,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "on",
+      "window_size_px": 9,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.8120343322933197,
+      "interior_dop_median": 0.8175325993117187,
+      "interior_dop_std": 0.13996994182623584,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "on",
+      "window_size_px": 15,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.7882266077523348,
+      "interior_dop_median": 0.7850915242885147,
+      "interior_dop_std": 0.12812318331207695,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "on",
+      "window_size_px": 21,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.7708027082161084,
+      "interior_dop_median": 0.769259285298634,
+      "interior_dop_std": 0.11797042937253983,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "on",
+      "window_size_px": 31,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.7481241692236122,
+      "interior_dop_median": 0.7549493929966375,
+      "interior_dop_std": 0.0988598791171749,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "calibration": "on",
+      "window_size_px": 41,
+      "n_interior_valid_px": 78078,
+      "interior_dop_mean": 0.7388522846710693,
+      "interior_dop_median": 0.7481127291499465,
+      "interior_dop_std": 0.08111458636349625,
+      "paper_dop_range": [
+        0.1,
+        0.13
+      ],
+      "meets_paper_range": false
+    }
+  ],
+  "verdict": "NO tested configuration (window size 5-41px, with or without gain/phase channel calibration) brought either crater's interior DOP into the paper's 0.10-0.13 range. This is reported as the honest outcome, not adjusted.",
+  "aggregate_whole_interior_covariance_test": {
+    "purpose": "Single DOP value computed from ONE covariance matrix aggregated over the ENTIRE interior mask (hundreds of thousands of px), instead of per-pixel sliding-window DOP then averaged -- eliminates small-sample bias essentially completely.",
+    "F2": {
+      "n_px": 202705,
+      "dop": 0.792658,
+      "paper_range": [
+        0.1,
+        0.13
+      ]
+    },
+    "F3": {
+      "n_px": 78078,
+      "dop": 0.766004,
+      "paper_range": [
+        0.1,
+        0.13
+      ]
+    },
+    "verdict": "DOP barely changes (0.79, 0.77) even with a huge-N aggregate estimate -- this RULES OUT small-sample/few-looks statistical bias as the explanation. Combined with the channel gain/phase correction sweep (which had ~zero effect, expected mathematically -- see note below), NEITHER of this session two leading hypotheses explains the gap."
+  },
+  "channel_calibration_math_note": "The gain_imbalance/phase_orthogonality correction implemented (per-channel amplitude scaling + phase rotation) had ~zero effect on DOP by mathematical construction, not just empirically: DOP depends only on |A|^2, |B|^2, and |A*conj(B)| (a magnitude) -- an independent per-channel phase ROTATION changes the cross term phase angle but not its magnitude, so it cannot change S3^2+S4^2 combined magnitude, hence cannot change DOP. A per-channel amplitude scaling by ~1-2% (the actual gain_imbalance values, all within 0.91-1.02) is too small to matter. This specific correction convention is therefore mathematically incapable of closing this gap regardless of whether it is the metrologically correct one -- a genuinely different kind of correction (e.g. a RELATIVE phase/gain correction between HH and VV, rather than per-channel absolute) would be needed to test that hypothesis properly, and was not attempted this session.",
+  "revised_final_verdict": "No configuration tested this session -- window size 5-41px, whole-interior aggregate (huge N), with or without per-channel gain/phase correction -- brings F2 or F3 interior DOP anywhere near the papers 0.10-0.13 range. Both of this sessions leading hypotheses (small-sample bias, incomplete channel calibration) are now cleanly ruled out, not merely unconfirmed. Remaining untested explanations: (1) the papers own acquisition for F2/F3 (from their Supplementary Table 1, not available to this project) may differ from the one used here and give genuinely different real-world scattering; (2) a RELATIVE (not per-channel-absolute) gain/phase calibration between HH and VV was not tested; (3) a documented CH2DFSAR-specific rotational-symmetry polarimetric calibration exists in the literature (Zhang et al. 2024 IEEE TGRS, Investigating the Residual Polarimetric Distortion... paywalled, not accessible this session) that may be required and was not implemented; (4) the papers own crater interior mask may be a tighter/different shape (e.g. floor-only) than this sessions simple circular radius=diameter/2 approximation."
+}

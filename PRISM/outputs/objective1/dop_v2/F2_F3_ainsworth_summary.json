@@ -1,0 +1,19 @@
+{
+  "purpose": "Ainsworth et al. 2006 a posteriori crosstalk/channel-imbalance calibration, tested against F2/F3 paper ground truth (0.10-0.13)",
+  "algorithm_source": "Ainsworth, Ferro-Famil, Lee, IEEE TGRS 44(4):994-1003, 2006 (read in full via IEEE this session)",
+  "known_defect_reference": "Xing, Dai, Liu, Wang, IEEE TGRS 50(6):2417-2419, 2012 (comment paper, read in full via IEEE this session)",
+  "craters_meeting_paper_range": [],
+  "verdict": "NEITHER crater's DOP moved into the paper's 0.10-0.13 range after implementing and applying the actual Ainsworth 2006 crosstalk/channel-imbalance calibration algorithm (not a self-derived approximation). See per-crater calibration_params for recovered u,v,w,z,alpha and linearization validity; see eta_over_beta for data-quality diagnostics. Reported as the honest outcome, not adjusted.",
+  "per_crater": {
+    "F2": {
+      "before": 0.7926579713821411,
+      "after_ainsworth": 0.7960432949054972,
+      "meets_paper_range": false
+    },
+    "F3": {
+      "before": 0.7660040259361267,
+      "after_ainsworth": 0.7704728993564192,
+      "meets_paper_range": false
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "category": "CANDIDATE-SPECIFIC DOP",
+  "candidate_id": "SP_830080_0535120",
+  "candidate_lat_lon_deg": [
+    -83.008,
+    53.512
+  ],
+  "acquisition": "ch2_sar_ncxl_20230917t031302812_d_fp_d32",
+  "source_zip_size_bytes": 1678925641,
+  "containment_evidence": {
+    "method": "point-in-polygon ray-casting against true rotated image-footprint corners (isda:image_upper_left/upper_right/lower_right/lower_left_mapX/mapY), same method as all other candidates this session",
+    "distance_to_nearest_corner_km": 41.05,
+    "bilinear_line_frac": 0.6835,
+    "bilinear_sample_frac": 0.4026,
+    "note": "Safely interior on both axes -- comfortable margin."
+  },
+  "window": {
+    "line_start": 153387,
+    "line_count": 2000,
+    "sample_start": 0,
+    "sample_count": 244,
+    "center_line": 154387,
+    "center_sample": 98,
+    "half_lines": 1000,
+    "local_covariance_window_px": 5,
+    "eigenvalue_purity_tile_px": [
+      40,
+      61
+    ]
+  },
+  "linear_pol_dop": {
+    "n_total_px": 488000,
+    "n_valid_px": 488000,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.6303497552871704,
+    "median": 0.6537832021713257,
+    "std": 0.17093810439109802,
+    "min": 0.011285264976322651,
+    "max": 0.9940269589424133,
+    "p5": 0.3110504537820816,
+    "p25": 0.5201266407966614,
+    "p50": 0.6537832021713257,
+    "p75": 0.7618419229984283,
+    "p95": 0.8690015405416489
+  },
+  "hybrid_pol_dop": {
+    "n_total_px": 488000,
+    "n_valid_px": 488000,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.5319000888604165,
+    "median": 0.5416989396078733,
+    "std": 0.17406027596700188,
+    "min": 0.005313686249779543,
+    "max": 0.993046805954701,
+    "p5": 0.22894751702922606,
+    "p25": 0.4086008959970666,
+    "p50": 0.5416989396078733,
+    "p75": 0.66301910278515,
+    "p95": 0.8015574152854005
+  },
+  "eigenvalue_purity_tiled_dop": {
+    "n_total_px": 200,
+    "n_valid_px": 200,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.4832827095687389,
+    "median": 0.4706364870071411,
+    "std": 0.04963913906247232,
+    "min": 0.39651715755462646,
+    "max": 0.6264962553977966,
+    "p5": 0.42501048296689986,
+    "p25": 0.44852954149246216,
+    "p50": 0.4706364870071411,
+    "p75": 0.5101274847984314,
+    "p95": 0.5843777984380722
+  },
+  "eigenvalue_purity_whole_window": 0.49897509813308716,
+  "best_supported_formulation": "linear-pol (HH/VV) Stokes-covariance DOP -- same rationale as all other candidates' DOP results this session.",
+  "calibration_applied": "XML bias_real/bias_imag subtraction only (per-polarization, from this product's own PDS4 label). No gain-imbalance or phase-orthogonality correction applied.",
+  "limitations": [
+    "Single acquisition, single ~2000x244 px window centered on the candidate -- not the full scene, not multi-temporal.",
+    "No gain-imbalance/phase-orthogonality calibration applied (bias-centering only).",
+    "No independent ground-truth ice confirmation exists for this candidate anywhere in this project."
+  ]
+}

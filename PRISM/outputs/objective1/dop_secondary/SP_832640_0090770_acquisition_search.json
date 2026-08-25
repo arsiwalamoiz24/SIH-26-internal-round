@@ -1,0 +1,44 @@
+{
+  "purpose": "Find a Level-1A quad-pol SLC DFSAR acquisition genuinely covering candidate SP_832640_0090770 (-83.264, 9.077), to compute real candidate-specific DOP -- same method already used for the primary candidate SP_840980_0797630 (see docs/CANDIDATE_ACQUISITION_SELECTION.md, src/candidate_dop_pipeline.py).",
+  "candidate_id": "SP_832640_0090770",
+  "candidate_lat_lon_deg": [-83.264, 9.077],
+  "candidate_projected_xy_m_moon_south_polar_stereographic": [32261.266575399244, 201932.84867428246],
+  "method": "For each of the 602 manifest acquisitions (feeding the Y4R/CPR mosaics), called PRADAN Map Browse's own internal API directly from an authenticated browser session: POST https://chmapbrowse.issdc.gov.in/server/browsePathConstructor {productId}, then GET https://chmapbrowse.issdc.gov.in/server/DisplayLabel to retrieve the full PDS4 XML label. Extracted the label's TRUE rotated image-footprint corners (isda:image_upper_left/upper_right/lower_right/lower_left_mapX/mapY, Moon_2000_South_Pole_Stereographic projected meters) -- NOT the loose axis-aligned bounding-box corners (same lesson already learned and documented for the primary candidate). Ran a point-in-polygon ray-casting test against the candidate's projected coordinate.",
+  "n_acquisitions_tested": 602,
+  "n_acquisitions_with_corner_metadata": 602,
+  "n_genuine_containment_hits": 1,
+  "result": {
+    "acquisition": "ch2_sar_ncxl_20191114t002451477_d_fp_mad",
+    "product_id": "2068911",
+    "date_of_pass": "2019-11-14",
+    "station": "mad",
+    "frequency_band": "L",
+    "num_polarizations": 4,
+    "polarizations": ["HH", "HV", "VH", "VV"],
+    "no_scans_lines": 6431,
+    "no_pixels": 3019,
+    "samples_per_echo_line": 512,
+    "centre_lat_lon_deg": [-85.827264, 1.354777],
+    "containment_evidence": {
+      "method": "point-in-polygon ray-casting, true rotated image-footprint corners, Moon_2000_South_Pole_Stereographic projected meters",
+      "candidate_projected_xy_m": [32261.266575399244, 201932.84867428246],
+      "image_corners_mapXY_m": {
+        "UL": [30872.117115, 206919.299244],
+        "UR": [40737.423604, 202745.043525],
+        "LR": [-25506.094809, 46159.442494],
+        "LL": [-34726.590376, 50075.099771]
+      },
+      "contains": true,
+      "distance_to_nearest_corner_km": 5.18
+    },
+    "calibration_constants_per_polarization": {
+      "HH": {"bias_real": 2.241162, "bias_imag": -0.061271, "std_real": 25.097454, "std_imag": 24.725812, "gain_imbalance": 1.015458, "phase_orthogonality": 2.357156},
+      "HV": {"bias_real": -4.565737, "bias_imag": 4.820437, "std_real": 11.901721, "std_imag": 13.982241, "gain_imbalance": 0.846301, "phase_orthogonality": -2.118334},
+      "VH": {"bias_real": 8.699006, "bias_imag": -4.560964, "std_real": 16.711408, "std_imag": 18.359863, "gain_imbalance": 0.906278, "phase_orthogonality": 2.960842},
+      "VV": {"bias_real": -2.199722, "bias_imag": -0.508930, "std_real": 22.873514, "std_imag": 22.769547, "gain_imbalance": 1.005222, "phase_orthogonality": -1.187030}
+    }
+  },
+  "note_on_confidence": "Confirmed by ONE method so far (true footprint polygon containment), not yet cross-checked with a second independent method (e.g. the acquisition's own Level-1A Grid CSV, per-pixel lat/lon) the way the primary candidate's acquisition was double-confirmed (91m from nearest grid sample). The candidate sits close to the UL corner of this scene (~5 km inside the nearest edge), which is a comfortable margin but not deep-swath-center like the primary candidate's ~20 km margin -- worth a second-method check before treating this as final.",
+  "next_step_not_yet_done": "Download the full Level-1A product zip for ch2_sar_ncxl_20191114t002451477_d_fp_mad via PRADAN Browse-and-Download (Table View), authenticated session -- NOT yet done, pending explicit user confirmation (file download requires explicit permission per this session's operating rules). Once downloaded, run the same DOP pipeline (src/candidate_dop_pipeline.py logic) pointed at this acquisition and this candidate's pixel window.",
+  "housekeeping_note": "This same search also re-confirmed the NEGATIVE result for the current primary candidate's ORIGINAL scan pattern is not being reused blindly -- this is a fully independent 602-acquisition scan for a different candidate coordinate, not a reuse of the primary candidate's cached result."
+}

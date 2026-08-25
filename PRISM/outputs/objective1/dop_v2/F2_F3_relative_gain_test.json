@@ -1,0 +1,199 @@
+{
+  "purpose": "Relative HH/VV gain calibration test (phase correction excluded -- mathematically inert, see module docstring)",
+  "gain_imbalance_raw_values": {
+    "HH": 1.015561,
+    "VV": 1.006232
+  },
+  "conventions_tested": [
+    "none (baseline, bias-centering only)",
+    "linear_amplitude_ratio",
+    "linear_power_ratio_sqrt",
+    "dB_power_10^(diff/10)",
+    "dB_amplitude_10^(diff/20)"
+  ],
+  "full_table": [
+    {
+      "crater_id": "F2",
+      "convention": "none (baseline, bias-centering only)",
+      "correction_factor": 1.0,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.7855011224746704,
+      "interior_dop_median": 0.817699134349823,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "none (baseline, bias-centering only)",
+      "correction_factor": 1.0,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.7733928561210632,
+      "interior_dop_median": 0.7632775902748108,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "linear_amplitude_ratio",
+      "correction_factor": 1.0092712217460784,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.7855501174926758,
+      "interior_dop_median": 0.817758321762085,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "linear_amplitude_ratio",
+      "correction_factor": 1.0092712217460784,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.7734255194664001,
+      "interior_dop_median": 0.7633283734321594,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "linear_power_ratio_sqrt",
+      "correction_factor": 1.0046249159492704,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.7855210734026211,
+      "interior_dop_median": 0.8177183247636435,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "linear_power_ratio_sqrt",
+      "correction_factor": 1.0046249159492704,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.7734035048687931,
+      "interior_dop_median": 0.7632987965071909,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "dB_power_10^(diff/10)",
+      "correction_factor": 1.0021503904134592,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.7855092883110046,
+      "interior_dop_median": 0.8177023530006409,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "dB_power_10^(diff/10)",
+      "correction_factor": 1.0021503904134592,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.773396372795105,
+      "interior_dop_median": 0.7632830739021301,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "dB_amplitude_10^(diff/20)",
+      "correction_factor": 1.001074617805016,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.785504937171936,
+      "interior_dop_median": 0.8177095651626587,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F2",
+      "convention": "dB_amplitude_10^(diff/20)",
+      "correction_factor": 1.001074617805016,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.7733942866325378,
+      "interior_dop_median": 0.7632763385772705,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "none (baseline, bias-centering only)",
+      "correction_factor": 1.0,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.842583179473877,
+      "interior_dop_median": 0.8727035522460938,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "none (baseline, bias-centering only)",
+      "correction_factor": 1.0,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.7386206388473511,
+      "interior_dop_median": 0.7479202747344971,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "linear_amplitude_ratio",
+      "correction_factor": 1.0092712217460784,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.8426538109779358,
+      "interior_dop_median": 0.8728399276733398,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "linear_amplitude_ratio",
+      "correction_factor": 1.0092712217460784,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.738852322101593,
+      "interior_dop_median": 0.7481127977371216,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "linear_power_ratio_sqrt",
+      "correction_factor": 1.0046249159492704,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.842615285985612,
+      "interior_dop_median": 0.8728046000413103,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "linear_power_ratio_sqrt",
+      "correction_factor": 1.0046249159492704,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.7387298835899401,
+      "interior_dop_median": 0.7479937228998649,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "dB_power_10^(diff/10)",
+      "correction_factor": 1.0021503904134592,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.8425973057746887,
+      "interior_dop_median": 0.8727604150772095,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "dB_power_10^(diff/10)",
+      "correction_factor": 1.0021503904134592,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.7386698722839355,
+      "interior_dop_median": 0.7479462623596191,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "dB_amplitude_10^(diff/20)",
+      "correction_factor": 1.001074617805016,
+      "window_size_px": 5,
+      "interior_dop_mean": 0.8425900936126709,
+      "interior_dop_median": 0.8727309703826904,
+      "meets_paper_range": false
+    },
+    {
+      "crater_id": "F3",
+      "convention": "dB_amplitude_10^(diff/20)",
+      "correction_factor": 1.001074617805016,
+      "window_size_px": 41,
+      "interior_dop_mean": 0.7386448979377747,
+      "interior_dop_median": 0.7479350566864014,
+      "meets_paper_range": false
+    }
+  ],
+  "n_converged": 0,
+  "converged_configs": [],
+  "verdict": "NO relative-gain convention tested (linear ratio, linear power, dB power, dB amplitude) moved either crater's interior DOP meaningfully -- HH and VV's own gain_imbalance values are already very close to each other (1.0156 vs 1.0062), so under every unit convention the relative correction factor is small (<25% even in the most aggressive dB interpretation) and cannot explain a ~6x gap from the paper's target. This rules out relative HH/VV gain calibration as the explanation too."
+}

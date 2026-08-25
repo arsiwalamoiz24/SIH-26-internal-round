@@ -1,0 +1,98 @@
+{
+  "category": "CANDIDATE-SPECIFIC DOP (paper-crater validation)",
+  "crater_id": "F2",
+  "lat_lon_deg": [
+    -87.39,
+    82.31
+  ],
+  "diameter_m": 1100,
+  "interior_radius_m": 550.0,
+  "acquisition": "ch2_sar_ncxl_20200321t082617351_d_fp_d18",
+  "source_zip_size_bytes": 4817098756,
+  "containment_evidence": {
+    "distance_to_nearest_corner_km": 23.56,
+    "note": "Safely interior."
+  },
+  "paper_reported": {
+    "cpr_pct_gt1_interior": 47,
+    "cpr_max": 1.95,
+    "dop_range": [
+      0.1,
+      0.13
+    ],
+    "verdict": "Strong evidence"
+  },
+  "window": {
+    "line_start": 43629,
+    "line_count": 8180,
+    "center_line": 47719,
+    "center_sample": 112,
+    "local_covariance_window_px": 5,
+    "n_interior_px": 202705
+  },
+  "linear_pol_dop_interior": {
+    "n_total_px": 202705,
+    "n_valid_px": 202705,
+    "mean": 0.7855011224746704,
+    "median": 0.817699134349823,
+    "std": 0.14324654638767242,
+    "min": 0.01406372245401144,
+    "max": 0.9974278211593628,
+    "p5": 0.5014126420021057,
+    "p25": 0.7125368118286133,
+    "p50": 0.817699134349823,
+    "p75": 0.8919468522071838,
+    "p95": 0.9570591568946838
+  },
+  "hybrid_pol_dop_interior": {
+    "n_total_px": 202705,
+    "n_valid_px": 202705,
+    "mean": 0.6544078545304552,
+    "median": 0.6782938598245019,
+    "std": 0.18230949725804532,
+    "min": 0.016929487383520177,
+    "max": 0.9943718240764043,
+    "p5": 0.31456053190886385,
+    "p25": 0.5356594896331677,
+    "p50": 0.6782938598245019,
+    "p75": 0.7949554860787386,
+    "p95": 0.9126512667539514
+  },
+  "linear_pol_dop_whole_window": {
+    "n_total_px": 4188160,
+    "n_valid_px": 4188160,
+    "mean": 0.7844153642654419,
+    "median": 0.816077470779419,
+    "std": 0.1616355925798416,
+    "min": 0.011049031279981136,
+    "max": 1.0,
+    "p5": 0.4665606826543808,
+    "p25": 0.6977405548095703,
+    "p50": 0.8160775005817413,
+    "p75": 0.9003152400255203,
+    "p95": 1.0
+  },
+  "hybrid_pol_dop_whole_window": {
+    "n_total_px": 4188160,
+    "n_valid_px": 4188160,
+    "mean": 0.6634340345355636,
+    "median": 0.6762688568521242,
+    "std": 0.20524948669828788,
+    "min": 0.0020202746640892583,
+    "max": 1.0000000013928876,
+    "p5": 0.3013123254051977,
+    "p25": 0.5237335304303338,
+    "p50": 0.6762688568521242,
+    "p75": 0.8099389508274286,
+    "p95": 1.0000000000000002
+  },
+  "verdict_vs_paper": {
+    "prism_interior_dop_lt_0p13": false,
+    "prism_interior_dop_mean": 0.7855011224746704,
+    "paper_dop_range": [
+      0.1,
+      0.13
+    ]
+  },
+  "calibration_applied": "XML bias_real/bias_imag subtraction only (per-polarization). No gain-imbalance or phase-orthogonality correction applied -- same limitation as all other DOP results this session."
+}

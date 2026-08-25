@@ -1,0 +1,100 @@
+{
+  "category": "HYPOTHESIS 8 -- alternate acquisition DOP (Plan B of DOP investigation)",
+  "crater_id": "F3",
+  "lat_lon_deg": [
+    -87.31,
+    86.333
+  ],
+  "diameter_m": 700,
+  "interior_radius_m": 350.0,
+  "acquisition": "ch2_sar_ncxl_20191105t180525404_d_fp_m65",
+  "acquisition_date": "2019-11-05",
+  "baseline_acquisition_for_comparison": "ch2_sar_ncxl_20200321t082617351_d_fp_d18",
+  "source_zip_size_bytes": 813145924,
+  "containment_evidence": {
+    "distance_to_nearest_corner_km": 3.58,
+    "note": "Confirmed inside true image-footprint polygon; tighter margin than baseline d18 acquisition (29.17 km)."
+  },
+  "paper_reported": {
+    "cpr_pct_gt1_interior": 42,
+    "cpr_max": 1.73,
+    "dop_range": [
+      0.1,
+      0.13
+    ],
+    "verdict": "Likely"
+  },
+  "window": {
+    "line_start": 44102,
+    "line_count": 4324,
+    "center_line": 46264,
+    "center_sample": 332,
+    "local_covariance_window_px": 5,
+    "n_interior_px": 66761
+  },
+  "linear_pol_dop_interior": {
+    "n_total_px": 66761,
+    "n_valid_px": 66761,
+    "mean": 0.7570691108703613,
+    "median": 0.7918786406517029,
+    "std": 0.14834050834178925,
+    "min": 0.02692113257944584,
+    "max": 0.9949432015419006,
+    "p5": 0.4583514928817749,
+    "p25": 0.6842666864395142,
+    "p50": 0.7918786406517029,
+    "p75": 0.8666678667068481,
+    "p95": 0.9314741492271423
+  },
+  "hybrid_pol_dop_interior": {
+    "n_total_px": 66761,
+    "n_valid_px": 66761,
+    "mean": 0.5973669669382252,
+    "median": 0.6159421921083028,
+    "std": 0.1764205050615902,
+    "min": 0.01912103684641727,
+    "max": 0.9846123145708777,
+    "p5": 0.2754859625744791,
+    "p25": 0.4795268671417751,
+    "p50": 0.6159421921083028,
+    "p75": 0.7331257177232575,
+    "p95": 0.8530758021864748
+  },
+  "linear_pol_dop_whole_window": {
+    "n_total_px": 2213888,
+    "n_valid_px": 2213888,
+    "mean": 0.8055152297019958,
+    "median": 0.8329963684082031,
+    "std": 0.14364095032215118,
+    "min": 0.019805675372481346,
+    "max": 1.0,
+    "p5": 0.5249176889657974,
+    "p25": 0.7339134961366653,
+    "p50": 0.8329963982105255,
+    "p75": 0.9039470106363297,
+    "p95": 1.0
+  },
+  "hybrid_pol_dop_whole_window": {
+    "n_total_px": 2213888,
+    "n_valid_px": 2213888,
+    "mean": 0.679493380172619,
+    "median": 0.6952574315449565,
+    "std": 0.19392598761405835,
+    "min": 0.0039056189846706883,
+    "max": 1.0000000023303641,
+    "p5": 0.3307018091115056,
+    "p25": 0.5542712722819831,
+    "p50": 0.6952574315449565,
+    "p75": 0.8129093713277891,
+    "p95": 0.9999999999999998
+  },
+  "verdict_vs_paper": {
+    "prism_interior_dop_lt_0p13": false,
+    "prism_interior_dop_mean": 0.7570691108703613,
+    "paper_dop_range": [
+      0.1,
+      0.13
+    ]
+  },
+  "calibration_applied": "XML bias_real/bias_imag subtraction only (per-polarization). No gain-imbalance or phase-orthogonality correction applied -- same limitation as all other DOP results this session."
+}

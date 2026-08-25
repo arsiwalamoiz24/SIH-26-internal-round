@@ -1,0 +1,82 @@
+{
+  "category": "CANDIDATE-SPECIFIC DOP",
+  "candidate_id": "SP_832640_0090770",
+  "acquisition": "ch2_sar_ncxl_20191114t002451477_d_fp_mad",
+  "window": {
+    "line_start": 5758,
+    "line_count": 2000,
+    "sample_start": 0,
+    "sample_count": 512,
+    "center_line": 6758,
+    "center_sample": 153,
+    "half_lines": 1000,
+    "local_covariance_window_px": 5,
+    "eigenvalue_purity_tile_px": [
+      40,
+      64
+    ]
+  },
+  "formulas": {
+    "linear_pol_stokes_dop": "S1=<|HH|^2>+<|VV|^2>, S2=<|HH|^2>-<|VV|^2>, S3=2Re(<HH*conj(VV)>), S4=-2Im(<HH*conj(VV)>), DOP=sqrt(S2^2+S3^2+S4^2)/S1, local mean over 5x5 px window",
+    "hybrid_pol_stokes_dop": "LH=(HH+j*HV)/sqrt(2), LV=(VH+j*VV)/sqrt(2), then identical Stokes/DOP formula on (LH,LV)",
+    "eigenvalue_purity": "k=[HH,HV,VH,VV] per pixel, C=(k^H k)/N over a tile, eig=eigvalsh(C) clipped>=0, p=eig/sum(eig), purity=sqrt(max(0,(4*sum(p^2)-1)/3))",
+    "source": "Identical to src/candidate_dop_pipeline.py (primary candidate) -- not re-derived, only re-pointed at this candidate's covering acquisition."
+  },
+  "linear_pol_dop": {
+    "n_total_px": 1024000,
+    "n_valid_px": 1024000,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.8410893678665161,
+    "median": 0.871249794960022,
+    "std": 0.13104479014873505,
+    "min": 0.011565102264285088,
+    "max": 1.0,
+    "p5": 0.5813357979059219,
+    "p25": 0.7803612351417542,
+    "p50": 0.8712498247623444,
+    "p75": 0.9330418854951859,
+    "p95": 1.0
+  },
+  "hybrid_pol_dop": {
+    "n_total_px": 1024000,
+    "n_valid_px": 1024000,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.7207624958657035,
+    "median": 0.7455266097960416,
+    "std": 0.18698388084448017,
+    "min": 0.006471589172562503,
+    "max": 1.000000000461958,
+    "p5": 0.3695745296156882,
+    "p25": 0.6050828350426403,
+    "p50": 0.7455266097960416,
+    "p75": 0.8556983019525919,
+    "p95": 1.0
+  },
+  "eigenvalue_purity_tiled_dop": {
+    "n_total_px": 400,
+    "n_valid_px": 400,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.6970342773944139,
+    "median": 0.6744486689567566,
+    "std": 0.08983616814054492,
+    "min": 0.47247713804244995,
+    "max": 0.8917619585990906,
+    "p5": 0.559429869055748,
+    "p25": 0.6312371790409088,
+    "p50": 0.6744486689567566,
+    "p75": 0.7717581987380981,
+    "p95": 0.8529976248741149
+  },
+  "eigenvalue_purity_whole_window": 0.7090409398078918,
+  "best_supported_formulation": "linear-pol (HH/VV) Stokes-covariance DOP -- same rationale as the primary candidate's DOP result.",
+  "calibration_applied": "XML bias_real/bias_imag subtraction only (per-polarization, from this product's own PDS4 label). No gain-imbalance or phase-orthogonality correction applied -- same limitation as the primary candidate's DOP result.",
+  "channel_mapping_note": "Level-1A SLI product with per-polarization TIF files explicitly named _hh_/_hv_/_vh_/_vv_ in the PDS4 label and filename -- ISRO-labeled directly, not byte-level-inferred.",
+  "limitations": [
+    "Single acquisition, single ~2000x512 px window centered on the candidate -- not the full scene, not multi-temporal.",
+    "No gain-imbalance/phase-orthogonality calibration applied (bias-centering only).",
+    "No independent ground-truth ice confirmation exists for this candidate anywhere in this project."
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "F2": {
+    "crater_id": "F2",
+    "crosstalk_coefficients": {
+      "v": [
+        -0.4080798946685692,
+        -0.3763251521602122
+      ],
+      "w": [
+        0.30359279354922636,
+        0.15732693995192853
+      ],
+      "u": [
+        -0.45129063109430634,
+        -0.279119871855777
+      ],
+      "z": [
+        0.32640335440887897,
+        0.1306828963382036
+      ]
+    },
+    "crosstalk_magnitudes_dB": {
+      "v": -5.11238080799291,
+      "w": -9.321098920315817,
+      "u": -5.50411866103938,
+      "z": -9.079212059813912
+    },
+    "residual_check_after_correction": {
+      "HHcorr_HV_normcorr": [
+        2.1754740183872326e-09,
+        6.913311843468834e-11
+      ],
+      "VVcorr_HV_normcorr": [
+        2.794437451765899e-09,
+        5.120786410522979e-10
+      ]
+    },
+    "aggregate_whole_interior_dop": {
+      "before": 0.7926579713821411,
+      "after": 0.7909487408640168
+    },
+    "windowed_table": [
+      {
+        "window": "20x1",
+        "dop_mean_before_crosstalk_correction": 0.7680385112762451,
+        "dop_mean_after_crosstalk_correction": 0.7676264616497294
+      },
+      {
+        "window": "20x5",
+        "dop_mean_before_crosstalk_correction": 0.7585594058036804,
+        "dop_mean_after_crosstalk_correction": 0.7580549333628414
+      },
+      {
+        "window": "5x5",
+        "dop_mean_before_crosstalk_correction": 0.7855011224746704,
+        "dop_mean_after_crosstalk_correction": 0.7850738644010073
+      }
+    ],
+    "paper_range": [
+      0.1,
+      0.13
+    ],
+    "meets_paper_range_after_correction": false
+  },
+  "F3": {
+    "crater_id": "F3",
+    "crosstalk_coefficients": {
+      "v": [
+        -0.24971681574473567,
+        -0.5826320710580691
+      ],
+      "w": [
+        0.33065353772641165,
+        0.24937728558125385
+      ],
+      "u": [
+        0.0920191831274006,
+        -0.3466355919883536
+      ],
+      "z": [
+        -0.02035650767100455,
+        0.29563562166373103
+      ]
+    },
+    "crosstalk_magnitudes_dB": {
+      "v": -3.9596994405925283,
+      "w": -7.656832251654056,
+      "u": -8.906787865529042,
+      "z": -10.564322428895984
+    },
+    "residual_check_after_correction": {
+      "HHcorr_HV_normcorr": [
+        -5.314036233124358e-09,
+        -2.2102049196230638e-08
+      ],
+      "VVcorr_HV_normcorr": [
+        -6.351346873042386e-10,
+        -1.0789093285545492e-08
+      ]
+    },
+    "aggregate_whole_interior_dop": {
+      "before": 0.7660040259361267,
+      "after": 0.7721067205589744
+    },
+    "windowed_table": [
+      {
+        "window": "20x1",
+        "dop_mean_before_crosstalk_correction": 0.833940327167511,
+        "dop_mean_after_crosstalk_correction": 0.8381116480736275
+      },
+      {
+        "window": "20x5",
+        "dop_mean_before_crosstalk_correction": 0.8156689405441284,
+        "dop_mean_after_crosstalk_correction": 0.8203091904015591
+      },
+      {
+        "window": "5x5",
+        "dop_mean_before_crosstalk_correction": 0.842583179473877,
+        "dop_mean_after_crosstalk_correction": 0.8448175629623009
+      }
+    ],
+    "paper_range": [
+      0.1,
+      0.13
+    ],
+    "meets_paper_range_after_correction": false
+  }
+}

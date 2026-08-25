@@ -1,0 +1,50 @@
+{
+  "purpose": "Direct test: does PRISM own pipeline, run on the paper own confirmed-ice craters (F2, F3) with crater-scale circular interior masking, reproduce the paper own CPR>1 & DOP<0.13 finding?",
+  "paper": "Sinha et al. 2026, npj Space Exploration 2:22",
+  "craters_tested": [
+    "F2 (Faustini, Strong evidence)",
+    "F3 (Faustini, Likely)"
+  ],
+  "cpr_comparison": {
+    "F2": {
+      "paper_pct_gt1": 47,
+      "paper_max": 1.95,
+      "prism_pct_gt1": 44.752,
+      "prism_max": 1.8248525857925415,
+      "verdict": "CLOSE MATCH"
+    },
+    "F3": {
+      "paper_pct_gt1": 42,
+      "paper_max": 1.73,
+      "prism_pct_gt1": 33.333,
+      "prism_max": 1.477660894393921,
+      "verdict": "SAME REGIME, PRISM somewhat lower"
+    }
+  },
+  "dop_comparison_interior_mask_only": {
+    "F2": {
+      "paper_range": [
+        0.1,
+        0.13
+      ],
+      "prism_mean": 0.7855011224746704,
+      "prism_median": 0.817699134349823,
+      "meets_threshold": false
+    },
+    "F3": {
+      "paper_range": [
+        0.1,
+        0.13
+      ],
+      "prism_mean": 0.842583179473877,
+      "prism_median": 0.8727035522460938,
+      "meets_threshold": false
+    }
+  },
+  "headline_finding": "The scale-mismatch hypothesis (whole-PSR averaging washing out a small low-DOP ice patch) is RULED OUT: even restricted to the exact crater circular interior mask on the papers own confirmed-ice craters, PRISM DOP comes back 6x too high (0.79-0.84 vs paper 0.10-0.13). CPR, computed from the same real local mosaic product, IS in close agreement with the papers own numbers for both craters. The gap is specific to DOP, not CPR, pointing to a calibration/acquisition difference rather than a window-size artifact: PRISM only applies bias-centering (no gain-imbalance/phase-orthogonality correction), and the acquisition used here (2020-03-21, found via a blind 602-acquisition scan) is almost certainly not the specific pass the papers authors used (their own acquisition list is in a Supplementary Table not available to this project).",
+  "not_yet_resolved": [
+    "Whether applying full gain-imbalance + phase-orthogonality calibration (not just bias-centering) would close the gap.",
+    "Whether a different acquisition/date covering F2/F3 would give a different DOP value (multiple passes may exist; only one was tested).",
+    "Whether the papers own DOP formula construction (Stokes S1-S4 from a specific covariance window size/shape) exactly matches PRISMs 5x5 local-window construction."
+  ]
+}

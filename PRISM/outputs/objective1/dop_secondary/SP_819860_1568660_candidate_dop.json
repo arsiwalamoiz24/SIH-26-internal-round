@@ -1,0 +1,87 @@
+{
+  "category": "CANDIDATE-SPECIFIC DOP",
+  "candidate_id": "SP_819860_1568660",
+  "candidate_lat_lon_deg": [
+    -81.986,
+    156.866
+  ],
+  "acquisition": "ch2_sar_ncxl_20220408t112037436_d_fp_d18",
+  "source_zip_size_bytes": 1052930056,
+  "containment_evidence": {
+    "method": "point-in-polygon ray-casting against true rotated image-footprint corners (isda:image_upper_left/upper_right/lower_right/lower_left_mapX/mapY), same method as all other candidates this session",
+    "distance_to_nearest_corner_km": 1.47,
+    "bilinear_line_frac": 0.9998,
+    "bilinear_sample_frac": 0.2354,
+    "note": "THIN MARGIN -- candidate sits ~24 lines (of 142172) from the true end of this acquisition's strip. Real, verified containment (not a false positive), but the thinnest margin of any candidate confirmed this session."
+  },
+  "window": {
+    "line_start": 141648,
+    "line_count": 524,
+    "sample_start": 0,
+    "sample_count": 244,
+    "center_line": 142148,
+    "center_sample": 57,
+    "half_lines": 500,
+    "local_covariance_window_px": 5,
+    "eigenvalue_purity_tile_px": [
+      25,
+      61
+    ]
+  },
+  "linear_pol_dop": {
+    "n_total_px": 127856,
+    "n_valid_px": 127856,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.8270149230957031,
+    "median": 0.8567492365837097,
+    "std": 0.1182265654206276,
+    "min": 0.01717410422861576,
+    "max": 0.9987823963165283,
+    "p5": 0.5902218520641327,
+    "p25": 0.771472230553627,
+    "p50": 0.8567492365837097,
+    "p75": 0.9132122248411179,
+    "p95": 0.9599301517009735
+  },
+  "hybrid_pol_dop": {
+    "n_total_px": 127856,
+    "n_valid_px": 127856,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.7217355292642018,
+    "median": 0.7531435438648946,
+    "std": 0.15957002633791012,
+    "min": 0.011957475018663085,
+    "max": 0.9949471450681369,
+    "p5": 0.40981175569052525,
+    "p25": 0.6312957852031188,
+    "p50": 0.7531435438648946,
+    "p75": 0.8431878141937728,
+    "p95": 0.9239776525140482
+  },
+  "eigenvalue_purity_tiled_dop": {
+    "n_total_px": 80,
+    "n_valid_px": 80,
+    "n_nan_px": 0,
+    "pct_nan": 0.0,
+    "mean": 0.7235760234296322,
+    "median": 0.716084361076355,
+    "std": 0.037652406264511745,
+    "min": 0.619456946849823,
+    "max": 0.8382079601287842,
+    "p5": 0.6778143793344498,
+    "p25": 0.7013934403657913,
+    "p50": 0.716084361076355,
+    "p75": 0.7444563657045364,
+    "p95": 0.7988721877336502
+  },
+  "eigenvalue_purity_whole_window": 0.7314770221710205,
+  "best_supported_formulation": "linear-pol (HH/VV) Stokes-covariance DOP -- same rationale as all other candidates' DOP results this session.",
+  "calibration_applied": "XML bias_real/bias_imag subtraction only (per-polarization, from this product's own PDS4 label). No gain-imbalance or phase-orthogonality correction applied.",
+  "limitations": [
+    "Single acquisition, single ~524x244 px window centered on the candidate -- not the full scene, not multi-temporal.",
+    "No gain-imbalance/phase-orthogonality calibration applied (bias-centering only).",
+    "No independent ground-truth ice confirmation exists for this candidate anywhere in this project."
+  ]
+}
