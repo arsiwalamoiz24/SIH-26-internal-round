@@ -448,3 +448,90 @@ export function getTerrainStats(): TerrainStats {
     },
   };
 }
+
+// ---------------------------------------------------------------------------
+// Ground-truth validation against the published literature
+// (Sinha et al. 2026, npj Space Exploration 2:22).
+//
+// PRISM's CPR reproduces the paper's own numbers on the paper's own
+// confirmed-ice craters; PRISM's DOP does not, and 8 independently-tested
+// hypotheses failed to close that gap. Both halves are surfaced -- the match
+// is the project's strongest external validation, and the mismatch is real
+// and must not be hidden behind it.
+// Source: PRISM/docs/DOP_GROUND_TRUTH_INVESTIGATION.md
+// ---------------------------------------------------------------------------
+
+export interface PaperCraterCprComparison {
+  id: string;
+  host: string;
+  paperVerdict: string;
+  prismPctGt1: number;
+  paperPctGt1: number;
+  prismMax: number;
+  paperMax: number;
+  match: string;
+}
+
+export interface PaperGroundTruthValidation {
+  paper: string;
+  criterion: string;
+  whatWasTested: string;
+  cpr: {
+    verdict: string;
+    summary: string;
+    craters: PaperCraterCprComparison[];
+  };
+  dop: {
+    verdict: string;
+    summary: string;
+    paperRange: [number, number];
+    prismF2Mean: number;
+    prismF3Mean: number;
+    hypothesesTested: number;
+    bracketingDiagnostic: string;
+    remainingStep: string;
+  };
+  shortlistAgainstCriterion: {
+    candidatesEvaluated: number;
+    meetCriterion1CprGt1Present: number;
+    dopComputedFor: number;
+    meetFullCriterion: number;
+    scaleCaveat: string;
+    dopNotPursuedNote: string;
+    headline: string;
+  };
+  recommendation: string;
+  doc: string;
+  provenance: ProvenanceMetadata;
+}
+
+export function getPaperGroundTruthValidation(): PaperGroundTruthValidation {
+  const v = scienceData.paperGroundTruthValidation;
+  return {
+    paper: v.paper,
+    criterion: v.criterion,
+    whatWasTested: v.whatWasTested,
+    cpr: {
+      verdict: v.cpr.verdict,
+      summary: v.cpr.summary,
+      craters: v.cpr.craters,
+    },
+    dop: {
+      verdict: v.dop.verdict,
+      summary: v.dop.summary,
+      paperRange: v.dop.paperRange as [number, number],
+      prismF2Mean: v.dop.prismF2Mean,
+      prismF3Mean: v.dop.prismF3Mean,
+      hypothesesTested: v.dop.hypothesesTested,
+      bracketingDiagnostic: v.dop.bracketingDiagnostic,
+      remainingStep: v.dop.remainingStep,
+    },
+    shortlistAgainstCriterion: v.shortlistAgainstCriterion,
+    recommendation: v.recommendation,
+    doc: v.doc,
+    provenance: {
+      source_type: "REAL",
+      dataset: v.source,
+    },
+  };
+}

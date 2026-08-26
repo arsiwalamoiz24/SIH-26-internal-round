@@ -219,7 +219,7 @@ export const REAL_CANDIDATE: RealCandidate = {
 };
 
 export const DOP_THRESHOLD_WARNING =
-  "Published DOP < 0.13 criterion is not directly comparable to this result because calibration/basis/formula equivalence has not been established.";
+  "Not validated against published ground truth. Running this same pipeline on Sinha et al. 2026's own confirmed-ice craters returns DOP ~6x their reported 0.10-0.13, and 8 hypotheses (window size, small-sample bias, absolute and relative calibration, Zhao 2024 multilook, self-derived and full Ainsworth 2006 crosstalk, and an independent acquisition) failed to close the gap. This is an OPEN PROBLEM, not a metric to set aside: the paper's own Supplementary Fig. 6 shows rough terrain reaching CPR 1.1 at DOP 0.17, and states that high CPR alone is insufficient -- the combined CPR-DOP criterion is what separates surface roughness from subsurface volumetric scattering. PRISM's CPR reproduces the paper and is real evidence the radar processing is sound, but on its own it cannot tell ice from rough rock. See PRISM/docs/SINHA_SUPPLEMENTARY_FINDINGS.md.";
 
 export const TERRAIN_THRESHOLD_LABEL = "Unvalidated project threshold";
 

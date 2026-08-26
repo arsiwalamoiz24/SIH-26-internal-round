@@ -10,6 +10,16 @@ paper well on the same data. **Recommendation: use PRISM's CPR-based
 criterion as the validated ground-truth metric, and de-emphasize DOP
 matching, unless the paper's Supplementary Table 1 becomes available.**
 
+> ⚠️ **That recommendation is SUPERSEDED, and hypothesis 8 is REOPENED.** The
+> Supplementary Table 1 named above arrived on 2026-08-26. It shows PRISM ran on
+> none of the authors' six acquisitions, and Supplementary Figure 6 states that
+> high CPR alone is insufficient to separate roughness from volumetric
+> scattering — the combined CPR-DOP criterion is required. The 8-hypothesis work
+> below is unchanged and still correct as measurement; only its closing
+> recommendation and hypothesis 8's "ruled out" status are withdrawn. See the
+> [Addendum, 2026-08-26](#addendum-2026-08-26--the-supplementary-material-arrived-and-it-changes-two-conclusions-above)
+> at the end of this file, and `SINHA_SUPPLEMENTARY_FINDINGS.md`.
+
 ---
 
 ## The problem
@@ -231,3 +241,50 @@ publicly available) or direct correspondence with the authors.
   `outputs/objective1/paper_crater_validation/`, `outputs/objective1/paper_criterion/`.
 - This document supersedes the informal working notes; it is the
   single source of truth for the DOP ground-truth investigation.
+
+---
+
+## Addendum, 2026-08-26 — the Supplementary Material arrived, and it changes two conclusions above
+
+This document's own closing recommendation was: obtain Sinha et al.'s Supplementary
+Table 1. That has now happened. It does **not** resolve the DOP discrepancy, but it
+invalidates how one hypothesis was closed and contradicts the recommendation this
+document ends on. Full analysis: `SINHA_SUPPLEMENTARY_FINDINGS.md`. In brief:
+
+**1. Hypothesis 8 is reopened — "wrong acquisition" is untested, not ruled out.**
+Supplementary Table 1 lists the six acquisitions the authors actually used:
+`ch2_sar_ncls_20200808t201154198_d_cp_d18` (**compact-pol**), and full-pol
+`20191009t103018034`, `20191113t183130223`, `20201019t092257302`,
+`20201022t140200748`, `20220909t150312532_d_fp_d32`. PRISM used
+`20200321t082617351` for hypotheses 1–7 and `20191105t180525404_d_fp_m65` for
+hypothesis 8. **Neither is on that list.** Demonstrating that a seventh, unrelated
+acquisition also yields high DOP says nothing about whether theirs do. (Entry #4 was
+seen and rejected during the hypothesis-8 footprint search because it misses F2 by
+~2.8 km — correct for a single-acquisition test, but it means one of their own
+datasets was discarded rather than followed up, e.g. on F3 alone, which it does cover.)
+
+**2. The recommendation to lean on CPR instead of DOP is wrong as stated.**
+Supplementary Figure 6 reports the exterior of F2 — rough terrain — at mean CPR 1.1
+and mean DOP 0.17, and concludes that "high CPR alone is insufficient and that the
+combined CPR-DOP criterion is required to distinguish roughness driven scattering from
+subsurface volumetric scattering." So the metric this document validated is the one the
+authors say cannot separate ice from rough rock unaided, and the metric it recommended
+de-emphasising is the discriminator. CPR agreement remains real and remains PRISM's
+strongest external validation — of the *radar processing and geolocation*, not of ice.
+DOP is an open problem blocking a complete criterion, not a metric to set aside.
+
+**3. The stop rule stands, and does not cover what is now available.** Hypotheses 1–8
+should still not be re-run as they were. Three genuinely new avenues exist: the authors'
+own full-pol acquisitions; a compact-pol / hybrid-basis DOP on their compact-pol dataset
+(the m-χ formalism this document already identified as the leading explanation, now
+confirmed present in their data); and Zhao et al. 2024's low-quality range-area removal
+(−30 dB antenna isolation), which PRISM has never applied and which could leave the
+F2/F3 covariance terms noise-dominated regardless of calibration quality.
+
+**4. One open question elsewhere is now closed.** The Chandrayaan-2 DFSAR User Manual
+(SAC/SIPG/MDPD/CH2/SAR/2020/12/23 v1.0) was read in full: it is a 7-page PDS4 archive
+document and defines **no** DOP formula, CPR formula, or Stokes parameters. PRISM's use
+of the general Stokes construction is not contradicted by vendor documentation because
+no vendor definition exists. It also confirms Level-1A SLI is single-look complex
+(phase-preserving) while Level-2A SRI is `Unsigned short int` (amplitude only) —
+independently supporting this document's power-only-DOP note.

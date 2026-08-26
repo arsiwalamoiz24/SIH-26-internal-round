@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { TerrainVisualizer } from "@/components/visualizer/TerrainVisualizer";
+import { GroundTruthValidationPanel } from "@/components/prism/GroundTruthValidationPanel";
 import {
   getTargetCrater,
   getConfidenceBudget,
@@ -13,6 +14,7 @@ import {
   getMlAnomalyScore,
   getDopSummary,
   getPixelAnomalyScore,
+  getPaperGroundTruthValidation,
 } from "@/lib/api";
 import 'material-symbols';
 
@@ -30,6 +32,7 @@ export default function IceDetection() {
   const mlAnomaly = getMlAnomalyScore();
   const dop = getDopSummary();
   const pixelAnomaly = getPixelAnomalyScore();
+  const groundTruth = getPaperGroundTruthValidation();
 
   const gaugeOffset = 282.7 * (1 - confidence.overall / 100);
 
@@ -237,7 +240,10 @@ export default function IceDetection() {
               </span>
             </div>
             <div className="flex justify-between items-center p-2 bg-surface-container-low rounded border border-outline-variant">
-              <span className="text-on-surface-variant">Candidate DOP (linear-pol)</span>
+              <span className="text-on-surface-variant">
+                Candidate DOP (linear-pol)
+                <span className="text-outline"> · not validated vs published</span>
+              </span>
               <span className="text-on-surface font-semibold">
                 {dop.linearPolDopMean.toFixed(3)} <span className="text-outline font-normal">(n={dop.nValidPx.toLocaleString()} px)</span>
               </span>
@@ -257,6 +263,9 @@ export default function IceDetection() {
             </p>
           </div>
         </div>
+
+        {/* External ground-truth validation vs the published literature */}
+        <GroundTruthValidationPanel v={groundTruth} />
 
         {/* Depth-Resolved Profile */}
         <div className="bento-card mx-1 flex flex-col overflow-hidden shrink-0">
