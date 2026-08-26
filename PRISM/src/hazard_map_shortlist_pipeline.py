@@ -129,6 +129,16 @@ def run_for_candidate(psr_id, lat, lon, psr_gdf):
     fig.savefig(os.path.join(OUT_DIR, f"{psr_id}_hazard_map.png"), dpi=130)
     plt.close(fig)
 
+    # ---- Single-panel crop (no title/colorbar) -- for use as a 3D mesh texture ----
+    fig2, ax2 = plt.subplots(figsize=(6, 6))
+    ax2.imshow(np.where(valid, hazard, np.nan), cmap="RdYlGn_r", vmin=0, vmax=1)
+    if psr_mask is not None:
+        ax2.contour(psr_mask, colors="cyan", linewidths=1.0)
+    ax2.axis("off")
+    fig2.savefig(os.path.join(OUT_DIR, f"{psr_id}_hazard_only.png"), dpi=150,
+                 bbox_inches="tight", pad_inches=0)
+    plt.close(fig2)
+
     return result
 
 

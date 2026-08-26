@@ -1,0 +1,380 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   PRISM Design System
+   Lunar South Pole Scientific Exploration Interface
+   ────────────────────────────────────────────────────────────── */
+
+@layer base {
+  :root {
+    /* ── Lunar Dark (default) ── */
+    --void: #06080D;
+    --surface: #0D1118;
+    --surface-raised: #131820;
+    --surface-high: #1A2130;
+    --border: rgba(255, 255, 255, 0.07);
+    --border-subtle: rgba(255, 255, 255, 0.04);
+
+    --text-primary: #E4E2DC;
+    --text-secondary: #7A7870;
+    --text-muted: #4A4840;
+    --text-link: #8AABCF;
+
+    /* Accent — lunar dust amber */
+    --amber: #C4A268;
+    --amber-dim: #6B5530;
+    --amber-glow: rgba(196, 162, 104, 0.15);
+
+    /* Aerospace blue */
+    --blue: #3E6B9A;
+    --blue-bright: #5B8EC2;
+    --blue-dim: #1E3550;
+    --blue-glow: rgba(62, 107, 154, 0.2);
+
+    /* Signal colours */
+    --signal-high: #6DBF8A;   /* elevated signal = ice candidate */
+    --signal-warn: #D4924A;   /* caution */
+    --signal-flag: #B85050;   /* anomaly / low percentile */
+    --signal-neutral: #7A9AB8;
+
+    /* PRISM wordmark gradient */
+    --prism-grad-start: #E4E2DC;
+    --prism-grad-mid: #8AABCF;
+    --prism-grad-end: #C4A268;
+
+    --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+    --nav-h: 60px;
+    --section-gap: 120px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 12px;
+
+    /* scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  [data-theme="light"] {
+    --void: #EDEAE4;
+    --surface: #F5F2EC;
+    --surface-raised: #FAFAF8;
+    --surface-high: #FFFFFF;
+    --border: rgba(0, 0, 0, 0.1);
+    --border-subtle: rgba(0, 0, 0, 0.05);
+
+    --text-primary: #1A1714;
+    --text-secondary: #5C5A54;
+    --text-muted: #9A9890;
+    --text-link: #1B4F7A;
+
+    --amber: #6B4F10;
+    --amber-dim: #C4A268;
+    --amber-glow: rgba(107, 79, 16, 0.1);
+
+    --blue: #1B4F7A;
+    --blue-bright: #2E6FA8;
+    --blue-dim: #C8D9EC;
+    --blue-glow: rgba(27, 79, 122, 0.1);
+
+    --signal-high: #1E7A40;
+    --signal-warn: #8B5E1A;
+    --signal-flag: #8B2222;
+    --signal-neutral: #2E5A7A;
+
+    --prism-grad-start: #1A1714;
+    --prism-grad-mid: #1B4F7A;
+    --prism-grad-end: #6B4F10;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    background: var(--void);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--void);
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--blue-glow);
+    color: var(--text-primary);
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* ── Typography ─────────────────────────────────────────────── */
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-body    { font-family: var(--font-body); }
+  .font-mono    { font-family: var(--font-mono); }
+
+  /* PRISM wordmark — the defining text treatment */
+  .prism-wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg,
+      var(--prism-grad-start) 0%,
+      var(--prism-grad-mid) 50%,
+      var(--prism-grad-end) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .prism-wordmark-nav {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg,
+      var(--prism-grad-start) 0%,
+      var(--prism-grad-mid) 55%,
+      var(--prism-grad-end) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .prism-wordmark-hero {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(72px, 12vw, 140px);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    background: linear-gradient(135deg,
+      var(--prism-grad-start) 0%,
+      var(--prism-grad-mid) 45%,
+      var(--prism-grad-end) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Instrument readout — for scientific values */
+  .readout {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+
+  .readout-lg {
+    font-family: var(--font-mono);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .label-caps {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  /* ── Layout helpers ─────────────────────────────────────────── */
+  .container-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  @media (max-width: 768px) {
+    .container-page { padding: 0 20px; }
+  }
+
+  /* Hairline divider */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Ghost outline button */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+    background: var(--amber-glow);
+  }
+
+  .btn-blue {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border: 1px solid var(--blue);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue-bright);
+    background: var(--blue-glow);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-blue:hover {
+    background: rgba(62, 107, 154, 0.35);
+    border-color: var(--blue-bright);
+  }
+
+  /* Metric / data card — used sparingly */
+  .metric-block {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .metric-block:first-child { border-top: none; }
+
+  /* Status pill */
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--signal-high);
+    border-radius: 99px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--signal-high);
+    background: rgba(109, 191, 138, 0.08);
+  }
+
+  .status-pill::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--signal-high);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* Animation utilities */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Noise texture overlay for dark sections */
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* Table rows for scientific data */
+  .data-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .data-row:last-child { border-bottom: none; }
+
+  /* Image treatment */
+  .scientific-image {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    filter: brightness(0.92) contrast(1.05);
+  }
+
+  /* Thin ruler */
+  .ruler {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .ruler::before, .ruler::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Reduced motion ─────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

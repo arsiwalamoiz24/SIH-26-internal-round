@@ -55,9 +55,10 @@ from rasterio.features import geometry_mask
 from rasterio.windows import from_bounds as window_from_bounds
 from pyproj import Transformer
 
-PSR_SHP = r"C:\Users\radhe\PRISM_local_data\psr_south\LOLA_PSR_75S_120M_82S_060M_5KM2_FINAL.shp"
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PSR_SHP = os.path.join(REPO, "data", "raw", "psr_south", "LOLA_PSR_75S_120M_82S_060M_5KM2_FINAL.shp")
 
-OUT_DIR = r"C:\Users\radhe\OneDrive\Documents\GitHub\SIH-26-internal-round\PRISM\outputs\objective2"
+OUT_DIR = os.path.join(REPO, "PRISM", "outputs", "objective2")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 LDSM_URL = "/vsicurl/https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_20MPP_ADJ.TIF"
@@ -227,6 +228,16 @@ def main():
     plt.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, f"{CANDIDATE_ID}_terrain_composite.png"), dpi=150)
     plt.close(fig)
+
+    # ---- Single-panel crop (no title/colorbar) -- for use as a 3D mesh texture ----
+    fig2, ax2 = plt.subplots(figsize=(6, 6))
+    ax2.imshow(np.where(valid_elev, elev, np.nan), cmap="terrain")
+    if psr_mask is not None:
+        ax2.contour(psr_mask, colors="cyan", linewidths=1.0)
+    ax2.axis("off")
+    fig2.savefig(os.path.join(OUT_DIR, f"{CANDIDATE_ID}_elevation_only.png"), dpi=150,
+                 bbox_inches="tight", pad_inches=0)
+    plt.close(fig2)
 
     # --- Write outputs ---
     result = {
