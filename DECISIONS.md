@@ -196,6 +196,12 @@ genuine, reproducible measurement of real data — but it no longer carries the 
 "agrees with the literature," because it demonstrably doesn't, and we know exactly how hard
 that was tested.
 
+> ⚠️ **Superseded the next day — see "The Supplementary Material arrived" below.** The
+> paper's own Supplementary Figure 6 states that high CPR alone is insufficient and that the
+> combined CPR-DOP criterion is what separates roughness from volumetric scattering. Leaning
+> on CPR *instead of* DOP was the wrong call. What survives: CPR agreement validates PRISM's
+> radar processing and geolocation. What is withdrawn: treating it as the ice criterion.
+
 **Stop rule, deliberately recorded so nobody burns another session on it:** do not re-try
 hypotheses 1–8. Every calibration, processing and acquisition-level avenue reachable from
 public and institutional sources has been exhausted. The only remaining productive step is
@@ -238,6 +244,120 @@ sub-features; PRISM's 7 candidates are PSR-scale (9–43 km²) LOLA catalog poly
 the paper's threshold at PSR scale is a reasonable extrapolation, not a literally validated
 comparison, and the frontend panel says so.
 
+## The Supplementary Material arrived, and it corrected us twice (2026-08-26)
+
+The DOP investigation ended by naming exactly one thing that could move it forward:
+Sinha et al.'s Supplementary Table 1. The team supplied it, along with the DFSAR User
+Manual and the full text of Zhao et al. 2024. Reading them cost about an hour and
+overturned two conclusions we had committed to the repo the same morning.
+
+**We had never run on any of the authors' acquisitions.** Supplementary Table 1 lists
+six DFSAR datasets. PRISM ran hypotheses 1–7 on `20200321t082617351` and hypothesis 8 on
+`20191105t180525404_d_fp_m65`. Neither is on the list. Hypothesis 8 was recorded as
+"closes off 'wrong acquisition' as an explanation" — but it closed that door using an
+acquisition the authors never used, which proves nothing about theirs. **Hypothesis 8 is
+reopened; the honest status is untested, not ruled out.** Worth noting the hypothesis-8
+footprint search *did* see one of their datasets (`20201019t092257302`) and rejected it
+for missing F2 by ~2.8 km — correct for a single-acquisition test, but it meant one of
+their own datasets got discarded rather than followed up on F3, which it does cover.
+
+**One of their six is compact-pol** (`ch2_sar_ncls_20200808t201154198_d_cp_d18`). The
+investigation's own leading explanation was "a different polarimetric basis," reasoning
+from the fact that the paper's only DOP-interpretation citations (Raney 2012 m-χ, Mohan
+2011 Mini-SAR) are hybrid/compact-pol rather than quad-pol references. That inference now
+has a confirmed compact-pol dataset behind it, and computing DOP in the hybrid basis is a
+concrete, testable next step rather than speculation.
+
+**The bigger correction: we picked the wrong metric to lean on.** Supplementary Figure 6
+reports the rough terrain outside F2 at mean CPR 1.1 and mean DOP 0.17 — elevated CPR,
+but DOP above their 0.13 threshold — and concludes that "high CPR alone is insufficient
+and that the combined CPR-DOP criterion is required to distinguish roughness driven
+scattering from subsurface volumetric scattering."
+
+So the metric we validated is the one the authors say cannot tell ice from rough rock on
+its own, and the metric we de-emphasised is the discriminator. The reasoning behind the
+original call was sound on the evidence we had — CPR matched, DOP didn't, so lean on what
+validates. It was still wrong, and in a way that matters: **ranking candidates on CPR
+alone ranks rough terrain and subsurface ice identically**, which is precisely the failure
+mode the paper pre-empts. Corrected wording is now in the frontend panel,
+`DOP_THRESHOLD_WARNING`, `prism_science_data.json`, `TODO.md`, the F2/F3 output JSON, and
+an addendum plus a superseded-banner in `DOP_GROUND_TRUTH_INVESTIGATION.md` itself.
+
+**A question elsewhere got closed, negatively.** The DFSAR User Manual is a 7-page PDS4
+archive document. It defines no DOP formula, no CPR formula, and no Stokes parameters —
+zero hits searching for any of them. So PRISM's general Stokes construction isn't
+contradicted by vendor documentation, because there is no vendor definition to contradict
+it. It also confirms Level-1A SLI is single-look complex (phase-preserving) while
+Level-2A SRI is `Unsigned short int` (amplitude only), independently backing the
+investigation's power-only-DOP note.
+
+**Zhao et al. 2024 in full gave us a ninth hypothesis.** We already cite it for the CPR
+formula and the multilook number, but the full text describes a step PRISM has never
+applied: removing low-quality range areas where estimated crosstalk exceeds the
+instrument's own −30 dB antenna-isolation spec. If the F2/F3 windows sit in such a
+region, the covariance terms driving DOP could be noise-dominated no matter how well the
+calibration solves — which would fit hypothesis 7's odd result, where a correct Ainsworth
+solve found small, plausible crosstalk and still barely moved DOP.
+
+Full detail: `PRISM/docs/SINHA_SUPPLEMENTARY_FINDINGS.md`.
+
+## Validating on craters that actually have ice — the scale artifact, and the test that settles it (2026-08-26)
+
+**Two ice validations already existed and appeared to contradict each other.**
+`docs/INDEPENDENT_ICE_VALIDATION.md` (2026-08-22) found *no* separation between
+M3-positive craters and checked-negative controls, with LCROSS Cabeus — the only in-situ
+ice measurement in the set — ranking last of 11. Three days later the F2/F3 work
+reproduced the paper's CPR numbers closely. Same craters, same mosaics, same formulas.
+
+**The difference is sampling scale, and inside Faustini the gradient is monotonic:**
+
+| Sampled region | Area | CPR mean |
+|---|---:|---:|
+| Whole 39 km crater disk | 1,195 km² | 0.297 |
+| F2's ~4 km neighbourhood | ~16 km² | 0.567 |
+| F2 ice-feature interior (r = 550 m) | 0.95 km² | 0.967 |
+| F3's neighbourhood | ~4 km² | 0.386 |
+| F3 ice-feature interior (r = 350 m) | 0.38 km² | 0.876 |
+
+The signal lives in features roughly **0.08% the area** of a whole-crater window, so
+whole-crater averaging destroys it — and it shows: at that scale every site in the
+2026-08-22 study, positive and control alike, collapses to CPR 0.17–0.48. That is the
+mosaic background, not a measurement of ice. **The null result is very likely a sampling
+artifact rather than a refutation of the physics**, which matters because it is currently
+written up as this project's headline negative finding.
+
+**What that does NOT establish, and we should not pretend otherwise:** F2 and F3 are
+small craters, and small craters have rough blocky interiors that raise CPR with or
+without ice. "Interior CPR > surroundings CPR" is the expected result from roughness
+alone. The F2/F3 match on its own cannot separate the two — which is the same point
+Supplementary Figure 6 makes, from the other direction.
+
+**The paper hands us a better test than anything we could assemble.** Supplementary
+Figures 4–5 cover nine doubly-shadowed craters — F1/F2/F3 (Faustini), H1/H2/H3
+(Haworth), S1/S2/S3 (Shoemaker) — and annotate in red those "having relatively higher
+number of CPR elevated pixels": **F2, F3, H3, S1**, against F1, H1, H2, S2, S3. All nine
+are small, doubly shadowed, inside PSRs, same thermal environment, same morphological
+class. That 4-vs-5 split controls for sampling scale, shadowing and crater morphology
+**by construction** — something no crater-catalogue control set achieves. There are also
+three explicit control ROIs (Tooley floor, Tooley wall, H3 exterior) plus F2's exterior
+with published values.
+
+`PRISM/src/nine_crater_validation_pipeline.py` implements it: measure interior CPR for
+all nine with PRISM's own unchanged formulas, then score PRISM's ranking against the
+paper's labels with a rank/AUC test rather than an absolute threshold (their label is
+relative — "relatively higher" — so a fixed cutoff wouldn't be like-for-like).
+
+**Two honest limits, both in the script's docstring:** it tests **CPR ordering only**,
+because PRISM's DOP needs Level-1A SLC phase-preserving data while these are
+amplitude-derived L4/L3C mosaics — so it cannot evaluate the combined criterion the paper
+says is required, and a positive result is necessary-but-not-sufficient. And it is
+**blocked on coordinates**: only F2/F3 have published positions transcribed into this
+project; the other seven and Tooley are in the main paper, not the supplement. The script
+**refuses to run and lists what's missing** rather than guessing — a fabricated coordinate
+would produce a real-looking but meaningless validation result. Tooley's wall ROI is
+excluded outright, since it is an arc in the paper and can't be reproduced by the
+circular-mask geometry without also sampling the floor.
+
 ## What's next (keep this list current)
 - [ ] Optical hazard detection (boulder/rock CV) — imagery blocker resolved (NASA ShadowCam confirmed real for all 7 shortlisted candidates, see below), labeling blocker is open again: BoulderNet was downloaded, verified, filtered for Earth-imagery contamination, then rejected by the user and deleted entirely (2026-08-23). No trained detector exists or is in progress. Deprioritized in favor of 3D terrain reconstruction (below) until a labeling approach is decided.
 - [ ] 3D terrain reconstruction for the frontend — new priority (2026-08-23). Combine real LOLA DEM elevation (already used for hazard mapping) with real ShadowCam/NAC imagery (confirmed real this session, all 7 shortlisted candidates) into an actual 3D terrain model per candidate, so frontend maps/animations show real Moon geometry instead of synthetic placeholders. Not yet started — see `ML_METHODS.md` for status.
@@ -246,5 +366,7 @@ comparison, and the frontend panel says so.
 - [ ] `PRISM/docs/PROJECT_EXPLAINED.md` (124 lines, plain-English + the honest validation-failure finding) and root `PROJECT_GUIDE.md` (632 lines, full team/stack/glossary) both function as "explain PRISM from scratch" documents with real overlap. Not merged this pass — they emphasize different things (PROJECT_EXPLAINED leads with the humbling `REFERENCE_PROJECT_COMPARISON.md` validation result; PROJECT_GUIDE has the team/role breakdown PROJECT_EXPLAINED lacks) and merging them well needs a content judgment call, not a mechanical one. Flagging for whoever picks this up next.
 - [ ] `CandidateComparisonChart` / `CandidateTimeSeriesChart` still read from `SYNTHETIC_CANDIDATES` / `SYNTHETIC_TIMESERIES` — could be upgraded to the real 7-candidate shortlist data now that it exists, dropping the synthetic map candidates but keeping the (clearly-labeled) synthetic time series, since the pipeline only has one real acquisition per candidate, not a real time series
 - [ ] Regional overview currently reports per-PSR hazard only for the 336 PSRs with existing radar coverage (reusing Objective 1's candidate table) — could be extended to all 653 catalogued PSRs if useful
-- [ ] DOP vs published ground truth — **the only live thread is obtaining Sinha et al.'s Supplementary Table 1, or corresponding with the authors** about their exact DOP processing chain. Hypotheses 1–8 are closed; see the stop rule above before reopening any of them
+- [ ] **Run `nine_crater_validation_pipeline.py`** — blocked only on the seven missing crater coordinates (main paper) and access to the L4/L3C mosaics. This is the highest-value open item: it is the first test in this project that can separate an ice signal from a roughness signal
+- [ ] DOP vs published ground truth — Supplementary Table 1 is now in hand, so this is no longer a dead end. Three live avenues, none repeating hypotheses 1–8: (a) run the DOP pipeline on the authors' own full-pol acquisitions, (b) compute compact-pol / hybrid-basis DOP on their compact-pol dataset `ch2_sar_ncls_20200808t201154198_d_cp_d18`, (c) apply Zhao et al. 2024's low-quality range-area removal (−30 dB antenna isolation) before computing DOP. The stop rule on hypotheses 1–8 as originally run still stands
+- [ ] Get the **main paper's crater table** into the repo's site list — F1, H1, H2, H3, S1, S2, S3 and Tooley coordinates + diameters. Everything above waits on this
 - [ ] `PRISM/outputs/objective1/paper_crater_validation/F2_F3_final_comparison_summary.json` has no committed generating script — it was written by a one-off step. If the F2/F3 comparison is ever re-run, fold it into `src/paper_crater_pipeline.py` so the summary can't drift from the pipeline again

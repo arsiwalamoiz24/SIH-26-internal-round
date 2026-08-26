@@ -111,11 +111,15 @@ export function GroundTruthValidationPanel({ v }: { v: PaperGroundTruthValidatio
 
         <p className="text-[9px] text-outline leading-relaxed m-0">
           <strong>Reading this honestly:</strong> the CPR agreement is real external validation that
-          PRISM&apos;s radar processing and crater geolocation are correct. The DOP gap is equally real
-          and unexplained &mdash; so DOP is reported as a measurement, not as validated evidence, and
-          CPR is the criterion PRISM ranks on. The paper&apos;s craters are also 700&ndash;3000 m
+          PRISM&apos;s radar processing and crater geolocation are correct &mdash; but it is{" "}
+          <strong>not sufficient evidence of ice</strong>. The paper&apos;s own Supplementary Fig. 6
+          shows rough terrain outside F2 reaching CPR 1.1 at DOP 0.17, and states that high CPR alone
+          cannot separate roughness-driven from volumetric scattering; the combined CPR-DOP criterion
+          is what does. So the unresolved DOP gap is an <strong>open problem blocking a complete
+          criterion</strong>, not a metric to set aside, and any ranking built on CPR alone cannot
+          tell subsurface ice from rough rock. The paper&apos;s craters are also 700&ndash;3000 m
           sub-features while PRISM&apos;s candidates are PSR-scale polygons, so applying the threshold
-          at PSR scale is an extrapolation. Full detail: <code>{v.doc}</code>.
+          at PSR scale is a further extrapolation. Full detail: <code>{v.doc}</code>.
         </p>
       </div>
     </div>
