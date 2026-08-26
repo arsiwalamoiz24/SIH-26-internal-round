@@ -46,5 +46,14 @@
     "Whether applying full gain-imbalance + phase-orthogonality calibration (not just bias-centering) would close the gap.",
     "Whether a different acquisition/date covering F2/F3 would give a different DOP value (multiple passes may exist; only one was tested).",
     "Whether the papers own DOP formula construction (Stokes S1-S4 from a specific covariance window size/shape) exactly matches PRISMs 5x5 local-window construction."
-  ]
+  ],
+  "status_update_2026_08_25": {
+    "summary": "The three 'not_yet_resolved' items below have since been resolved -- all three came back negative. The DOP gap is NOT explained by calibration, acquisition, or covariance-window construction.",
+    "resolved_by": "PRISM/docs/DOP_GROUND_TRUTH_INVESTIGATION.md (8 independently-tested hypotheses)",
+    "item_1_calibration": "RESOLVED / NEGATIVE. XML gain_imbalance + phase_orthogonality corrections are mathematically inert for a magnitude-ratio metric (hypothesis 3); relative HH/VV gain conventions are negligible (hypothesis 4); the real Ainsworth et al. 2006 crosstalk/channel-imbalance algorithm, implemented in full from the IEEE TGRS paper, found genuinely small and physically plausible crosstalk (0.3-2.4%) and moved DOP by <0.005 (F2 0.7927->0.7960, F3 0.7660->0.7705) (hypothesis 7).",
+    "item_2_different_acquisition": "RESOLVED / NEGATIVE. A genuinely independent covering acquisition (ch2_sar_ncxl_20191105t180525404_d_fp_m65, 2019-11-05, different date AND swath mode, found by point-in-polygon footprint test over 18 full-pol candidates and independently re-geolocated from scratch) gives F2 = 0.665, F3 = 0.757 -- lower than this file's baseline but still 5-7x the paper's target (hypothesis 8).",
+    "item_3_window_construction": "RESOLVED / NEGATIVE. Covariance windows swept 5-41 px plateau at 0.74-0.85 (hypothesis 1); the bias-free whole-crater-interior aggregate covariance gives the same answer, ruling out small-sample bias entirely (hypothesis 2); Zhao et al. 2024's own documented azimuth-only multilook formula (MLN=20) reproduces the same plateau (hypothesis 5).",
+    "revised_diagnosis": "This file's original headline_finding attributes the gap to 'a calibration/acquisition difference'. That attribution is superseded: both were tested to completion and neither explains it. Current best explanation is that the paper's DOP is not derived from raw Level-1A SLC phase-preserving data the way PRISM computes it -- PRISM's full coherent DOP (0.63-0.85) sits far above the paper's 0.10-0.13 and PRISM's power-only DOP (0.003-0.063) far below it, bracketing the target from both sides. Unresolvable without the paper's Supplementary Table 1.",
+    "what_still_stands": "Every measured value in this file is unchanged and still correct. The CPR agreement (F2 44.75% vs paper 47%, F3 33.3% vs paper 42%) is the project's validated ground-truth match and is now the recommended ground-truth metric; the DOP mismatch is real, reproducible, and honestly unexplained."
+  }
 }

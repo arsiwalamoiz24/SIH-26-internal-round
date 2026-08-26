@@ -141,6 +141,103 @@ Full writeup: `PRISM/docs/ML_METHODS.md` YOLOv8 section.
 
 Still primary-candidate-only; extending to the other 6 shortlisted candidates (which all have verified real ShadowCam coverage already) is a natural next step if wanted.
 
+## DOP could not be reconciled with published ground truth — CPR is the validated criterion instead (2026-08-25)
+
+**The question this was trying to settle:** does PRISM's radar physics actually agree with
+published, peer-reviewed lunar ice science, or only with itself? Sinha et al. 2026 (*npj
+Space Exploration* 2:22) publish a two-part criterion — CPR > 1 **and** DOP < 0.13 over a
+crater interior — plus the actual measured values for named, confirmed-ice craters. That
+makes a direct test possible: run PRISM's own pipeline on *their* craters and see whether
+it reproduces *their* numbers.
+
+**Result, split cleanly down the middle:**
+
+- **CPR reproduces the paper.** On F2 (1100 m) and F3 (700 m), two doubly-shadowed
+  sub-features inside Faustini's PSR, PRISM gets 44.75% and 33.3% of interior pixels above
+  CPR 1, against the paper's 47% and 42%; max CPR 1.82/1.48 against their 1.95/1.73. This
+  is the strongest external validation this project has — and note PRISM's CPR formula
+  (Zhao et al. 2024 Eq. 10, includes HV/VH cross terms) isn't even the same formula the
+  paper uses (their Eq. 1, HH/VV power only), so the agreement is not a tautology. It also
+  independently confirms the crater geolocation and acquisition selection are right.
+- **DOP does not, and could not be made to.** Same craters, same acquisition, same real
+  data: PRISM returns 0.79/0.84 against the paper's 0.10–0.13 — roughly 6× too high.
+
+**Eight hypotheses were tested to completion before concluding that.** Window/look-count
+size (swept 5–41 px), small-sample statistical bias (whole-crater aggregate covariance,
+the bias-free limit), absolute XML gain/phase calibration, relative HH/VV gain conventions,
+Zhao et al. 2024's own documented multilook formula, a self-derived reflection-symmetry
+crosstalk correction, the **real Ainsworth et al. 2006 crosstalk algorithm implemented in
+full from the IEEE TGRS paper**, and finally a completely independent covering acquisition
+(2019-11-05, different date *and* swath mode, found by point-in-polygon footprint testing
+over 18 full-pol candidates and re-geolocated from scratch). Every one came back negative
+and every one is reported as such — none was tuned after the fact to force a match.
+
+**The most informative negative result was hypothesis 7.** The crude reflection-symmetry
+correction (hypothesis 6) produced physically impossible 34–63% crosstalk coefficients —
+the kind of number that looks like it might be the bug. The correct Ainsworth algorithm
+found genuinely small, physically plausible crosstalk instead (0.3–2.4%, *cleaner* than
+Ainsworth's own real PiSAR example, with the algorithm's own quality flag η/β < 1 not even
+raising a complaint) — and moved DOP by less than 0.005. So the discrepancy is not a
+calibration bug hiding somewhere; the data is well-calibrated and the answer is still wrong.
+
+**Best current explanation, stated as a hypothesis and not as a finding:** PRISM's full
+coherent DOP (0.63–0.85) sits far above the paper's target, and PRISM's power-only DOP
+(0.003–0.063, dropping the coherent HH·VV* cross-term) far below it. The paper's 0.10–0.13
+falls *between* the two. That brackets the target from both sides and points at a different
+processing level or polarimetric basis rather than an error — consistent with the fact that
+the paper's only two DOP-interpretation citations (Raney et al. 2012, Mohan et al. 2011) are
+hybrid/compact-pol references, not standard quad-pol ones.
+
+### The decision that follows
+
+**CPR is PRISM's validated ground-truth criterion. DOP is reported as a real measurement,
+not as validated evidence.** DOP stays in the pipeline and on the dashboard — it is a
+genuine, reproducible measurement of real data — but it no longer carries the weight of
+"agrees with the literature," because it demonstrably doesn't, and we know exactly how hard
+that was tested.
+
+**Stop rule, deliberately recorded so nobody burns another session on it:** do not re-try
+hypotheses 1–8. Every calibration, processing and acquisition-level avenue reachable from
+public and institutional sources has been exhausted. The only remaining productive step is
+obtaining the paper's Supplementary Table 1 (their exact acquisitions and processing chain,
+not public) or corresponding with the authors directly.
+
+Full detail, including the per-hypothesis numbers: `PRISM/docs/DOP_GROUND_TRUTH_INVESTIGATION.md`.
+
+### Propagating the conclusion (rather than leaving it in one doc)
+
+A conclusion that only lives in the doc that produced it doesn't change anything, so:
+
+- **Corrected a superseded output file.** `outputs/objective1/paper_crater_validation/F2_F3_final_comparison_summary.json`
+  still listed the three "not yet resolved" questions — calibration, a different
+  acquisition, window construction — and attributed the DOP gap to "a calibration/acquisition
+  difference." All three were subsequently tested and came back negative, so that attribution
+  is now wrong. Added a `status_update_2026_08_25` block answering each item and superseding
+  the diagnosis; every *measured* value in the file is untouched and still correct. Worth
+  noting this file is an orphan artifact — no committed script regenerates it — so it would
+  have stayed wrong indefinitely.
+- **Surfaced both halves in the frontend.** New `GroundTruthValidationPanel` on Ice
+  Detection shows the CPR match (per-crater, PRISM vs paper, side by side) and the DOP
+  mismatch at equal visual weight, rather than leading with the win. New
+  `paperGroundTruthValidation` block in `prism_science_data.json` (transcribed verbatim from
+  the two real output JSONs, per this repo's convention that frontend "REAL" values are
+  traceable and never recomputed in the frontend) and a `getPaperGroundTruthValidation()`
+  getter in `lib/api.ts`. The Ice Detection DOP readout is now explicitly labelled "not
+  validated vs published," and `DOP_THRESHOLD_WARNING` was rewritten from the vague
+  "equivalence has not been established" to what was actually measured and tested.
+
+**One thing not pursued, and it's a decision rather than a gap:** real candidate-specific
+DOP exists for 4 of the 7 shortlisted PSRs, and all 4 fail DOP < 0.13 by 4.8×–6.5× — those
+4 being precisely the candidates with the *strongest* CPR > 1 signatures (7.2–10.8%). The
+other 3 were not pursued because their CPR > 1 fractions (0.004–0.14%) already fail
+criterion 1 by a wide margin, so DOP couldn't change their outcome. That reasoning was only
+recorded inside an output JSON; it's here now.
+
+**Scale caveat, carried forward:** the paper's craters are 700–3000 m doubly-shadowed
+sub-features; PRISM's 7 candidates are PSR-scale (9–43 km²) LOLA catalog polygons. Applying
+the paper's threshold at PSR scale is a reasonable extrapolation, not a literally validated
+comparison, and the frontend panel says so.
+
 ## What's next (keep this list current)
 - [ ] Optical hazard detection (boulder/rock CV) — imagery blocker resolved (NASA ShadowCam confirmed real for all 7 shortlisted candidates, see below), labeling blocker is open again: BoulderNet was downloaded, verified, filtered for Earth-imagery contamination, then rejected by the user and deleted entirely (2026-08-23). No trained detector exists or is in progress. Deprioritized in favor of 3D terrain reconstruction (below) until a labeling approach is decided.
 - [ ] 3D terrain reconstruction for the frontend — new priority (2026-08-23). Combine real LOLA DEM elevation (already used for hazard mapping) with real ShadowCam/NAC imagery (confirmed real this session, all 7 shortlisted candidates) into an actual 3D terrain model per candidate, so frontend maps/animations show real Moon geometry instead of synthetic placeholders. Not yet started — see `ML_METHODS.md` for status.
@@ -149,3 +246,5 @@ Still primary-candidate-only; extending to the other 6 shortlisted candidates (w
 - [ ] `PRISM/docs/PROJECT_EXPLAINED.md` (124 lines, plain-English + the honest validation-failure finding) and root `PROJECT_GUIDE.md` (632 lines, full team/stack/glossary) both function as "explain PRISM from scratch" documents with real overlap. Not merged this pass — they emphasize different things (PROJECT_EXPLAINED leads with the humbling `REFERENCE_PROJECT_COMPARISON.md` validation result; PROJECT_GUIDE has the team/role breakdown PROJECT_EXPLAINED lacks) and merging them well needs a content judgment call, not a mechanical one. Flagging for whoever picks this up next.
 - [ ] `CandidateComparisonChart` / `CandidateTimeSeriesChart` still read from `SYNTHETIC_CANDIDATES` / `SYNTHETIC_TIMESERIES` — could be upgraded to the real 7-candidate shortlist data now that it exists, dropping the synthetic map candidates but keeping the (clearly-labeled) synthetic time series, since the pipeline only has one real acquisition per candidate, not a real time series
 - [ ] Regional overview currently reports per-PSR hazard only for the 336 PSRs with existing radar coverage (reusing Objective 1's candidate table) — could be extended to all 653 catalogued PSRs if useful
+- [ ] DOP vs published ground truth — **the only live thread is obtaining Sinha et al.'s Supplementary Table 1, or corresponding with the authors** about their exact DOP processing chain. Hypotheses 1–8 are closed; see the stop rule above before reopening any of them
+- [ ] `PRISM/outputs/objective1/paper_crater_validation/F2_F3_final_comparison_summary.json` has no committed generating script — it was written by a one-off step. If the F2/F3 comparison is ever re-run, fold it into `src/paper_crater_pipeline.py` so the summary can't drift from the pipeline again

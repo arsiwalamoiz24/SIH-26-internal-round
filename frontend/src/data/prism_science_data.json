@@ -6,7 +6,7 @@
     "radarSource": "Chandrayaan-2 DFSAR L-Band Polarimetric Mosaic (2.5m/px)",
     "psrSource": "NASA LOLA South Pole Permanently Shadowed Regions (LROC)",
     "status": "OPERATIONAL_SCIENTIFIC_DATASET",
-    "version": "2.4.0-PRISM-REAL"
+    "version": "2.5.0-PRISM-REAL"
   },
   "baselineStats": {
     "pv_distribution": {
@@ -404,7 +404,7 @@
         "pctNan": 0.0,
         "bestSupportedFormulation": "linear-pol (HH/VV) Stokes-covariance DOP",
         "calibrationApplied": "XML bias_real/bias_imag subtraction only (per-polarization). No gain-imbalance or phase-orthogonality correction applied.",
-        "note": "Physics evidence score and ML anomaly score above were NOT recomputed to include this DOP value."
+        "note": "Physics evidence score and ML anomaly score above were NOT recomputed to include this DOP value. This DOP is a real, reproducible measurement of PRISM's own pipeline, but it is NOT validated against published ground truth: 8 independently-tested hypotheses failed to reconcile PRISM's DOP with Sinha et al. 2026's reported 0.10-0.13 at their own confirmed-ice craters. Use the CPR criterion (see paperGroundTruthValidation) as the validated ground-truth metric. See PRISM/docs/DOP_GROUND_TRUTH_INVESTIGATION.md."
       },
       "pipelineValidationNonCandidate": {
         "status": "NON-CANDIDATE VALIDATION -- different (2025-10-25) acquisition, does not cover this candidate",
@@ -27474,5 +27474,62 @@
         ]
       ]
     }
+  },
+  "paperGroundTruthValidation": {
+    "source_type": "REAL",
+    "source": "PRISM/outputs/objective1/paper_crater_validation/F2_F3_final_comparison_summary.json + PRISM/outputs/objective1/paper_criterion/seven_candidates_paper_criterion.json",
+    "doc": "PRISM/docs/DOP_GROUND_TRUTH_INVESTIGATION.md",
+    "paper": "Sinha et al. 2026, npj Space Exploration 2:22, doi:10.1038/s44453-026-00038-9",
+    "criterion": "CPR > 1 (crater-interior pixels) combined with DOP < 0.13 = strong evidence of volumetric scattering / subsurface ice",
+    "whatWasTested": "PRISM's own pipeline was run on the paper's own confirmed-ice craters F2 (1100 m) and F3 (700 m) inside Faustini's PSR, using crater-scale circular interior masks, and its output compared directly against the paper's published numbers.",
+    "cpr": {
+      "verdict": "VALIDATED",
+      "summary": "PRISM's CPR reproduces the paper's own reported values on the paper's own confirmed-ice craters.",
+      "craters": [
+        {
+          "id": "F2",
+          "host": "Faustini",
+          "paperVerdict": "Strong evidence",
+          "prismPctGt1": 44.752,
+          "paperPctGt1": 47,
+          "prismMax": 1.8248525857925415,
+          "paperMax": 1.95,
+          "match": "CLOSE MATCH"
+        },
+        {
+          "id": "F3",
+          "host": "Faustini",
+          "paperVerdict": "Likely",
+          "prismPctGt1": 33.333,
+          "paperPctGt1": 42,
+          "prismMax": 1.477660894393921,
+          "paperMax": 1.73,
+          "match": "SAME REGIME, PRISM SOMEWHAT LOWER"
+        }
+      ]
+    },
+    "dop": {
+      "verdict": "NOT RECONCILED",
+      "summary": "On the same craters, same acquisition, same real data, PRISM's DOP comes back 6x higher than the paper's. Eight independent hypotheses -- covariance-window size, small-sample bias, absolute and relative calibration, Zhao et al. 2024's multilook formula, a self-derived crosstalk correction, the full Ainsworth et al. 2006 crosstalk algorithm, and a completely independent covering acquisition -- were each tested to completion. None closed the gap.",
+      "paperRange": [
+        0.1,
+        0.13
+      ],
+      "prismF2Mean": 0.7855011224746704,
+      "prismF3Mean": 0.842583179473877,
+      "hypothesesTested": 8,
+      "bracketingDiagnostic": "PRISM's full coherent DOP (0.63-0.85) sits far above the paper's target and PRISM's power-only DOP (0.003-0.063) far below it -- the paper's 0.10-0.13 falls between the two, suggesting a different processing level or polarimetric basis rather than a calibration error.",
+      "remainingStep": "Unresolvable from public sources without the paper's Supplementary Table 1 (their exact acquisitions and processing chain) or direct correspondence with the authors."
+    },
+    "shortlistAgainstCriterion": {
+      "candidatesEvaluated": 7,
+      "meetCriterion1CprGt1Present": 7,
+      "dopComputedFor": 4,
+      "meetFullCriterion": 0,
+      "scaleCaveat": "The paper's craters are 700-3000 m doubly-shadowed sub-features; PRISM's 7 candidates are PSR-scale (9-43 km2) LOLA catalog polygons. Applying the paper's threshold at PSR scale is a reasonable extrapolation, not a literally validated comparison.",
+      "dopNotPursuedNote": "The 3 candidates without DOP were not pursued: their CPR>1 fractions (0.004%-0.14%) already fail criterion 1 by a wide margin.",
+      "headline": "No candidate meets the FULL paper criterion. All 4 candidates with real DOP fail the <0.13 threshold by 4.8x-6.5x -- and those 4 are precisely the ones with the strongest CPR>1 signatures (7.2%-10.8%)."
+    },
+    "recommendation": "Use PRISM's CPR-based criterion as the validated ground-truth metric. Report DOP as a real measurement, not as validated evidence, until the paper's processing chain is available."
   }
 }

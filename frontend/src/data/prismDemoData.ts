@@ -219,7 +219,7 @@ export const REAL_CANDIDATE: RealCandidate = {
 };
 
 export const DOP_THRESHOLD_WARNING =
-  "Published DOP < 0.13 criterion is not directly comparable to this result because calibration/basis/formula equivalence has not been established.";
+  "Not validated against published ground truth. Running this same pipeline on Sinha et al. 2026's own confirmed-ice craters returns DOP ~6x their reported 0.10-0.13, and 8 independently-tested hypotheses (window size, small-sample bias, absolute and relative calibration, Zhao 2024 multilook, self-derived and full Ainsworth 2006 crosstalk, and an independent covering acquisition) failed to close that gap. CPR, from the same data, does match the paper -- so CPR is the criterion PRISM ranks on. See PRISM/docs/DOP_GROUND_TRUTH_INVESTIGATION.md.";
 
 export const TERRAIN_THRESHOLD_LABEL = "Unvalidated project threshold";
 
