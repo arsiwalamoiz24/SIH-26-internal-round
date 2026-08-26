@@ -6,6 +6,7 @@ Lunar south-pole water-ice screening, hazard mapping, and landing/traverse plann
 
 | If you want... | Read |
 |---|---|
+| **Picking this up from someone else** — what's blocked, on whom, and the traps already hit | [`HANDOVER.md`](./HANDOVER.md) |
 | The full plain-English explainer (problem, data, pipeline, glossary) | [`PROJECT_GUIDE.md`](./PROJECT_GUIDE.md) |
 | **Why** things are built the way they are, and what changed recently | [`DECISIONS.md`](./DECISIONS.md) |
 | The original requirements/spec | [`PRISM_PRD.md`](./PRISM_PRD.md) |
@@ -32,7 +33,7 @@ PRISM_PRD.md        requirements
 
 1. **Ice Detection** (`PRISM/src/radar_pipeline.py`, `ml_*_pipeline.py`) — DFSAR Pv/CPR/SERD/T-Ratio screening + Isolation Forest. Real, done, documented in `PRISM/docs/ML_METHODS.md`.
 2. **Hazard Mapping — terrain** (`PRISM/src/hazard_map_*.py`) — LOLA DEM slope/roughness/illumination. Real, done (primary candidate + full 7-shortlist + regional overview).
-2b. **Hazard Mapping — optical** (`PRISM/src/cnn_yolo_interface.py`) — boulder detection via YOLOv8/CNN. Not built yet — blocked on finding an OHRC scene that covers the candidate; see `PRISM/docs/ML_METHODS.md` for where to look next.
+2b. **Hazard Mapping — optical** (`PRISM/src/cnn_yolo_interface.py`) — boulder detection via YOLOv8/CNN. Not built yet. The imagery blocker is **resolved**: Chandrayaan-2 OHRC has no south-polar coverage here (confirmed dead end), and it was replaced by NASA ShadowCam, verified real for all 7 shortlisted candidates. The remaining blocker is **labelled training data** — see `PRISM/docs/ML_METHODS.md` and `DECISIONS.md`.
 3. **Landing Site Selection** — slope + solar + ice-proximity scoring. Illustrative model in the frontend today, not yet fed by the real Module 2 output above.
 4. **Rover Traverse** — A* pathfinding. Same status as #3.
 5/6. **Frontend** — `frontend/`, Next.js dashboard rendering all of the above.
