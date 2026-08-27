@@ -1,0 +1,514 @@
+[
+  {
+    "site_id": "SP_840980_0797630",
+    "role": "PRISM candidate (primary)",
+    "illumination_value": 0.0,
+    "illumination_status": "PASS",
+    "temperature_K": 84.3,
+    "temperature_status": "PASS",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 3324,
+        "PASS": 397
+      },
+      "dop": {
+        "FAIL": 3426,
+        "PASS": 295
+      },
+      "backscatter": {
+        "FAIL": 2610,
+        "PASS": 1111
+      },
+      "phase": {
+        "FAIL": 1135,
+        "PASS": 2586
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "PASS": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 0.6347002796085699,
+    "cpr_median": 0.569480677454015,
+    "dop_mean": 0.4219598896822821,
+    "dop_median": 0.41256228633743197,
+    "backscatter_db_mean": -13.872357550991307,
+    "final_classification": "NON_ICE"
+  },
+  {
+    "site_id": "SP_832640_0090770",
+    "role": "PRISM candidate",
+    "illumination_value": 0.0,
+    "illumination_status": "PASS",
+    "temperature_K": 135.0,
+    "temperature_status": "FAIL",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 2783,
+        "PASS": 938
+      },
+      "dop": {
+        "FAIL": 3338,
+        "PASS": 383
+      },
+      "backscatter": {
+        "FAIL": 2065,
+        "PASS": 1656
+      },
+      "phase": {
+        "FAIL": 1425,
+        "PASS": 2296
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "FAIL": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 0.8144574047184796,
+    "cpr_median": 0.7050885352782831,
+    "dop_mean": 0.40423478121001055,
+    "dop_median": 0.39908770291349677,
+    "backscatter_db_mean": -14.63283477112749,
+    "final_classification": "NON_ICE"
+  },
+  {
+    "site_id": "SP_830080_0535120",
+    "role": "PRISM candidate",
+    "illumination_value": 0.0,
+    "illumination_status": "PASS",
+    "temperature_K": 156.7,
+    "temperature_status": "FAIL",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 2439,
+        "PASS": 1282
+      },
+      "dop": {
+        "FAIL": 3277,
+        "PASS": 444
+      },
+      "backscatter": {
+        "FAIL": 2523,
+        "PASS": 1198
+      },
+      "phase": {
+        "FAIL": 1607,
+        "PASS": 2114
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "FAIL": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 0.9490699159932857,
+    "cpr_median": 0.8398856792657893,
+    "dop_mean": 0.3575602449022352,
+    "dop_median": 0.36302799981130723,
+    "backscatter_db_mean": -13.316861487286706,
+    "final_classification": "NON_ICE"
+  },
+  {
+    "site_id": "SP_842420_0421060",
+    "role": "PRISM candidate",
+    "illumination_value": 0.0,
+    "illumination_status": "PASS",
+    "temperature_K": 134.1,
+    "temperature_status": "FAIL",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 3214,
+        "PASS": 507
+      },
+      "dop": {
+        "FAIL": 3445,
+        "PASS": 276
+      },
+      "backscatter": {
+        "FAIL": 2146,
+        "PASS": 1575
+      },
+      "phase": {
+        "FAIL": 1096,
+        "PASS": 2625
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "FAIL": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 0.6723396916424499,
+    "cpr_median": 0.596706898735434,
+    "dop_mean": 0.4241562090245171,
+    "dop_median": 0.4265525529991149,
+    "backscatter_db_mean": -14.418827501939743,
+    "final_classification": "NON_ICE"
+  },
+  {
+    "site_id": "SP_817950_1586580",
+    "role": "PRISM candidate",
+    "illumination_value": 0.0,
+    "illumination_status": "PASS",
+    "temperature_K": 118.9,
+    "temperature_status": "FAIL",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 2852,
+        "PASS": 869
+      },
+      "dop": {
+        "FAIL": 3394,
+        "PASS": 327
+      },
+      "backscatter": {
+        "FAIL": 1544,
+        "PASS": 2177
+      },
+      "phase": {
+        "FAIL": 1283,
+        "PASS": 2438
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "FAIL": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 0.7968876001263612,
+    "cpr_median": 0.70047685390749,
+    "dop_mean": 0.41572432589404107,
+    "dop_median": 0.41019704345339425,
+    "backscatter_db_mean": -15.3674947181896,
+    "final_classification": "NON_ICE"
+  },
+  {
+    "site_id": "SP_819860_1568660",
+    "role": "PRISM candidate",
+    "illumination_value": 0.0,
+    "illumination_status": "PASS",
+    "temperature_K": 102.7,
+    "temperature_status": "PASS",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 3255,
+        "PASS": 466
+      },
+      "dop": {
+        "FAIL": 3435,
+        "PASS": 286
+      },
+      "backscatter": {
+        "FAIL": 2775,
+        "PASS": 946
+      },
+      "phase": {
+        "FAIL": 1164,
+        "PASS": 2557
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "PASS": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 0.6489026910528628,
+    "cpr_median": 0.5664006667454403,
+    "dop_mean": 0.43837731358663456,
+    "dop_median": 0.43187313339548666,
+    "backscatter_db_mean": -12.727383663245108,
+    "final_classification": "NON_ICE"
+  },
+  {
+    "site_id": "SP_809570_2454450",
+    "role": "PRISM candidate",
+    "illumination_value": 0.0,
+    "illumination_status": "PASS",
+    "temperature_K": 144.3,
+    "temperature_status": "FAIL",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 3146,
+        "PASS": 575
+      },
+      "dop": {
+        "FAIL": 3395,
+        "PASS": 326
+      },
+      "backscatter": {
+        "FAIL": 261,
+        "PASS": 3460
+      },
+      "phase": {
+        "FAIL": 1127,
+        "PASS": 2594
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "FAIL": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 0.7048057879415567,
+    "cpr_median": 0.6221982536065582,
+    "dop_mean": 0.4189722679108858,
+    "dop_median": 0.4077643247329552,
+    "backscatter_db_mean": -18.07267535444306,
+    "final_classification": "NON_ICE"
+  },
+  {
+    "site_id": "LCROSS_Cabeus",
+    "role": "POSITIVE CONTROL (LCROSS)",
+    "illumination_value": 0.0022422,
+    "illumination_status": "PASS",
+    "temperature_K": 45.8,
+    "temperature_status": "PASS",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 2003,
+        "PASS": 1718
+      },
+      "dop": {
+        "FAIL": 3277,
+        "PASS": 444
+      },
+      "backscatter": {
+        "PASS": 3721
+      },
+      "phase": {
+        "FAIL": 1952,
+        "PASS": 1769
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "PASS": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 1.0915988055115882,
+    "cpr_median": 0.9646008611442005,
+    "dop_mean": 0.37880152596133165,
+    "dop_median": 0.367188092997353,
+    "backscatter_db_mean": -24.391750112065758,
+    "final_classification": "NON_ICE"
+  },
+  {
+    "site_id": "Wiechert",
+    "role": "NEGATIVE CONTROL (M3)",
+    "illumination_value": 0.053103,
+    "illumination_status": "PASS",
+    "temperature_K": 267.2,
+    "temperature_status": "FAIL",
+    "n_total_px": 3721,
+    "n_valid_px": 3721,
+    "n_ICE": 0,
+    "n_NON_ICE": 3721,
+    "n_UNRESOLVED": 0,
+    "pct_ICE": 0.0,
+    "pct_NON_ICE": 100.0,
+    "pct_UNRESOLVED": 0.0,
+    "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+    "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+    "condition_pass_rates": {
+      "cpr": {
+        "FAIL": 3391,
+        "PASS": 330
+      },
+      "dop": {
+        "FAIL": 3528,
+        "PASS": 193
+      },
+      "backscatter": {
+        "FAIL": 1994,
+        "PASS": 1727
+      },
+      "phase": {
+        "FAIL": 1162,
+        "PASS": 2559
+      },
+      "weighted_power": {
+        "NO_DATA": 3721
+      },
+      "volume_scattering": {
+        "NO_DATA": 3721
+      },
+      "roughness": {
+        "NO_DATA": 3721
+      },
+      "temperature": {
+        "FAIL": 3721
+      },
+      "illumination": {
+        "PASS": 3721
+      }
+    },
+    "cpr_mean": 0.5865082480444566,
+    "cpr_median": 0.5155120648015198,
+    "dop_mean": 0.4671072197894086,
+    "dop_median": 0.4659754502545328,
+    "backscatter_db_mean": -14.760434374836555,
+    "final_classification": "NON_ICE"
+  }
+]

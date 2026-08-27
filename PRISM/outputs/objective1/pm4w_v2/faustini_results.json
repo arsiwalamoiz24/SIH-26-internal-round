@@ -1,0 +1,57 @@
+{
+  "site_id": "Faustini",
+  "role": "M3-positive reference site (Li et al. 2018); PM4W's own paper flags Faustini for follow-up",
+  "illumination_value": 0.023,
+  "illumination_status": "PASS",
+  "temperature_K": 51.833,
+  "temperature_status": "PASS",
+  "n_total_px": 3721,
+  "n_valid_px": 3721,
+  "n_ICE": 0,
+  "n_NON_ICE": 3721,
+  "n_UNRESOLVED": 0,
+  "pct_ICE": 0.0,
+  "pct_NON_ICE": 100.0,
+  "pct_UNRESOLVED": 0.0,
+  "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+  "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+  "condition_pass_rates": {
+    "cpr": {
+      "FAIL": 3393,
+      "PASS": 328
+    },
+    "dop": {
+      "FAIL": 3486,
+      "PASS": 235
+    },
+    "backscatter": {
+      "FAIL": 2999,
+      "PASS": 722
+    },
+    "phase": {
+      "FAIL": 1231,
+      "PASS": 2490
+    },
+    "weighted_power": {
+      "NO_DATA": 3721
+    },
+    "volume_scattering": {
+      "NO_DATA": 3721
+    },
+    "roughness": {
+      "NO_DATA": 3721
+    },
+    "temperature": {
+      "PASS": 3721
+    },
+    "illumination": {
+      "PASS": 3721
+    }
+  },
+  "cpr_mean": 0.5657197623202402,
+  "cpr_median": 0.48731589245765317,
+  "dop_mean": 0.4566559748972543,
+  "dop_median": 0.4524588415456171,
+  "backscatter_db_mean": -13.12131837864951,
+  "final_classification": "NON_ICE"
+}
