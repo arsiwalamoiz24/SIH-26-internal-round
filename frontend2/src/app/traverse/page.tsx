@@ -1539,7 +1539,7 @@ function TelemetryValue({
       <div
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "9px",
+          fontSize: "10px",
           color: "var(--text-muted)",
           textTransform: "uppercase",
           letterSpacing: "0.1em",
@@ -1551,7 +1551,7 @@ function TelemetryValue({
       <div
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "14px",
+          fontSize: "16px",
           color,
         }}
       >
@@ -1584,7 +1584,7 @@ function TelemetryRow({
       <span
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "11px",
+          fontSize: "12px",
           letterSpacing: "0.06em",
           textTransform: "uppercase",
           color: "var(--text-secondary)",
@@ -1596,7 +1596,7 @@ function TelemetryRow({
       <span
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "15px",
+          fontSize: "14px",
           color,
         }}
       >
@@ -2216,11 +2216,11 @@ export default function TraversePage() {
             onClick={toggleSimulation}
             disabled={plannedRoute.length < 2}
             style={{
-              padding: "7px 14px",
+              padding: "10px 22px",
               fontFamily: "var(--font-mono)",
-              fontSize: "10px",
+              fontSize: "11px",
               fontWeight: 700,
-              letterSpacing: "0.1em",
+              letterSpacing: "0.12em",
               textTransform: "uppercase",
               background: simComplete
                 ? "var(--signal-high)"
@@ -2229,7 +2229,7 @@ export default function TraversePage() {
                   : PATH_COLOR,
               color: "#fff",
               border: "none",
-              borderRadius: "4px",
+              borderRadius: "var(--radius-sm)",
               cursor:
                 plannedRoute.length > 1
                   ? "pointer"
@@ -2338,7 +2338,7 @@ export default function TraversePage() {
                 background:
                   "color-mix(in srgb, var(--surface) 85%, transparent)",
                 border: "1px solid var(--signal-high)",
-                borderRadius: "8px",
+                borderRadius: "var(--radius-lg)",
                 textAlign: "center",
                 backdropFilter: "blur(8px)",
               }}
@@ -2519,12 +2519,13 @@ export default function TraversePage() {
                 marginTop: "10px",
                 width: "100%",
                 fontFamily: "var(--font-mono)",
-                fontSize: "10px",
-                padding: "6px 8px",
-                background: "var(--surface-alt, var(--surface))",
+                fontSize: "12px",
+                padding: "6px 10px",
+                background: "transparent",
                 color: "var(--text-primary)",
                 border: "1px solid var(--border)",
-                borderRadius: "3px",
+                borderRadius: "var(--radius-sm)",
+                cursor: "pointer",
               }}
             >
               {ALL_TRAVERSE_SITES.map((site) => (
@@ -2575,7 +2576,7 @@ export default function TraversePage() {
                     width: "13px",
                     height: "4px",
                     background: color,
-                    borderRadius: "3px",
+                    borderRadius: "var(--radius-sm)",
                   }}
                 />
 
