@@ -14,6 +14,7 @@ Lunar south-pole water-ice screening, hazard mapping, and landing/traverse plann
 | Open questions / TODO | [`PRISM/TODO.md`](./PRISM/TODO.md) |
 | Frontend setup | [`frontend2/README.md`](./frontend2/README.md) |
 | What's current as of 2026-08-27 (ML status, traverse engine, frontend audit) | [`PRISM/docs/CURRENT_STATUS_2026-08-27.md`](./PRISM/docs/CURRENT_STATUS_2026-08-27.md) |
+| Hackathon evaluation talk track + Q&A (supersedes `script.pdf`) | [`EVALUATION_SCRIPT.md`](./EVALUATION_SCRIPT.md) |
 
 ## Layout
 
