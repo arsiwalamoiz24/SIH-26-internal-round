@@ -1,0 +1,57 @@
+{
+  "site_id": "de_Gerlache",
+  "role": "PM4W priority site (de_Gerlache)",
+  "illumination_value": 0.0,
+  "illumination_status": "PASS",
+  "temperature_K": 90.0,
+  "temperature_status": "PASS",
+  "n_total_px": 3721,
+  "n_valid_px": 3721,
+  "n_ICE": 0,
+  "n_NON_ICE": 3721,
+  "n_UNRESOLVED": 0,
+  "pct_ICE": 0.0,
+  "pct_NON_ICE": 100.0,
+  "pct_UNRESOLVED": 0.0,
+  "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+  "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+  "condition_pass_rates": {
+    "cpr": {
+      "FAIL": 3451,
+      "PASS": 270
+    },
+    "dop": {
+      "FAIL": 3566,
+      "PASS": 155
+    },
+    "backscatter": {
+      "FAIL": 468,
+      "PASS": 3253
+    },
+    "phase": {
+      "FAIL": 1174,
+      "PASS": 2547
+    },
+    "weighted_power": {
+      "NO_DATA": 3721
+    },
+    "volume_scattering": {
+      "NO_DATA": 3721
+    },
+    "roughness": {
+      "NO_DATA": 3721
+    },
+    "temperature": {
+      "PASS": 3721
+    },
+    "illumination": {
+      "PASS": 3721
+    }
+  },
+  "cpr_mean": 0.5034716016945677,
+  "cpr_median": 0.4189494994804032,
+  "dop_mean": 0.5500892942384131,
+  "dop_median": 0.5547799492568193,
+  "backscatter_db_mean": -17.747528674370066,
+  "final_classification": "NON_ICE"
+}

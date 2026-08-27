@@ -1,0 +1,57 @@
+{
+  "site_id": "Shackleton",
+  "role": "PM4W priority site (Shackleton)",
+  "illumination_value": 0.0,
+  "illumination_status": "PASS",
+  "temperature_K": 90.0,
+  "temperature_status": "PASS",
+  "n_total_px": 3721,
+  "n_valid_px": 3721,
+  "n_ICE": 0,
+  "n_NON_ICE": 3721,
+  "n_UNRESOLVED": 0,
+  "pct_ICE": 0.0,
+  "pct_NON_ICE": 100.0,
+  "pct_UNRESOLVED": 0.0,
+  "n_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0,
+  "pct_PARTIAL_ICE_CONSISTENT_diagnostic_only": 0.0,
+  "condition_pass_rates": {
+    "cpr": {
+      "FAIL": 2607,
+      "PASS": 1114
+    },
+    "dop": {
+      "FAIL": 3553,
+      "PASS": 168
+    },
+    "backscatter": {
+      "FAIL": 501,
+      "PASS": 3220
+    },
+    "phase": {
+      "FAIL": 1457,
+      "PASS": 2264
+    },
+    "weighted_power": {
+      "NO_DATA": 3721
+    },
+    "volume_scattering": {
+      "NO_DATA": 3721
+    },
+    "roughness": {
+      "NO_DATA": 3721
+    },
+    "temperature": {
+      "PASS": 3721
+    },
+    "illumination": {
+      "PASS": 3721
+    }
+  },
+  "cpr_mean": 0.8372498142438705,
+  "cpr_median": 0.7627052189384789,
+  "dop_mean": 0.44572849526290487,
+  "dop_median": 0.4609193857660185,
+  "backscatter_db_mean": -22.295441504376317,
+  "final_classification": "NON_ICE"
+}

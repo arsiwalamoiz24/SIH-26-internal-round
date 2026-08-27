@@ -1,0 +1,4 @@
+site_id,known_ice,slope_source,dop_uncorr_mean,dop_corr_mean,dop_uncorr_pct_pass,dop_corr_pct_pass,slope_mean_deg,slope_max_deg,interpretation
+Faustini,True,"LOLA DEM (LDEM_80S_20MPP_ADJ.TIF, NASA GSFC PGDA)",0.4567,0.4567,6.32,6.32,23.5,31.8,DOP not significantly changed by slope correction
+SP_840980_0797630,,"LOLA DEM (LDEM_80S_20MPP_ADJ.TIF, NASA GSFC PGDA)",0.422,0.422,7.93,7.93,14.9,26.2,DOP not significantly changed by slope correction
+Shackleton,,"LOLA DEM (LDEM_80S_20MPP_ADJ.TIF, NASA GSFC PGDA)",0.4457,0.4457,4.51,4.51,17.0,31.5,DOP not significantly changed by slope correction

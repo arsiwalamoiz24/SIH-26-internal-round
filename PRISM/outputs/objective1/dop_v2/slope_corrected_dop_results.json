@@ -1,0 +1,92 @@
+[
+  {
+    "site_id": "Faustini",
+    "lat": -87.3,
+    "lon": 77.0,
+    "slope_source": "LOLA DEM (LDEM_80S_20MPP_ADJ.TIF, NASA GSFC PGDA)",
+    "n_valid_px": 3721,
+    "dop_uncorrected": {
+      "mean": 0.4566559748972543,
+      "median": 0.4524588415456171,
+      "min": 0.02875842203748397,
+      "max": 1.2862765727364767,
+      "n_pass_dop_lt_0p2": 235,
+      "pct_pass": 6.32
+    },
+    "dop_slope_corrected": {
+      "mean": 0.4566559748972543,
+      "median": 0.4524588415456171,
+      "min": 0.02875842203748397,
+      "max": 1.2862765727364767,
+      "n_pass_dop_lt_0p2": 235,
+      "pct_pass": 6.32
+    },
+    "slope_stats_deg": {
+      "mean": 23.473089477641594,
+      "max": 31.836441149283075,
+      "min": 15.938759575388026
+    },
+    "interpretation": "DOP not significantly changed by slope correction",
+    "known_ice": true
+  },
+  {
+    "site_id": "SP_840980_0797630",
+    "lat": -84.098,
+    "lon": 79.764,
+    "slope_source": "LOLA DEM (LDEM_80S_20MPP_ADJ.TIF, NASA GSFC PGDA)",
+    "n_valid_px": 3721,
+    "dop_uncorrected": {
+      "mean": 0.4219598896822821,
+      "median": 0.41256228633743197,
+      "min": 0.02253185763716572,
+      "max": 6.54600070403787,
+      "n_pass_dop_lt_0p2": 295,
+      "pct_pass": 7.93
+    },
+    "dop_slope_corrected": {
+      "mean": 0.4219598896822821,
+      "median": 0.41256228633743197,
+      "min": 0.02253185763716572,
+      "max": 6.54600070403787,
+      "n_pass_dop_lt_0p2": 295,
+      "pct_pass": 7.93
+    },
+    "slope_stats_deg": {
+      "mean": 14.906547806651092,
+      "max": 26.227204853342208,
+      "min": 2.4467121360295674
+    },
+    "interpretation": "DOP not significantly changed by slope correction",
+    "known_ice": null
+  },
+  {
+    "site_id": "Shackleton",
+    "lat": -89.54,
+    "lon": 129.2,
+    "slope_source": "LOLA DEM (LDEM_80S_20MPP_ADJ.TIF, NASA GSFC PGDA)",
+    "n_valid_px": 3721,
+    "dop_uncorrected": {
+      "mean": 0.44572849526290487,
+      "median": 0.4609193857660185,
+      "min": -92.18931627730937,
+      "max": 33.663771083561436,
+      "n_pass_dop_lt_0p2": 168,
+      "pct_pass": 4.51
+    },
+    "dop_slope_corrected": {
+      "mean": 0.44572849526290487,
+      "median": 0.4609193857660185,
+      "min": -92.18931627730937,
+      "max": 33.663771083561436,
+      "n_pass_dop_lt_0p2": 168,
+      "pct_pass": 4.51
+    },
+    "slope_stats_deg": {
+      "mean": 16.98823216173611,
+      "max": 31.529149378440433,
+      "min": 3.6912688683442467
+    },
+    "interpretation": "DOP not significantly changed by slope correction",
+    "known_ice": null
+  }
+]
