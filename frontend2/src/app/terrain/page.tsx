@@ -133,15 +133,34 @@ function CraterMesh({
       : { rimByAngle: new Float32Array(ANGLE_BUCKETS).fill(AVG_RIM_UNITS), scale: 1 };
   }, [boundary]);
 
+  const depthScale = (elevRange / 1742) * 3.2;
+  // Meters-of-real-relief -> mesh-Y-units, tied to this candidate's own
+  // documented elevation range (not the wide grid's own min/max, which can
+  // be dominated by distant terrain far outside the crater itself).
+  const metersToMeshY = depthScale / (elevRange / 2);
+
+  // Real terrain height at one mesh-space (x,z) point -- pulled out of the
+  // geometry loop below so the ShadowCam decal (a separate small mesh, see
+  // below) can sample the same real elevation grid to sit on the surface
+  // instead of floating at a guessed height.
+  const sampleHeight = (x: number, z: number): number => {
+    if (wideGrid) {
+      const halfM = wideGrid.window_half_m;
+      const gridSize = wideGrid.grid_size;
+      const realX = x / scale, realZ = z / scale;
+      const u = ((realX + halfM) / (2 * halfM)) * (gridSize - 1);
+      const v = ((realZ + halfM) / (2 * halfM)) * (gridSize - 1);
+      if (u >= 0 && u <= gridSize - 1 && v >= 0 && v <= gridSize - 1) {
+        return sampleElevationGrid(wideGrid.elevationGridRelativeM, gridSize, u, v) * metersToMeshY;
+      }
+    }
+    return 0;
+  };
+
   const geometry = useMemo(() => {
     const geo = new THREE.PlaneGeometry(20, 20, 160, 160);
     geo.rotateX(-Math.PI / 2);
 
-    const depthScale = (elevRange / 1742) * 3.2;
-    // Meters-of-real-relief -> mesh-Y-units, tied to this candidate's own
-    // documented elevation range (not the wide grid's own min/max, which can
-    // be dominated by distant terrain far outside the crater itself).
-    const metersToMeshY = depthScale / (elevRange / 2);
     const positions = geo.attributes.position;
 
     for (let i = 0; i < positions.count; i++) {
@@ -201,14 +220,36 @@ function CraterMesh({
     return geo;
   }, [elevRange, wideGrid, rimByAngle, scale]);
 
+  const meshHalfExtentM = MESH_HALF / (scale || 1);
+
+  // A single real ShadowCam frame is a normal ~1.5km-half orbital crop --
+  // correct and real, but far smaller than Faustini/Cabeus's ~19km-wide mesh
+  // (the other 7 candidates' craters are close enough in size to their crop
+  // that texturing the whole mesh with it is reasonable). Stretching that
+  // small patch to fill the whole mesh would misrepresent it as full
+  // coverage; showing it at true scale via UV clamping instead bleeds the
+  // crop's own border pixel across the rest of the mesh (a smeared, glitchy-
+  // looking artifact, not actually a fix). So for that specific mismatch,
+  // don't texture the terrain mesh with ShadowCam at all -- show the real
+  // hazard classification underneath (still real per-site context, not
+  // blank) and place the real ShadowCam photo as a separate, correctly-
+  // scaled, correctly-positioned flat panel resting on the terrain, the way
+  // a real photo inset would sit on a map, rather than wallpapering it.
+  const shadowcamHalfM = textureHalfM?.shadowcam;
+  const showShadowcamAsDecal =
+    activeLayer === "shadowcam" &&
+    !!shadowcamHalfM &&
+    meshHalfExtentM / shadowcamHalfM > 1.3;
+  const baseLayer = showShadowcamAsDecal ? "hazard" : activeLayer;
+
   // Texture: a single cropped science panel matching the active 2D layer
   // (never the old multi-panel wallpaper), scaled so its real-world footprint
   // lines up with the mesh's own real-world size.
   const textureUrl =
-    activeLayer === "shadowcam" && shadowcamUrl ? shadowcamUrl :
-    activeLayer === "hazard" ? `/assets/prism/hazard_only/${candidateId}.png` :
-    activeLayer === "terrain" ? `/assets/prism/elevation_only/${candidateId}.png` :
-    activeLayer === "radar" ? `/assets/prism/radar_only/${candidateId}.png` :
+    baseLayer === "shadowcam" && shadowcamUrl ? shadowcamUrl :
+    baseLayer === "hazard" ? `/assets/prism/hazard_only/${candidateId}.png` :
+    baseLayer === "terrain" ? `/assets/prism/elevation_only/${candidateId}.png` :
+    baseLayer === "radar" ? `/assets/prism/radar_only/${candidateId}.png` :
     `/assets/prism/hazard_only/${candidateId}.png`;
 
   const texture = useTexture(textureUrl);
@@ -218,26 +259,35 @@ function CraterMesh({
   // window (not a fixed BUFFER_M like hazard/terrain), so its real-world
   // half-width varies per candidate — derive it from the same rim polygon
   // already loaded for the mesh geometry instead of a fixed constant.
-  const halfM = activeLayer === "radar"
+  const halfM = baseLayer === "radar"
     ? (scale > 0 ? AVG_RIM_UNITS / scale + 1000 : 5000)
-    : (textureHalfM?.[activeLayer as "hazard" | "terrain" | "shadowcam"] ?? TEXTURE_SOURCE_HALF_M[activeLayer] ?? 5000);
-  const meshHalfExtentM = MESH_HALF / (scale || 1);
-  // Not capped at 1: when a real crop covers *less* than the mesh's real
-  // footprint (e.g. a single ShadowCam frame on Faustini/Cabeus's much
-  // bigger real crater), forcing repeatFrac to 1 would stretch that small
-  // real patch across the entire mesh and misrepresent it as full coverage.
-  // Left uncapped, ClampToEdgeWrapping instead shows the real patch at its
-  // true relative scale, positioned correctly, with the rest of the mesh
-  // reading as a plain surface -- honest about what the data actually covers.
-  const repeatFrac = meshHalfExtentM / halfM;
+    : (textureHalfM?.[baseLayer as "hazard" | "terrain" | "shadowcam"] ?? TEXTURE_SOURCE_HALF_M[baseLayer] ?? 5000);
+  const repeatFrac = Math.min(meshHalfExtentM / halfM, 1);
   texture.offset.set((1 - repeatFrac) / 2, (1 - repeatFrac) / 2);
   texture.repeat.set(repeatFrac, repeatFrac);
   texture.needsUpdate = true;
 
+  // Decal texture load is unconditional (hooks can't be conditional) but only
+  // ever rendered when showShadowcamAsDecal is true; falls back to the base
+  // texture's own URL (already loading) rather than an empty string when
+  // there's no real shadowcamUrl for this site.
+  const decalTexture = useTexture(shadowcamUrl || textureUrl);
+  const decalHalfMeshUnits = shadowcamHalfM ? shadowcamHalfM * scale : 0;
+  const decalY = sampleHeight(0, 0) + 0.04;
+
   return (
-    <mesh ref={meshRef} geometry={geometry}>
-      <meshStandardMaterial map={texture} color="#ffffff" roughness={0.94} metalness={0.02} />
-    </mesh>
+    <group>
+      <mesh ref={meshRef} geometry={geometry}>
+        <meshStandardMaterial map={texture} color="#ffffff" roughness={0.94} metalness={0.02} />
+      </mesh>
+
+      {showShadowcamAsDecal && decalHalfMeshUnits > 0 && (
+        <mesh position={[0, decalY, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={1}>
+          <planeGeometry args={[decalHalfMeshUnits * 2, decalHalfMeshUnits * 2]} />
+          <meshBasicMaterial map={decalTexture} toneMapped={false} />
+        </mesh>
+      )}
+    </group>
   );
 }
 
@@ -444,6 +494,25 @@ export default function TerrainPage() {
                 </div>
               ))}
             </div>
+
+            {activeLayer === "shadowcam" && selectedCandidate.textureHalfM?.shadowcam && (
+              <div
+                style={{
+                  marginTop: "12px",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "9px",
+                  color: "var(--text-muted)",
+                  lineHeight: 1.5,
+                  maxWidth: "640px",
+                }}
+              >
+                Real single-frame ShadowCam pass ({(selectedCandidate.textureHalfM.shadowcam * 2 / 1000).toFixed(1)}km
+                across) — a real orbital swath can&apos;t be widened the way the LOLA elevation window can, so it
+                only covers a fraction of this crater. In the 3D view it&apos;s shown as a correctly-scaled photo
+                resting on the real terrain, over the real hazard classification — not stretched to imply full
+                coverage.
+              </div>
+            )}
           </div>
 
           {/* Legend for Hazard Map */}
