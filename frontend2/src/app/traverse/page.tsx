@@ -1532,7 +1532,7 @@ function TelemetryValue({
       <div
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "8px",
+          fontSize: "9px",
           color: "var(--text-muted)",
           textTransform: "uppercase",
           letterSpacing: "0.1em",
@@ -1544,7 +1544,7 @@ function TelemetryValue({
       <div
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "13px",
+          fontSize: "14px",
           color,
         }}
       >
@@ -1608,11 +1608,11 @@ function SmallLabel({
     <div
       style={{
         fontFamily: "var(--font-mono)",
-        fontSize: "7px",
+        fontSize: "9px",
         color: "var(--text-muted)",
         textTransform: "uppercase",
         letterSpacing: "0.08em",
-        marginBottom: "2px",
+        marginBottom: "3px",
       }}
     >
       {children}
@@ -2137,7 +2137,7 @@ export default function TraversePage() {
             gap: "20px",
           }}
         >
-          <div className="label-caps" style={{ fontSize: "9px" }}>
+          <div className="label-caps">
             Live Rover Telemetry
           </div>
 
@@ -2277,35 +2277,26 @@ export default function TraversePage() {
             }}
           >
             <div>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "8px",
-                  color: "var(--text-muted)",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                }}
-              >
-                3D Topography · LOLA DEM
-              </div>
+              <div className="label-caps">3D Topography · LOLA DEM</div>
 
-              <div
+              <h1
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
+                  fontFamily: "var(--font-display)",
+                  fontSize: "18px",
                   color: "var(--text-primary)",
-                  marginTop: "2px",
+                  margin: "4px 0 0",
+                  letterSpacing: "-0.01em",
                 }}
               >
                 {selectedCandidate.label}
-              </div>
+              </h1>
             </div>
 
             <div style={{ textAlign: "right" }}>
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
+                  fontSize: "16px",
                   color: PATH_COLOR,
                 }}
               >
@@ -2315,9 +2306,10 @@ export default function TraversePage() {
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "7px",
+                  fontSize: "10px",
                   color: "var(--text-muted)",
-                  marginTop: "3px",
+                  marginTop: "4px",
+                  letterSpacing: "0.06em",
                 }}
               >
                 {totalDistanceKm.toFixed(2)} KM A* PATH · MAX SLOPE{" "}
@@ -2345,13 +2337,8 @@ export default function TraversePage() {
               }}
             >
               <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "9px",
-                  color: "var(--signal-high)",
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                }}
+                className="label-caps"
+                style={{ color: "var(--signal-high)" }}
               >
                 Mission Complete
               </div>
@@ -2359,9 +2346,9 @@ export default function TraversePage() {
               <div
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "21px",
-                  color: "#fff",
-                  marginTop: "5px",
+                  fontSize: "22px",
+                  color: "var(--text-primary)",
+                  marginTop: "6px",
                 }}
               >
                 Ice Target Reached
@@ -2370,9 +2357,9 @@ export default function TraversePage() {
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "8px",
+                  fontSize: "11px",
                   color: "var(--text-secondary)",
-                  marginTop: "6px",
+                  marginTop: "8px",
                 }}
               >
                 A* traverse playback completed in {(SIM_DURATION_MS / 1000).toFixed(0)} seconds
@@ -2493,10 +2480,7 @@ export default function TraversePage() {
           >
             <div
               className="label-caps"
-              style={{
-                marginBottom: "5px",
-                fontSize: "8px",
-              }}
+              style={{ marginBottom: "8px" }}
             >
               Traverse Planning
             </div>
@@ -2505,9 +2489,9 @@ export default function TraversePage() {
               style={{
                 margin: 0,
                 fontFamily: "var(--font-body)",
-                fontSize: "10px",
+                fontSize: "12px",
                 color: "var(--text-secondary)",
-                lineHeight: 1.45,
+                lineHeight: 1.55,
               }}
             >
               Weighted A* search over real slope, illumination, and
@@ -2591,7 +2575,7 @@ export default function TraversePage() {
                 <span
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: "8px",
+                    fontSize: "11px",
                     color: "var(--text-secondary)",
                   }}
                 >
@@ -2703,7 +2687,7 @@ export default function TraversePage() {
                     <div
                       style={{
                         fontFamily: "var(--font-mono)",
-                        fontSize: "8px",
+                        fontSize: "11px",
                         color: visited
                           ? "var(--text-primary)"
                           : "var(--text-secondary)",
@@ -2715,9 +2699,10 @@ export default function TraversePage() {
                     <div
                       style={{
                         fontFamily: "var(--font-mono)",
-                        fontSize: "6px",
+                        fontSize: "9px",
                         color: "var(--text-muted)",
-                        marginTop: "2px",
+                        marginTop: "3px",
+                        letterSpacing: "0.04em",
                       }}
                     >
                       SLOPE{" "}
@@ -2729,7 +2714,8 @@ export default function TraversePage() {
                     <span
                       style={{
                         fontFamily: "var(--font-mono)",
-                        fontSize: "6px",
+                        fontSize: "9px",
+                        letterSpacing: "0.06em",
                         color: "var(--signal-high)",
                       }}
                     >
@@ -2741,7 +2727,8 @@ export default function TraversePage() {
                     <span
                       style={{
                         fontFamily: "var(--font-mono)",
-                        fontSize: "6px",
+                        fontSize: "9px",
+                        letterSpacing: "0.06em",
                         color: "#7ec8e8",
                       }}
                     >
