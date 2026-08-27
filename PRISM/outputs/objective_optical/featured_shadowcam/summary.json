@@ -1,0 +1,72 @@
+{
+  "SP_871460_0840750": {
+    "n_frames": 50,
+    "extracted": [
+      {
+        "n_valid": 2334784,
+        "pct_valid": 100.0,
+        "mean": 0.033922627568244934,
+        "std": 0.020947569981217384,
+        "adjacent_pixel_correlation": 0.9881266942451762,
+        "shape": [
+          1528,
+          1528
+        ],
+        "identifier": "M076693225SE",
+        "incidence_angle": "85.463",
+        "resolution": "1.7907",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2025/008/M076693225S/M076693225S_map_raw.tif"
+      },
+      {
+        "n_valid": 2943868,
+        "pct_valid": 93.23,
+        "mean": 0.037114549428224564,
+        "std": 0.02532673068344593,
+        "adjacent_pixel_correlation": 0.9814279793583978,
+        "shape": [
+          1777,
+          1777
+        ],
+        "identifier": "M076686129SE",
+        "incidence_angle": "85.586",
+        "resolution": "1.6554",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2025/008/M076686129S/M076686129S_map_raw.tif"
+      }
+    ]
+  },
+  "SP_844580_3134320": {
+    "n_frames": 37,
+    "extracted": [
+      {
+        "n_valid": 2078466,
+        "pct_valid": 85.52,
+        "mean": 0.03386790305376053,
+        "std": 0.016621209681034088,
+        "adjacent_pixel_correlation": 0.9383784629799369,
+        "shape": [
+          1559,
+          1559
+        ],
+        "identifier": "M077619504SE",
+        "incidence_angle": "81.426",
+        "resolution": "1.8457",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2025/019/M077619504S/M077619504S_map_raw.tif"
+      },
+      {
+        "n_valid": 1638136,
+        "pct_valid": 67.21,
+        "mean": 0.032773785293102264,
+        "std": 0.015347251668572426,
+        "adjacent_pixel_correlation": 0.9484214877781028,
+        "shape": [
+          1611,
+          1513
+        ],
+        "identifier": "M077626574SE",
+        "incidence_angle": "81.446",
+        "resolution": "1.8391",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2025/019/M077626574S/M077626574S_map_raw.tif"
+      }
+    ]
+  }
+}

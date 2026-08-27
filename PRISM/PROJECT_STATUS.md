@@ -1,5 +1,11 @@
 # PRISM — Project Status Audit
 
+> **This is a point-in-time audit from 2026-08-22 (kept unedited as a historical
+> record).** A real Python pipeline and a real Next.js frontend have since been
+> built, and the "PLANNED"/"absent" items below (Isolation Forest, YOLOv8, A*
+> routing, frontend, etc.) are now implemented. See
+> `PRISM/docs/CURRENT_STATUS_2026-08-27.md` for the current state.
+
 **Audit date:** 2026-08-22
 **Audit type:** Read-only. No notebooks, data, or code were modified, executed, or deleted as part of this audit.
 **Audited artifacts:** the 5 notebooks under `PRISM/notebooks/`. `PRISM/data`, `PRISM/doc`, `PRISM/outputs`, `PRISM/src`, `PRISM/tests` are all **empty directories** — there is currently no code or data in this repository outside the notebooks themselves. None of the notebooks contain markdown cells; every notebook is pure code with inline `#` comments, so there is no in-repo narrative documentation of intent beyond what the code and print output show.

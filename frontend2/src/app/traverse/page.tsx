@@ -9,9 +9,19 @@ import {
   type ReactNode,
 } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, useTexture } from "@react-three/drei";
-import { PRIMARY, CANDIDATES } from "@/data/prism";
+import { Instance, Instances, OrbitControls, useTexture } from "@react-three/drei";
+import { CANDIDATES, FAUSTINI, CABEUS, spIdLabel } from "@/data/prism";
 import * as THREE from "three";
+import {
+  buildFineGrid,
+  astar,
+  buildTelemetry,
+  selectLandingSite,
+  MAX_MISSION_SECONDS,
+  type PathfindingGridData,
+  type BoulderData,
+  type TraversePlan,
+} from "@/lib/traversePlanner";
 
 /* =========================================================
    TYPES
@@ -48,6 +58,12 @@ type RoutePoint = {
   slopeDeg: number;
   nd: number;
   heading: number;
+  // Real telemetry from the A* plan's battery/speed model (src/lib/
+  // traversePlanner.ts), carried through for the live rover HUD -- not
+  // re-derived from the mesh, so it stays exactly what the planner computed.
+  batterySoc?: number;
+  speedMs?: number;
+  illumination?: number;
 };
 
 type RouteMetrics = {
@@ -67,26 +83,6 @@ const MESH_HALF = MESH_SIZE / 2;
 
 const DEPTH_SCALE = 3.2;
 
-const START_RADIUS = 9.25;
-const START_ANGLE = 0.35;
-
-/*
- * The circular spiral ends here before entering the exact
- * center of the ice.
- */
-const SPIRAL_END_RADIUS = 0.42;
-
-/*
- * Number of circular revolutions around the crater.
- */
-const TOTAL_TURNS = 3.25;
-
-/*
- * Dense route for smooth rover motion.
- */
-const SPIRAL_POINT_COUNT = 900;
-const FINAL_APPROACH_POINT_COUNT = 50;
-
 const MAX_SLOPE_DEG = 10;
 const HARD_SLOPE_DEG = 15;
 
@@ -97,7 +93,12 @@ const HARD_SLOPE_DEG = 15;
 const ROVER_CLEARANCE = 0.025;
 const PATH_CLEARANCE = 0.075;
 
-const PATH_COLOR = "#ff1818";
+// Matches the site's shared --amber accent (used for the primary/featured
+// highlight color elsewhere). A fixed hex, not var(--amber) -- this value is
+// also used directly in a Three.js material, which can't resolve CSS custom
+// properties, so it can't switch with the light/dark theme toggle the way
+// the rest of the page's 2D chrome does.
+const PATH_COLOR = "#C4A268";
 
 /*
  * Complete traversal duration: exactly 10 seconds.
@@ -424,7 +425,8 @@ function createRoutePoint(
   z: number,
   heading: number,
   terrain: TerrainData,
-  rimLookup: RimLookup
+  rimLookup: RimLookup,
+  telemetry?: { batterySoc: number; speedMs: number; illumination: number }
 ): RoutePoint {
   const groundY = sampleTerrainY(
     x,
@@ -457,196 +459,51 @@ function createRoutePoint(
         ? Math.hypot(x, z) / rim
         : 0,
     heading,
+    batterySoc: telemetry?.batterySoc,
+    speedMs: telemetry?.speedMs,
+    illumination: telemetry?.illumination,
   };
 }
 
 /* =========================================================
-   RELIABLE CIRCULAR SPIRAL ROUTE
+   REAL A*-PLANNED ROUTE
 
-   This route cannot become stuck because its radius is
-   mathematically reduced at every stage.
-
-   It:
-   - circles around the crater
-   - continuously moves inward
-   - follows the DEM height
-   - reaches the exact center of the ice
+   Waypoints come from a real weighted-A* search over real slope/
+   illumination/boulder cost grids (src/lib/traversePlanner.ts),
+   not a parametric spiral -- the rover goes wherever the real
+   terrain lets it, avoiding real detected boulders and steep
+   slopes, from a selected landing site to the ice-evidence target.
 ========================================================= */
 
-function buildCircularRoute(
+/*
+ * Converts the real A*-planned waypoints (real meters, relative
+ * to the candidate's own center) from PRISM/src/export_pathfinding_grids.py +
+ * export_real_boulder_positions.py + src/lib/traversePlanner.ts into mesh-
+ * space RoutePoints for rendering. Height/slope/rim-fraction are resampled
+ * directly against this page's own terrain field for visual consistency with
+ * CraterMesh/Rover, which already read the same real elevation data.
+ */
+function buildRouteFromRealPlan(
+  plan: TraversePlan,
   terrain: TerrainData,
   rimLookup: RimLookup
 ): RoutePoint[] {
+  const scale = rimLookup.scale;
   const route: RoutePoint[] = [];
 
-  const totalAngle =
-    TOTAL_TURNS * Math.PI * 2;
+  for (let i = 0; i < plan.waypoints.length; i++) {
+    const wp = plan.waypoints[i];
+    const x = wp.x * scale;
+    const z = wp.y * scale;
+    const prev = route[route.length - 1];
+    const heading = prev
+      ? Math.atan2(z - prev.z, x - prev.x)
+      : (wp.heading * Math.PI) / 180;
 
-  let previousX =
-    START_RADIUS * Math.cos(START_ANGLE);
-
-  let previousZ =
-    START_RADIUS * Math.sin(START_ANGLE);
-
-  for (
-    let i = 0;
-    i < SPIRAL_POINT_COUNT;
-    i++
-  ) {
-    const t =
-      i / (SPIRAL_POINT_COUNT - 1);
-
-    /*
-     * Smooth radial descent. Radius always trends inward.
-     */
-    const smoothT =
-      t * t * (3 - 2 * t);
-
-    const intendedRadius =
-      THREE.MathUtils.lerp(
-        START_RADIUS,
-        SPIRAL_END_RADIUS,
-        smoothT
-      );
-
-    const angle =
-      START_ANGLE + totalAngle * t;
-
-    /*
-     * Allow a small low-slope adjustment without breaking
-     * the circular shape.
-     */
-    const radialOffsets =
-      i > 3 && i < SPIRAL_POINT_COUNT - 15
-        ? [-0.08, -0.04, 0, 0.04, 0.08]
-        : [0];
-
-    let bestX =
-      Math.cos(angle) * intendedRadius;
-
-    let bestZ =
-      Math.sin(angle) * intendedRadius;
-
-    let bestCost = Infinity;
-
-    for (const offset of radialOffsets) {
-      const candidateRadius =
-        THREE.MathUtils.clamp(
-          intendedRadius + offset,
-          SPIRAL_END_RADIUS,
-          START_RADIUS
-        );
-
-      const candidateX =
-        Math.cos(angle) * candidateRadius;
-
-      const candidateZ =
-        Math.sin(angle) * candidateRadius;
-
-      const candidateSlope =
-        sampleSlopeDeg(
-          candidateX,
-          candidateZ,
-          terrain
-        );
-
-      /*
-       * Slope is preferred, but the route is kept close
-       * to the intended circular spiral.
-       */
-      const cost =
-        candidateSlope +
-        Math.abs(offset) * 8;
-
-      if (cost < bestCost) {
-        bestCost = cost;
-        bestX = candidateX;
-        bestZ = candidateZ;
-      }
-    }
-
-    let heading =
-      START_ANGLE + Math.PI / 2;
-
-    if (i > 0) {
-      heading = Math.atan2(
-        bestZ - previousZ,
-        bestX - previousX
-      );
-    }
-
-    route.push(
-      createRoutePoint(
-        bestX,
-        bestZ,
-        heading,
-        terrain,
-        rimLookup
-      )
-    );
-
-    previousX = bestX;
-    previousZ = bestZ;
+    route.push(createRoutePoint(x, z, heading, terrain, rimLookup, {
+      batterySoc: wp.batterySoc, speedMs: wp.speedMs, illumination: wp.illumination,
+    }));
   }
-
-  /*
-   * Smooth final approach from the smallest circular
-   * orbit into the exact center of the ice.
-   */
-  const finalStart = route[route.length - 1];
-
-  for (
-    let i = 1;
-    i <= FINAL_APPROACH_POINT_COUNT;
-    i++
-  ) {
-    const t =
-      i / FINAL_APPROACH_POINT_COUNT;
-
-    const smoothT =
-      t * t * (3 - 2 * t);
-
-    const x = THREE.MathUtils.lerp(
-      finalStart.x,
-      0,
-      smoothT
-    );
-
-    const z = THREE.MathUtils.lerp(
-      finalStart.z,
-      0,
-      smoothT
-    );
-
-    const previous = route[route.length - 1];
-
-    const heading = Math.atan2(
-      z - previous.z,
-      x - previous.x
-    );
-
-    route.push(
-      createRoutePoint(
-        x,
-        z,
-        heading,
-        terrain,
-        rimLookup
-      )
-    );
-  }
-
-  /*
-   * Ensure the final route point is exactly at the center.
-   */
-  const finalPoint = route[route.length - 1];
-
-  finalPoint.x = 0;
-  finalPoint.z = 0;
-  finalPoint.y =
-    sampleTerrainY(0, 0, terrain) +
-    PATH_CLEARANCE;
-  finalPoint.nd = 0;
 
   return route;
 }
@@ -806,6 +663,11 @@ function sampleRouteAtProgress(
     next.x - previous.x
   );
 
+  const lerpOptional = (a?: number, b?: number) =>
+    a !== undefined && b !== undefined
+      ? THREE.MathUtils.lerp(a, b, localT)
+      : (b ?? a);
+
   return {
     x,
     y,
@@ -814,6 +676,9 @@ function sampleRouteAtProgress(
     slopeDeg,
     nd,
     heading,
+    batterySoc: lerpOptional(previous.batterySoc, next.batterySoc),
+    speedMs: lerpOptional(previous.speedMs, next.speedMs),
+    illumination: lerpOptional(previous.illumination, next.illumination),
   };
 }
 
@@ -1241,6 +1106,95 @@ function IceLayer({
 }
 
 /* =========================================================
+   BOULDER MARKERS
+
+   Real YOLOv8n-seg detections on local ShadowCam imagery
+   (PRISM/src/export_real_boulder_positions.py) -- these are the
+   actual obstacles the A* planner routed around, not decoration.
+========================================================= */
+
+function BoulderMarkers({
+  boulders,
+  terrain,
+  scale,
+}: {
+  boulders: BoulderData["boulders"];
+  terrain: TerrainData;
+  scale: number;
+}) {
+  const placed = useMemo(() => {
+    // Cap render count for perf on dense candidates (some have 500+ real
+    // detections); keep the highest-confidence ones, biased toward larger
+    // rocks since those are the ones that actually matter for routing.
+    const sorted = [...boulders].sort(
+      (a, b) => b.confidence * b.radius_m - a.confidence * a.radius_m
+    );
+
+    return sorted.slice(0, 180).map((b) => {
+      const x = b.x * scale;
+      const z = b.y * scale;
+      const y = sampleTerrainY(x, z, terrain);
+      const size = Math.max(0.03, Math.min(0.22, (b.radius_m * scale) / 1.5));
+      return { x, y: y + size * 0.5, z, size };
+    });
+  }, [boulders, terrain, scale]);
+
+  if (placed.length === 0) return null;
+
+  return (
+    <Instances limit={placed.length} range={placed.length}>
+      <sphereGeometry args={[1, 8, 8]} />
+      <meshStandardMaterial
+        color="#9a7a5a"
+        roughness={0.95}
+        metalness={0}
+      />
+      {placed.map((p, i) => (
+        <Instance
+          key={i}
+          position={[p.x, p.y, p.z]}
+          scale={p.size}
+        />
+      ))}
+    </Instances>
+  );
+}
+
+/* =========================================================
+   LANDING SITE MARKER
+========================================================= */
+
+function LandingSiteMarker({
+  point,
+}: {
+  point: RoutePoint | undefined;
+}) {
+  if (!point) return null;
+
+  return (
+    <group position={[point.x, point.y + 0.02, point.z]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.22, 0.3, 32]} />
+        <meshBasicMaterial
+          color="#ffd23f"
+          transparent
+          opacity={0.9}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh position={[0, 0.24, 0]}>
+        <coneGeometry args={[0.05, 0.4, 8]} />
+        <meshStandardMaterial
+          color="#ffd23f"
+          emissive="#ffd23f"
+          emissiveIntensity={0.4}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+/* =========================================================
    ROVER
 ========================================================= */
 
@@ -1615,15 +1569,17 @@ function TelemetryRow({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "5px 0",
+        padding: "10px 0",
         borderBottom:
-          "1px solid var(--border-subtle)",
+          "1px solid var(--border)",
       }}
     >
       <span
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "8px",
+          fontSize: "11px",
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
           color: "var(--text-secondary)",
         }}
       >
@@ -1633,7 +1589,7 @@ function TelemetryRow({
       <span
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "9px",
+          fontSize: "15px",
           color,
         }}
       >
@@ -1668,8 +1624,26 @@ function SmallLabel({
    PAGE
 ========================================================= */
 
+// Faustini/Cabeus first, like every other page's site list -- real
+// externally-validated reference sites, not a separate subsection.
+const ALL_TRAVERSE_SITES = [FAUSTINI, CABEUS, ...CANDIDATES];
+
+/** Real point-in-polygon test against the candidate's own PSR boundary (meters, relative to center). */
+function pointInBoundary(x: number, y: number, boundaryPts: [number, number][]): boolean {
+  let inside = false;
+  for (let i = 0, j = boundaryPts.length - 1; i < boundaryPts.length; j = i++) {
+    const [xi, yi] = boundaryPts[i];
+    const [xj, yj] = boundaryPts[j];
+    const intersect = yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
 export default function TraversePage() {
-  const selectedCandidate = CANDIDATES[0];
+  const [selectedCandidateId, setSelectedCandidateId] = useState<string>(CANDIDATES[0].id);
+  const selectedCandidate =
+    ALL_TRAVERSE_SITES.find((c) => c.id === selectedCandidateId) || CANDIDATES[0];
   const candidateId = selectedCandidate.id;
   const elevRange =
     selectedCandidate.terrain.elevRange;
@@ -1681,6 +1655,12 @@ export default function TraversePage() {
 
   const [wideGrid, setWideGrid] =
     useState<ElevationGridJSON | null>(null);
+
+  const [pathfindingGrid, setPathfindingGrid] =
+    useState<PathfindingGridData | null>(null);
+
+  const [boulderData, setBoulderData] =
+    useState<BoulderData | null>(null);
 
   const [dataReady, setDataReady] =
     useState(false);
@@ -1739,14 +1719,32 @@ export default function TraversePage() {
           response.ok ? response.json() : null
         )
         .catch(() => null),
+
+      fetch(
+        `/assets/prism/pathfinding/${candidateId}_pathfinding_grid.json`
+      )
+        .then((response) =>
+          response.ok ? response.json() : null
+        )
+        .catch(() => null),
+
+      fetch(
+        `/assets/prism/pathfinding/${candidateId}_boulders.json`
+      )
+        .then((response) =>
+          response.ok ? response.json() : null
+        )
+        .catch(() => null),
     ]).then(
-      ([boundaryData, elevationData]) => {
+      ([boundaryData, elevationData, pathfindingData, boulders]) => {
         if (cancelled) {
           return;
         }
 
         setBoundary(boundaryData);
         setWideGrid(elevationData);
+        setPathfindingGrid(pathfindingData);
+        setBoulderData(boulders);
         setDataReady(true);
       }
     );
@@ -1791,19 +1789,67 @@ export default function TraversePage() {
   );
 
   /* =========================================================
-     COMPLETE CIRCULAR ROUTE
+     REAL A* ROUTE — landing site to the ice-evidence target,
+     over a real slope/illumination/boulder cost grid (see
+     src/lib/traversePlanner.ts). Replaces the old hardcoded
+     spiral entirely.
   ========================================================= */
 
+  const realPlan = useMemo<TraversePlan | null>(() => {
+    if (!pathfindingGrid || !boundary?.boundary_xy_m) {
+      return null;
+    }
+    // Same real elevation grid CraterMesh/terrain use, once mesh/terrain
+    // data has loaded -- lets the router evaluate the actual along-heading
+    // slope (see directionalSlopeDeg in traversePlanner.ts) instead of only
+    // the isotropic steepest-direction magnitude, so a path can cross a
+    // locally steep area at an angle (switchback-style) instead of being
+    // flatly blocked by it or forced to power straight up it.
+    const elevationSource = wideGrid
+      ? { grid: wideGrid.elevationGridRelativeM, halfM: wideGrid.window_half_m, size: wideGrid.grid_size }
+      : undefined;
+
+    // Size the fine pathfinding window off the real PSR polygon's own
+    // extent, not a flat constant -- a fixed 4000m half-window works for
+    // most candidates but sits entirely *inside* very large real floors
+    // (Cabeus's true polygon reaches ~15.9km from its centroid), leaving no
+    // real cell outside the crater for the lander to sit on.
+    const boundaryPts = boundary.boundary_xy_m;
+    let maxBoundaryR = 0;
+    for (const [x, y] of boundaryPts) {
+      maxBoundaryR = Math.max(maxBoundaryR, Math.hypot(x, y));
+    }
+    const fineHalfM = Math.min(
+      pathfindingGrid.window_half_m,
+      Math.max(4000, maxBoundaryR * 1.3)
+    );
+    const fg = buildFineGrid(pathfindingGrid, fineHalfM, 160, elevationSource);
+    const isInsideCrater = (x: number, y: number) => pointInBoundary(x, y, boundaryPts);
+
+    // The ice-evidence target: the candidate's own reference point, which is
+    // exactly where every real Pv/CPR/SERD/T-Ratio measurement on this site
+    // was centered (see src/data/prism.ts).
+    const target: [number, number] = [0, 0];
+    const landing = selectLandingSite(fg, isInsideCrater, target);
+    const boulders = boulderData?.boulders ?? [];
+
+    const result = astar(fg, boulders, [landing.x, landing.y], target);
+    if (!result) return null;
+
+    return buildTelemetry(fg, result.cells);
+  }, [pathfindingGrid, boundary, boulderData, wideGrid]);
+
   const plannedRoute = useMemo(() => {
-    if (!dataReady) {
+    if (!dataReady || !realPlan) {
       return [];
     }
 
-    return buildCircularRoute(
+    return buildRouteFromRealPlan(
+      realPlan,
       terrain,
       rimLookup
     );
-  }, [dataReady, terrain, rimLookup]);
+  }, [dataReady, realPlan, terrain, rimLookup]);
 
   const routeMetrics = useMemo(
     () => calculateRouteMetrics(plannedRoute),
@@ -1947,11 +1993,23 @@ export default function TraversePage() {
         ? "Medium"
         : "Low";
 
-  const elapsedKm =
-    simProgress * 15.3;
+  // Live telemetry at the rover's current simulated position, straight from
+  // the real A* plan's battery/speed model (src/lib/traversePlanner.ts) --
+  // not re-derived, so it's exactly what the planner computed for this point.
+  const currentBatteryPct = currentPoint?.batterySoc;
+  const currentSpeedMs = currentPoint?.speedMs;
+  const currentIllumFrac = currentPoint?.illumination;
 
+  // Real total path distance from the A* plan (meters -> km), not a
+  // hardcoded constant -- this now always matches the actual rendered route.
+  const totalDistanceKm = (realPlan?.totalDistanceM ?? 0) / 1000;
+  const elapsedKm = simProgress * totalDistanceKm;
+
+  // Playback is a fixed SIM_DURATION_MS-long animation of the whole route,
+  // independent of the rover's real mission time (below) -- this is a UI
+  // scrub position, not a data value.
   const elapsedSeconds =
-    simProgress * 10;
+    simProgress * (SIM_DURATION_MS / 1000);
 
   const maxRouteSlope = useMemo(() => {
     let maximum = 0;
@@ -1965,6 +2023,14 @@ export default function TraversePage() {
 
     return maximum;
   }, [plannedRoute]);
+
+  // Real mission-duration estimate from the battery/speed model, expressed
+  // in days against the hard 14-day rover-life budget.
+  const missionDays = (realPlan?.totalTimeS ?? 0) / 86400;
+  const maxMissionDays = MAX_MISSION_SECONDS / 86400;
+  const withinMissionBudget = realPlan?.withinMissionBudget ?? true;
+  const finalBatterySoc = realPlan?.finalBatterySoc ?? 0;
+  const minBatterySoc = realPlan?.minBatterySoc ?? 0;
 
   /* =========================================================
      WAYPOINTS
@@ -1983,27 +2049,27 @@ export default function TraversePage() {
       },
       {
         progress: 0.15,
-        label: "Outer Circular Traverse",
+        label: "Departure Corridor",
         type: "waypoint",
       },
       {
         progress: 0.3,
-        label: "Rim Descent",
+        label: "Slope Transit",
         type: "waypoint",
       },
       {
         progress: 0.46,
-        label: "Middle Circular Traverse",
+        label: "Boulder-Field Skirt",
         type: "waypoint",
       },
       {
         progress: 0.62,
-        label: "Inner Wall",
+        label: "PSR Interior Approach",
         type: "waypoint",
       },
       {
         progress: 0.78,
-        label: "Inner Circular Traverse",
+        label: "Shadowed Descent",
         type: "waypoint",
       },
       {
@@ -2059,6 +2125,8 @@ export default function TraversePage() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          flexWrap: "wrap",
+          rowGap: "8px",
           flexShrink: 0,
         }}
       >
@@ -2066,26 +2134,46 @@ export default function TraversePage() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "16px",
+            gap: "20px",
           }}
         >
-          <div
-            className="label-caps"
-            style={{ fontSize: "9px" }}
-          >
-            Rover Operations
+          <div className="label-caps" style={{ fontSize: "9px" }}>
+            Live Rover Telemetry
           </div>
 
-          <h1
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "16px",
-              color: "var(--text-primary)",
-              margin: 0,
-            }}
-          >
-            Circular Traverse Simulation
-          </h1>
+          <TelemetryValue
+            label="Slope"
+            value={currentSlope}
+            color={
+              slopeDeg > MAX_SLOPE_DEG
+                ? "var(--signal-warn)"
+                : "var(--signal-high)"
+            }
+          />
+
+          <TelemetryValue
+            label="Battery"
+            value={currentBatteryPct !== undefined ? `${currentBatteryPct.toFixed(0)}%` : "—"}
+            color={
+              currentBatteryPct === undefined
+                ? "var(--text-primary)"
+                : currentBatteryPct < 15
+                  ? "var(--signal-flag)"
+                  : currentBatteryPct < 40
+                    ? "var(--signal-warn)"
+                    : "var(--signal-high)"
+            }
+          />
+
+          <TelemetryValue
+            label="Speed"
+            value={currentSpeedMs !== undefined ? `${currentSpeedMs.toFixed(3)} m/s` : "—"}
+          />
+
+          <TelemetryValue
+            label="Illumination"
+            value={currentIllumFrac !== undefined ? `${(currentIllumFrac * 100).toFixed(1)}%` : "—"}
+          />
         </div>
 
         <div
@@ -2096,23 +2184,13 @@ export default function TraversePage() {
           }}
         >
           <TelemetryValue
-            label="Simulation"
-            value={`${elapsedSeconds.toFixed(1)} / 10.0 s`}
+            label="Playback"
+            value={`${elapsedSeconds.toFixed(1)} / ${(SIM_DURATION_MS / 1000).toFixed(1)} s`}
           />
 
           <TelemetryValue
             label="Distance"
-            value={`${elapsedKm.toFixed(2)} / 15.30 km`}
-          />
-
-          <TelemetryValue
-            label="Slope"
-            value={currentSlope}
-            color={
-              slopeDeg > MAX_SLOPE_DEG
-                ? "#ffb020"
-                : "#20e6a0"
-            }
+            value={`${elapsedKm.toFixed(2)} / ${totalDistanceKm.toFixed(2)} km`}
           />
 
           <TelemetryValue
@@ -2120,10 +2198,10 @@ export default function TraversePage() {
             value={currentHazard}
             color={
               currentHazard === "High"
-                ? "#ff3d3d"
+                ? "var(--signal-flag)"
                 : currentHazard === "Medium"
-                  ? "#ffb020"
-                  : "#20e6a0"
+                  ? "var(--signal-warn)"
+                  : "var(--signal-high)"
             }
           />
 
@@ -2138,9 +2216,9 @@ export default function TraversePage() {
               letterSpacing: "0.1em",
               textTransform: "uppercase",
               background: simComplete
-                ? "#00c978"
+                ? "var(--signal-high)"
                 : simRunning
-                  ? "#ff3d3d"
+                  ? "var(--signal-flag)"
                   : PATH_COLOR,
               color: "#fff",
               border: "none",
@@ -2166,22 +2244,6 @@ export default function TraversePage() {
         </div>
       </div>
 
-      {/* PROGRESS BAR */}
-      <div
-        style={{
-          height: "3px",
-          background: "var(--border)",
-          flexShrink: 0,
-        }}
-      >
-        <div
-          style={{
-            height: "100%",
-            width: `${simProgress * 100}%`,
-            background: PATH_COLOR,
-          }}
-        />
-      </div>
 
       {/* MAIN CONTENT */}
       <div
@@ -2197,7 +2259,7 @@ export default function TraversePage() {
         <section
           style={{
             position: "relative",
-            background: "#05070b",
+            background: "var(--surface)",
             overflow: "hidden",
           }}
         >
@@ -2258,7 +2320,7 @@ export default function TraversePage() {
                   marginTop: "3px",
                 }}
               >
-                {TOTAL_TURNS} CIRCULAR TURNS · MAX SLOPE{" "}
+                {totalDistanceKm.toFixed(2)} KM A* PATH · MAX SLOPE{" "}
                 {maxRouteSlope.toFixed(1)}°
               </div>
             </div>
@@ -2275,8 +2337,8 @@ export default function TraversePage() {
                 zIndex: 30,
                 padding: "18px 28px",
                 background:
-                  "rgba(0,20,15,0.84)",
-                border: "1px solid #00ff88",
+                  "color-mix(in srgb, var(--surface) 85%, transparent)",
+                border: "1px solid var(--signal-high)",
                 borderRadius: "8px",
                 textAlign: "center",
                 backdropFilter: "blur(8px)",
@@ -2286,7 +2348,7 @@ export default function TraversePage() {
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "9px",
-                  color: "#00ff88",
+                  color: "var(--signal-high)",
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
                 }}
@@ -2313,7 +2375,7 @@ export default function TraversePage() {
                   marginTop: "6px",
                 }}
               >
-                Circular traverse completed in 10 seconds
+                A* traverse playback completed in {(SIM_DURATION_MS / 1000).toFixed(0)} seconds
               </div>
             </div>
           )}
@@ -2332,7 +2394,7 @@ export default function TraversePage() {
                 shadows
                 dpr={[1, 2]}
                 camera={{
-                  position: [12, 15, 12],
+                  position: [19, 23, 19],
                   fov: 38,
                   near: 0.1,
                   far: 100,
@@ -2342,17 +2404,6 @@ export default function TraversePage() {
                   toneMapping:
                     THREE.ACESFilmicToneMapping,
                   toneMappingExposure: 1,
-                }}
-                onCreated={({ scene }) => {
-                  scene.background = new THREE.Color(
-                    "#05070b"
-                  );
-
-                  scene.fog = new THREE.Fog(
-                    "#05070b",
-                    27,
-                    55
-                  );
                 }}
               >
                 <LightingRig />
@@ -2370,6 +2421,16 @@ export default function TraversePage() {
 
                 <IceLayer terrain={terrain} />
 
+                {boulderData && (
+                  <BoulderMarkers
+                    boulders={boulderData.boulders}
+                    terrain={terrain}
+                    scale={rimLookup.scale}
+                  />
+                )}
+
+                <LandingSiteMarker point={plannedRoute[0]} />
+
                 <Rover
                   point={currentPoint}
                   isMoving={simRunning}
@@ -2384,8 +2445,8 @@ export default function TraversePage() {
                   maxPolarAngle={
                     Math.PI / 2 - 0.06
                   }
-                  minDistance={5}
-                  maxDistance={35}
+                  minDistance={7}
+                  maxDistance={55}
                   enableDamping
                   dampingFactor={0.06}
                   target={[0, -1.3, 0]}
@@ -2406,8 +2467,7 @@ export default function TraversePage() {
                   textTransform: "uppercase",
                 }}
               >
-                Loading terrain and calculating circular
-                route…
+                Loading terrain and computing A* route…
               </div>
             )}
           </div>
@@ -2450,10 +2510,42 @@ export default function TraversePage() {
                 lineHeight: 1.45,
               }}
             >
-              Continuous circular spiral descent followed
-              by a ground-conforming final approach to the
-              ice deposit.
+              Weighted A* search over real slope, illumination, and
+              detected-boulder cost grids, from a selected landing
+              site to the ice-evidence target — real obstacles cost
+              real detours, not a straight line down the slope.
             </p>
+
+            <select
+              value={selectedCandidateId}
+              onChange={(e) => {
+                setSelectedCandidateId(e.target.value);
+                setSimProgress(0);
+                setSimRunning(false);
+                setSimComplete(false);
+              }}
+              style={{
+                marginTop: "10px",
+                width: "100%",
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                padding: "6px 8px",
+                background: "var(--surface-alt, var(--surface))",
+                color: "var(--text-primary)",
+                border: "1px solid var(--border)",
+                borderRadius: "3px",
+              }}
+            >
+              {ALL_TRAVERSE_SITES.map((site) => (
+                <option key={site.id} value={site.id}>
+                  {site.id === FAUSTINI.id || site.id === CABEUS.id
+                    ? `${spIdLabel(site.id)} ${site.label}`
+                    : "isPrimary" in site && site.isPrimary
+                      ? `${site.label} (Primary)`
+                      : site.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* LEGEND */}
@@ -2467,7 +2559,7 @@ export default function TraversePage() {
             {[
               {
                 color: PATH_COLOR,
-                label: "Complete Circular Rover Path",
+                label: "A*-Planned Rover Path",
               },
               {
                 color: "#7ec8e8",
@@ -2534,8 +2626,8 @@ export default function TraversePage() {
               value={currentSlope}
               color={
                 slopeDeg > MAX_SLOPE_DEG
-                  ? "#ffb020"
-                  : "#20e6a0"
+                  ? "var(--signal-warn)"
+                  : "var(--signal-high)"
               }
             />
 
@@ -2588,7 +2680,7 @@ export default function TraversePage() {
                       ? `2px solid ${PATH_COLOR}`
                       : "2px solid transparent",
                     background: current
-                      ? "rgba(255,24,24,0.07)"
+                      ? "rgba(196,162,104,0.1)"
                       : "transparent",
                   }}
                 >
@@ -2638,7 +2730,7 @@ export default function TraversePage() {
                       style={{
                         fontFamily: "var(--font-mono)",
                         fontSize: "6px",
-                        color: "#00ff88",
+                        color: "var(--signal-high)",
                       }}
                     >
                       START
@@ -2669,7 +2761,7 @@ export default function TraversePage() {
                 borderTop:
                   "1px solid var(--border)",
                 background:
-                  "rgba(255,24,24,0.035)",
+                  "rgba(196,162,104,0.05)",
               }}
             >
               {(() => {
@@ -2717,7 +2809,7 @@ export default function TraversePage() {
               padding: "10px 16px",
               borderTop:
                 "1px solid var(--border)",
-              background: "rgba(0,0,0,0.2)",
+              background: "var(--surface)",
             }}
           >
             <div
@@ -2729,7 +2821,45 @@ export default function TraversePage() {
             >
               <div>
                 <SmallLabel>
-                  Mission Estimate
+                  Mission Duration
+                </SmallLabel>
+
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "11px",
+                    color: withinMissionBudget
+                      ? "var(--text-primary)"
+                      : "var(--signal-warn)",
+                  }}
+                >
+                  {missionDays.toFixed(2)} / {maxMissionDays.toFixed(0)}.0 days
+                </div>
+              </div>
+
+              <div>
+                <SmallLabel>
+                  Battery Reserve
+                </SmallLabel>
+
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "11px",
+                    color:
+                      minBatterySoc < 15
+                        ? "var(--signal-warn)"
+                        : "var(--signal-high)",
+                  }}
+                >
+                  {finalBatterySoc.toFixed(0)}% final ·{" "}
+                  {minBatterySoc.toFixed(0)}% min
+                </div>
+              </div>
+
+              <div>
+                <SmallLabel>
+                  Path Distance
                 </SmallLabel>
 
                 <div
@@ -2739,39 +2869,7 @@ export default function TraversePage() {
                     color: "var(--text-primary)",
                   }}
                 >
-                  {PRIMARY.traverse.estTime}
-                </div>
-              </div>
-
-              <div>
-                <SmallLabel>
-                  Simulation
-                </SmallLabel>
-
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "11px",
-                    color: "#20e6a0",
-                  }}
-                >
-                  10.0 sec
-                </div>
-              </div>
-
-              <div>
-                <SmallLabel>
-                  Circular Turns
-                </SmallLabel>
-
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "11px",
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  {TOTAL_TURNS}
+                  {totalDistanceKm.toFixed(2)} km
                 </div>
               </div>
 
@@ -2786,8 +2884,8 @@ export default function TraversePage() {
                     fontSize: "11px",
                     color:
                       maxRouteSlope > MAX_SLOPE_DEG
-                        ? "#ffb020"
-                        : "#20e6a0",
+                        ? "var(--signal-warn)"
+                        : "var(--signal-high)",
                   }}
                 >
                   {maxRouteSlope.toFixed(1)}°

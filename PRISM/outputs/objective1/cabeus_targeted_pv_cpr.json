@@ -1,0 +1,72 @@
+[
+  {
+    "id": "Cabeus_LCROSS_Marshall2011",
+    "lat": -84.6796,
+    "lon": -48.7093,
+    "diameter_m": 2000,
+    "window_shape": [
+      160,
+      160
+    ],
+    "pv": {
+      "inside_mean": 0.21382476389408112,
+      "inside_n": 3421,
+      "outside_mean": 0.2482527643442154,
+      "outside_n": 10799
+    },
+    "cpr": {
+      "inside_mean": 0.1609698385000229,
+      "inside_n": 3474,
+      "outside_mean": 0.21340130269527435,
+      "outside_n": 10857
+    },
+    "srd": {
+      "inside_mean": 0.8522127866744995,
+      "inside_n": 3474,
+      "outside_mean": 0.8238146901130676,
+      "outside_n": 10857
+    },
+    "trt": {
+      "inside_mean": 0.19417205452919006,
+      "inside_n": 3474,
+      "outside_mean": 0.25528228282928467,
+      "outside_n": 10857
+    },
+    "note": "inside = the sub-crater's own disk (its published radius); outside = surrounding annulus out to 2x that radius. Same Y4R/CPR mosaic and methodology as the 7 PRISM-screened candidates."
+  },
+  {
+    "id": "Cabeus_LCROSS_Fassett2024",
+    "lat": -84.678,
+    "lon": -48.6926,
+    "diameter_m": 900,
+    "window_shape": [
+      72,
+      72
+    ],
+    "pv": {
+      "inside_mean": 0.20643997192382812,
+      "inside_n": 724,
+      "outside_mean": 0.21591632068157196,
+      "outside_n": 2072
+    },
+    "cpr": {
+      "inside_mean": 0.15158452093601227,
+      "inside_n": 739,
+      "outside_mean": 0.16234086453914642,
+      "outside_n": 2104
+    },
+    "srd": {
+      "inside_mean": 0.8603112697601318,
+      "inside_n": 739,
+      "outside_mean": 0.8501785397529602,
+      "outside_n": 2104
+    },
+    "trt": {
+      "inside_mean": 0.1765037626028061,
+      "inside_n": 739,
+      "outside_mean": 0.1964138001203537,
+      "outside_n": 2104
+    },
+    "note": "inside = the sub-crater's own disk (its published radius); outside = surrounding annulus out to 2x that radius. Same Y4R/CPR mosaic and methodology as the 7 PRISM-screened candidates."
+  }
+]

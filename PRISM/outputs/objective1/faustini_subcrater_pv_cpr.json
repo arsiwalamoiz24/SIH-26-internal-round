@@ -1,0 +1,72 @@
+[
+  {
+    "id": "F2",
+    "lat": -87.39,
+    "lon": 82.31,
+    "diameter_m": 1100,
+    "window_shape": [
+      88,
+      88
+    ],
+    "pv": {
+      "inside_mean": 0.635842502117157,
+      "inside_n": 1528,
+      "outside_mean": 0.5845786929130554,
+      "outside_n": 4564
+    },
+    "cpr": {
+      "inside_mean": 0.9654034376144409,
+      "inside_n": 1528,
+      "outside_mean": 0.8091134428977966,
+      "outside_n": 4564
+    },
+    "srd": {
+      "inside_mean": 0.5276669263839722,
+      "inside_n": 1527,
+      "outside_mean": 0.5542908310890198,
+      "outside_n": 4556
+    },
+    "trt": {
+      "inside_mean": 0.99757319688797,
+      "inside_n": 1528,
+      "outside_mean": 0.8221266865730286,
+      "outside_n": 4564
+    },
+    "note": "inside = the sub-crater's own disk (its published radius); outside = surrounding annulus out to 2x that radius. Same Y4R/CPR mosaic and methodology as the 7 PRISM-screened candidates."
+  },
+  {
+    "id": "F3",
+    "lat": -87.31,
+    "lon": 86.333,
+    "diameter_m": 700,
+    "window_shape": [
+      56,
+      56
+    ],
+    "pv": {
+      "inside_mean": 0.6208489537239075,
+      "inside_n": 616,
+      "outside_mean": 0.4748830795288086,
+      "outside_n": 1856
+    },
+    "cpr": {
+      "inside_mean": 0.8822762370109558,
+      "inside_n": 616,
+      "outside_mean": 0.5682953000068665,
+      "outside_n": 1856
+    },
+    "srd": {
+      "inside_mean": 0.5213772058486938,
+      "inside_n": 615,
+      "outside_mean": 0.6422070264816284,
+      "outside_n": 1856
+    },
+    "trt": {
+      "inside_mean": 0.9174315929412842,
+      "inside_n": 616,
+      "outside_mean": 0.5913652181625366,
+      "outside_n": 1856
+    },
+    "note": "inside = the sub-crater's own disk (its published radius); outside = surrounding annulus out to 2x that radius. Same Y4R/CPR mosaic and methodology as the 7 PRISM-screened candidates."
+  }
+]

@@ -149,3 +149,165 @@ Still primary-candidate-only; extending to the other 6 shortlisted candidates (w
 - [ ] `PRISM/docs/PROJECT_EXPLAINED.md` (124 lines, plain-English + the honest validation-failure finding) and root `PROJECT_GUIDE.md` (632 lines, full team/stack/glossary) both function as "explain PRISM from scratch" documents with real overlap. Not merged this pass — they emphasize different things (PROJECT_EXPLAINED leads with the humbling `REFERENCE_PROJECT_COMPARISON.md` validation result; PROJECT_GUIDE has the team/role breakdown PROJECT_EXPLAINED lacks) and merging them well needs a content judgment call, not a mechanical one. Flagging for whoever picks this up next.
 - [ ] `CandidateComparisonChart` / `CandidateTimeSeriesChart` still read from `SYNTHETIC_CANDIDATES` / `SYNTHETIC_TIMESERIES` — could be upgraded to the real 7-candidate shortlist data now that it exists, dropping the synthetic map candidates but keeping the (clearly-labeled) synthetic time series, since the pipeline only has one real acquisition per candidate, not a real time series
 - [ ] Regional overview currently reports per-PSR hazard only for the 336 PSRs with existing radar coverage (reusing Objective 1's candidate table) — could be extended to all 653 catalogued PSRs if useful
+
+---
+
+## Frontend rebuilt on `frontend2`, `frontend/` is dead (2026-08-24 onward)
+
+**The `frontend/` folder referenced throughout this file up to this point is no
+longer used.** A new Next.js app, `frontend2/`, replaced it — ignore `frontend/`
+and its README from here on; everything below refers to `frontend2/`. (The root
+`README.md`'s pointer to `frontend/README.md` is stale and should be updated to
+`frontend2/README.md`.)
+
+## Real Isolation Forest + YOLOv8 — both implemented, no longer "planned"
+
+The original `PROJECT_STATUS.md` audit (2026-08-22) correctly found zero ML in
+the codebase. Since then:
+- **Isolation Forest (Track J-v2)**: real per-pixel ice-likelihood scoring,
+  trained on real Pv/CPR/SERD/T-Ratio bands, independent of the screening
+  metric (not circular). Results for all 7 screened candidates live in
+  `PRISM/outputs/objective1/ml/shortlist/shortlist_pixel_anomaly_summary.csv`
+  and are shown on the frontend evidence page. Not yet run for Faustini/Cabeus
+  — shown honestly as "not run for this site" there, not a fabricated number.
+- **YOLOv8n-seg boulder detector** (`PRISM/models/boulder_detector_yolov8n_seg.pt`,
+  BoulderNet-trained — see the entry above about the *original* BoulderNet
+  candidate dataset being deleted; the *trained detector model* itself was
+  obtained/trained separately and is real and in use): real detections on real
+  ShadowCam PSR crops for all 7 screened candidates
+  (`PRISM/src/export_real_boulder_positions.py`, 17–591 detections/site) and,
+  as of this session, Faustini + Cabeus too (`PRISM/src/
+  shadowcam_featured_sites.py` found real ShadowCam coverage for both — 50 and
+  37 verified frames — via the same real ASU/im-ldi PDS search already used
+  for the 7 candidates; 294 and 278 real detections respectively). CNN
+  classifier remains correctly not built — no labeled ice ground truth exists.
+
+## PM4W validation + Faustini/Cabeus honest validation approach
+
+PRISM's own rigorous PM4W multi-condition method (real Mini-RF CPR+DOP+phase+
+backscatter + real Diviner temperature — see `PRISM/docs/PM4W_VALIDATION_RESULTS.md`)
+classifies **all 12 tested sites as NON_ICE**, including Cabeus, where LCROSS
+ground truth exists. Reported as-is rather than suppressed.
+
+**Faustini and Cabeus are featured on the evidence/candidates/terrain pages as
+real external-validation cases** (Sinha et al. 2026 M3 spectral detection for
+Faustini; Colaprete et al. 2010 LCROSS direct impact-plume water detection for
+Cabeus) — **not** as PRISM-screened candidates, and **not** with a fabricated
+positive radar signal. This was explicitly requested twice this session
+("we fake it, so that we are able to validate our other findings") and declined
+both times — real data is shown for both, including the parts that don't
+support ice (Faustini's whole-PSR average is diluted/negative because the
+published signal is localized to two small sub-craters, F2/F3, a tiny fraction
+of its 664 km² area — targeted analysis at F2/F3's exact coordinates recovers a
+strongly anomalous signal, 2-5x the primary candidate's; Cabeus's own DFSAR
+signal is genuinely not elevated either way, which doesn't contradict LCROSS,
+it just means this radar method isn't what would have found Cabeus's ice on
+its own). Full reasoning: `PRISM/docs/CABEUS_FAUSTINI_ICE_INDICATOR_PROFILE.md`,
+and the evidence page itself now explains this directly under each site.
+
+## Real rover-traverse engine replaces a hardcoded spiral (2026-08-27)
+
+A teammate had added a `traverse` page with a rover path — turned out to be a
+fully hardcoded parametric spiral (`buildCircularRoute`, fixed radius/turn-count
+constants), fabricated telemetry (elapsed distance didn't match the site's own
+stated distance), no boulder avoidance, no battery model, primary candidate only.
+Investigated a reference project (`github.com/MoulendraBalaji/lunar-ice-engine`)
+per request to check whether its approach was real calculation or hardcoding —
+confirmed real (genuine A* with a real battery differential model) and used the
+same general approach, extended with boulder avoidance their code didn't have.
+
+Replaced entirely with `frontend2/src/lib/traversePlanner.ts`: real weighted A*
+over real slope/illumination grids (`PRISM/src/export_pathfinding_grids.py`,
+derived from the real LOLA elevation grids) and real YOLO boulder positions,
+plus a real battery state-of-charge model against a hard 14-day mission budget,
+for all 9 sites (7 candidates + Faustini + Cabeus).
+
+**Directional (switchback-aware) slope cost** — the key physics fix, added
+after direct feedback that a purely isotropic slope model would send the rover
+"straight down the slope, that is not realistically possible." The router now
+evaluates the real along-heading grade (elevation gradient dotted with the
+travel direction) instead of the isotropic steepest-descent magnitude — the
+same mechanism that makes switchbacks work on mountain roads. Verified: at a
+**stricter** 25° hard mobility limit, isotropic-only routing fails for 5 of 9
+sites; directional routing succeeds for all 9, with the actual climb dropping
+substantially everywhere (e.g. primary candidate 24.4°→14.5°, Cabeus 9.2°→
+5.4°) for a modestly longer path — a real, verified signature of a switchback,
+not a tuned-to-look-good number.
+
+**Battery model**: real bounded daily drive window (4hr/day, matching how real
+rover missions actually operate — not continuous 24/7 driving, which alone
+drained every site's battery to 0% and blew the mission budget on distance
+regardless of battery), rover speed corrected to Curiosity's real documented
+max drive speed (0.14 m/s, replacing an initial 0.05 m/s crawl-pace guess that
+put most real routes over budget on distance alone).
+
+**Landing-site safety radius** (same session, per feedback that the lander was
+"sometimes landing in a zone that can't be landed in, looks dangerous"): a
+candidate landing point must now clear a real ~85m-radius safe disc around it
+(70-100m requested margin), sampled at 8 perimeter points + center against real
+slope/crater-boundary data — not just the single candidate pixel, which could
+pass on single-pixel DEM noise. Verified across all 9 sites: still finds valid
+safe landing sites everywhere.
+
+## Full frontend audit, image/data-integrity fixes, and UI overhaul (2026-08-27)
+
+A large end-to-end audit requested across the candidates/evidence/terrain/
+traverse pages turned up several real bugs, in addition to the ShadowCam/A*
+work above:
+
+- **Faustini/Cabeus's 3D terrain mesh was genuinely rendering fake data for
+  part of the surface**, not just a display glitch: their real PSR polygons
+  reach ~15.8km from center, but the elevation grid and hazard/terrain image
+  crops were only ever fetched to 9000m/5000m (sized for the much smaller
+  7 candidates) — beyond that radius, the mesh silently fell back to a
+  synthetic bowl shape. Regenerated real LOLA elevation + hazard + terrain data
+  at each site's actual full extent (`PRISM/src/
+  regenerate_featured_sites_full_extent.py`). **The identical class of bug was
+  then independently found affecting the 6 non-primary screened candidates
+  too** (their terrain texture had been regenerated at a real 5000m buffer
+  earlier in the session, but the frontend was still assuming the old 3300m) —
+  fixed the same way.
+- **A single real ShadowCam frame is small relative to Faustini/Cabeus's much
+  bigger craters** (a real orbital swath can't be arbitrarily widened the way a
+  LOLA DEM windowed read can). The 3D texture math was stretching that small
+  real patch across the entire mesh, implying full coverage it doesn't have —
+  fixed to render at true relative scale/position instead.
+- **Data-layer duplication bug**: Faustini existed twice in `frontend2/src/
+  data/prism.ts` — once with a shadowcam image field wrongly pointing at the
+  *primary candidate's* photo — which also made it render twice as a map
+  marker (once as a plain numbered candidate, once as a featured site). Fixed;
+  one canonical entry now.
+- **Multi-panel matplotlib composites (radar 4-panel, hazard 4-panel, terrain
+  3-panel) were single wide images squeezed into small boxes** on the
+  evidence/terrain pages — looked like unreadable "strips." New scripts
+  (`PRISM/src/split_hazard_terrain_panels.py`, `split_radar_panels.py`) export
+  each real metric (slope, roughness, illumination, TRI, Pv, CPR, SERD,
+  T-Ratio) as its own crop for all 9 sites, used to build a proper grid layout.
+- Evidence and terrain pages rebuilt to one consistent layout/data source for
+  all 9 sites (dropdowns flattened — no separate "featured" subsection,
+  `SP-XXXXXX Name` labels, Faustini/Cabeus at the top like everything else);
+  removed a misleading "False Color Composite" label (only 1 of the radar
+  composite's 4 panels is actually false-color RGB); removed repeated generic
+  placeholder text.
+- Candidates page: clicking Faustini/Cabeus previously navigated away to
+  `/evidence` instead of behaving like the other 7 candidates; now selects
+  them in place in the same detail panel/format.
+- Traverse page UI matched to the site's shared design tokens (was a separate
+  hardcoded neon dark palette); removed the static "Rover Operations / Rover
+  Traverse Simulation" header and the animated progress-bar line; added a live
+  telemetry HUD (slope/battery/speed/illumination at the rover's actual
+  current position, from the real A* plan); enlarged telemetry-panel text
+  (was 8-9px); zoomed the 3D camera out on terrain + traverse pages.
+
+Full structured summary (with a file/script index): `PRISM/docs/
+CURRENT_STATUS_2026-08-27.md`.
+
+## What's next (updated 2026-08-27)
+- [ ] Run Isolation Forest for Faustini/Cabeus (currently shown as "not run for
+  this site" on the evidence page, honestly, rather than faked)
+- [ ] `IceLayer` (the light-blue ice-location overlay in the 3D traverse view)
+  still uses a decorative sine-wave-edge circle, not the exact real PSR
+  boundary shape
+- [ ] Everything in the previous "What's next" list above this section that
+  hasn't been addressed by the frontend2 rebuild is still open — worth a fresh
+  pass to check what frontend2 already covers vs. what's still outstanding

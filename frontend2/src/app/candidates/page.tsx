@@ -1,16 +1,71 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { CANDIDATES, CandidateId } from "@/data/prism";
+import { CANDIDATES, FAUSTINI, CABEUS } from "@/data/prism";
 import { useIsLightTheme } from "@/hooks/useIsLightTheme";
 import Link from "next/link";
+
+// ── Unified candidate view ───────────────────────────────────────
+// Faustini/Cabeus are real sites too -- clicking them should select them in
+// place and show their info in this same detail panel, not navigate away to
+// a different page the way the other 7 candidates don't. physicsScore/rank
+// don't apply to them (they aren't part of PRISM's own screening), so those
+// stay optional and the panel below shows their real external-validation
+// status in that slot instead.
+type CandidateView = {
+  id: string;
+  label: string;
+  lat: number;
+  lon: number;
+  areaKm2: number;
+  isPrimary: boolean;
+  isFeatured: boolean;
+  rank?: number;
+  physicsScore?: number;
+  deltaPv: number;
+  deltaCpr: number;
+  deltaTratio: number;
+  deltaSerd: number;
+  shadowcamImage: string;
+  hazardImage: string;
+  shortDescription: string;
+  externalEvidence?: string;
+};
+
+const ALL_CANDIDATE_VIEWS: CandidateView[] = [
+  ...CANDIDATES.map((c): CandidateView => ({
+    id: c.id, label: c.label, lat: c.lat, lon: c.lon, areaKm2: c.areaKm2,
+    isPrimary: c.isPrimary, isFeatured: false, rank: c.rank, physicsScore: c.physicsScore,
+    deltaPv: c.deltaPv, deltaCpr: c.deltaCpr, deltaTratio: c.deltaTratio, deltaSerd: c.deltaSerd,
+    shadowcamImage: c.shadowcamImage as string, hazardImage: c.hazardImage,
+    shortDescription: c.shortDescription,
+  })),
+  {
+    id: FAUSTINI.id, label: FAUSTINI.label, lat: FAUSTINI.lat, lon: FAUSTINI.lon, areaKm2: FAUSTINI.areaKm2,
+    isPrimary: false, isFeatured: true,
+    deltaPv: FAUSTINI.wholePsr.pv.delta, deltaCpr: FAUSTINI.wholePsr.cpr.delta,
+    deltaTratio: FAUSTINI.wholePsr.trt.delta, deltaSerd: FAUSTINI.wholePsr.srd.delta,
+    shadowcamImage: FAUSTINI.shadowcamImage, hazardImage: FAUSTINI.hazardImage,
+    shortDescription: "Externally-confirmed ice evidence (Sinha et al. 2026) — a validation case, not one of PRISM's 7 screened candidates.",
+    externalEvidence: FAUSTINI.externalEvidence,
+  },
+  {
+    id: CABEUS.id, label: CABEUS.label, lat: CABEUS.lat, lon: CABEUS.lon, areaKm2: CABEUS.areaKm2,
+    isPrimary: false, isFeatured: true,
+    deltaPv: CABEUS.wholePsr.pv.delta, deltaCpr: CABEUS.wholePsr.cpr.delta,
+    deltaTratio: CABEUS.wholePsr.trt.delta, deltaSerd: CABEUS.wholePsr.srd.delta,
+    shadowcamImage: CABEUS.shadowcamImage, hazardImage: CABEUS.hazardImage,
+    shortDescription: "LCROSS direct impact-plume water detection — a validation case, not one of PRISM's 7 screened candidates.",
+    externalEvidence: CABEUS.externalEvidence,
+  },
+];
 
 function PolarInteractiveMap({
   selectedId,
   onSelect,
 }: {
-  selectedId: CandidateId;
-  onSelect: (id: CandidateId) => void;
+  selectedId: string;
+  onSelect: (id: string) => void;
 }) {
   const isLight = useIsLightTheme();
   const size = 600;
@@ -84,7 +139,7 @@ function PolarInteractiveMap({
           return (
             <g
               key={c.id}
-              onClick={() => onSelect(c.id as CandidateId)}
+              onClick={() => onSelect(c.id)}
               style={{ cursor: "pointer", transition: "all 0.3s ease" }}
             >
               {isSelected && (
@@ -119,6 +174,43 @@ function PolarInteractiveMap({
             </g>
           );
         })}
+
+        {/* Faustini & Cabeus — featured validation sites, externally confirmed ice evidence */}
+        {[FAUSTINI, CABEUS].map((site) => {
+          const pos = toXY(site.lat, site.lon, mapRadius);
+          const isSelected = selectedId === site.id;
+          return (
+            <g
+              key={site.id}
+              onClick={() => onSelect(site.id)}
+              style={{ cursor: "pointer", transition: "all 0.3s ease" }}
+            >
+              {isSelected && (
+                <circle cx={pos.x} cy={pos.y} r={24} fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+              )}
+              <circle cx={pos.x} cy={pos.y} r={16} fill="rgba(90,200,180,0.12)" stroke="rgba(90,200,180,0.45)" strokeWidth="1" />
+              <circle
+                cx={pos.x}
+                cy={pos.y}
+                r={isSelected ? 6 : 5}
+                fill={isSelected ? "#FFF" : "#5AC8B4"}
+                stroke="#B8F0E4"
+                strokeWidth={1.5}
+              />
+              <text
+                x={pos.x + 12}
+                y={pos.y - 8}
+                fontSize="12"
+                fill="#5AC8B4"
+                fontFamily="monospace"
+                fontWeight="700"
+                style={{ pointerEvents: "none" }}
+              >
+                {site.label}
+              </text>
+            </g>
+          );
+        })}
       </svg>
 
       {/* Decorative corners */}
@@ -135,10 +227,10 @@ function PolarInteractiveMap({
 }
 
 export default function CandidatesPage() {
-  const [selectedId, setSelectedId] = useState<CandidateId>("SP_840980_0797630");
+  const [selectedId, setSelectedId] = useState<string>("SP_840980_0797630");
 
   const selectedCandidate = useMemo(() => {
-    return CANDIDATES.find((c) => c.id === selectedId) || CANDIDATES[0];
+    return ALL_CANDIDATE_VIEWS.find((c) => c.id === selectedId) || ALL_CANDIDATE_VIEWS[0];
   }, [selectedId]);
 
   return (
@@ -166,7 +258,7 @@ export default function CandidatesPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }}>
                 {selectedCandidate.isPrimary && <span className="status-pill">Primary Target</span>}
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", border: "1px solid var(--border)", padding: "2px 8px", borderRadius: "99px" }}>
-                  Rank {selectedCandidate.rank}
+                  {selectedCandidate.isFeatured ? "Validation Site" : `Rank ${selectedCandidate.rank}`}
                 </span>
               </div>
             </div>
@@ -197,13 +289,23 @@ export default function CandidatesPage() {
 
           {/* Physics Evidence Score */}
           <div style={{ padding: "32px 40px", borderBottom: "1px solid var(--border)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px" }}>
-              <div className="label-caps">Physics Evidence Score</div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "24px", color: selectedCandidate.isPrimary ? "var(--amber)" : "var(--text-primary)", lineHeight: 1 }}>
-                {selectedCandidate.physicsScore.toFixed(3)}
+            {selectedCandidate.isFeatured ? (
+              <div style={{ marginBottom: "20px" }}>
+                <div className="label-caps" style={{ marginBottom: "8px" }}>External Validation</div>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.6, margin: 0 }}>
+                  {selectedCandidate.externalEvidence} — not one of PRISM&apos;s 7 screened candidates, so it has no
+                  physicsScore/rank; featured here as a real validation case instead.
+                </p>
               </div>
-            </div>
-            
+            ) : (
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px" }}>
+                <div className="label-caps">Physics Evidence Score</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: "24px", color: selectedCandidate.isPrimary ? "var(--amber)" : "var(--text-primary)", lineHeight: 1 }}>
+                  {selectedCandidate.physicsScore?.toFixed(3)}
+                </div>
+              </div>
+            )}
+
             {/* Metric Deltas */}
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {[

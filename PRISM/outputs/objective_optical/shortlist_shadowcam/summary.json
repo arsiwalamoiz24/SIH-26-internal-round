@@ -1,0 +1,212 @@
+{
+  "SP_832640_0090770": {
+    "n_frames": 21,
+    "extracted": [
+      {
+        "n_valid": 2171944,
+        "pct_valid": 70.2,
+        "mean": 0.3366801142692566,
+        "std": 0.12543614208698273,
+        "adjacent_pixel_correlation": 0.9964714261555045,
+        "shape": [
+          1759,
+          1759
+        ],
+        "identifier": "M018257888SE",
+        "incidence_angle": "81.278",
+        "resolution": "1.7156",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2023/063/M018257888S/M018257888S_map_raw.tif"
+      },
+      {
+        "n_valid": 1656371,
+        "pct_valid": 67.46,
+        "mean": 0.41783443093299866,
+        "std": 0.13570037484169006,
+        "adjacent_pixel_correlation": 0.9950536056470584,
+        "shape": [
+          1567,
+          1567
+        ],
+        "identifier": "M013535360SE",
+        "incidence_angle": "81.673",
+        "resolution": "1.902",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2023/008/M013535360S/M013535360S_map_raw.tif"
+      }
+    ]
+  },
+  "SP_830080_0535120": {
+    "n_frames": 20,
+    "extracted": [
+      {
+        "n_valid": 1090332,
+        "pct_valid": 33.32,
+        "mean": 0.6445931792259216,
+        "std": 0.14917723834514618,
+        "adjacent_pixel_correlation": 0.9883826061017,
+        "shape": [
+          1809,
+          1809
+        ],
+        "identifier": "M074536836SE",
+        "incidence_angle": "83.18",
+        "resolution": "1.5888",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2024/349/M074536836S/M074536836S_map_raw.tif"
+      },
+      {
+        "n_valid": 1622946,
+        "pct_valid": 54.92,
+        "mean": 0.5725725293159485,
+        "std": 0.13040019571781158,
+        "adjacent_pixel_correlation": 0.9824003794485766,
+        "shape": [
+          1719,
+          1719
+        ],
+        "identifier": "M074635830SE",
+        "incidence_angle": "84.421",
+        "resolution": "1.682",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2024/350/M074635830S/M074635830S_map_raw.tif"
+      }
+    ]
+  },
+  "SP_842420_0421060": {
+    "n_frames": 23,
+    "extracted": [
+      {
+        "n_valid": 2986883,
+        "pct_valid": 82.39,
+        "mean": 0.2800591289997101,
+        "std": 0.12287382781505585,
+        "adjacent_pixel_correlation": 0.9968243955307632,
+        "shape": [
+          1904,
+          1904
+        ],
+        "identifier": "M018010390SE",
+        "incidence_angle": "83.577",
+        "resolution": "1.5626",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2023/060/M018010390S/M018010390S_map_raw.tif"
+      },
+      {
+        "n_valid": 7799993,
+        "pct_valid": 88.78,
+        "mean": 0.15065604448318481,
+        "std": 0.07177892327308655,
+        "adjacent_pixel_correlation": 0.9959955433127484,
+        "shape": [
+          2964,
+          2964
+        ],
+        "identifier": "M081703088SE",
+        "incidence_angle": "85.257",
+        "resolution": "0.9671",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2025/066/M081703088S/M081703088S_map_raw.tif"
+      }
+    ]
+  },
+  "SP_817950_1586580": {
+    "n_frames": 17,
+    "extracted": [
+      {
+        "n_valid": 1427015,
+        "pct_valid": 74.47,
+        "mean": 0.34350326657295227,
+        "std": 0.03858988732099533,
+        "adjacent_pixel_correlation": 0.971084162385322,
+        "shape": [
+          1050,
+          1825
+        ],
+        "identifier": "M017274985SE",
+        "incidence_angle": "80.092",
+        "resolution": "1.6299",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2023/051/M017274985S/M017274985S_map_raw.tif"
+      },
+      {
+        "n_valid": 2079395,
+        "pct_valid": 60.95,
+        "mean": 0.36624181270599365,
+        "std": 0.1037520319223404,
+        "adjacent_pixel_correlation": 0.9955127038475635,
+        "shape": [
+          1847,
+          1847
+        ],
+        "identifier": "M078644781SE",
+        "incidence_angle": "81.608",
+        "resolution": "1.6098",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2025/031/M078644781S/M078644781S_map_raw.tif"
+      }
+    ]
+  },
+  "SP_819860_1568660": {
+    "n_frames": 17,
+    "extracted": [
+      {
+        "n_valid": 3131891,
+        "pct_valid": 90.92,
+        "mean": 0.40620434284210205,
+        "std": 0.11265699565410614,
+        "adjacent_pixel_correlation": 0.9931993318855772,
+        "shape": [
+          1856,
+          1856
+        ],
+        "identifier": "M078658919SE",
+        "incidence_angle": "81.659",
+        "resolution": "1.596",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2025/031/M078658919S/M078658919S_map_raw.tif"
+      },
+      {
+        "n_valid": 3131412,
+        "pct_valid": 99.61,
+        "mean": 0.2532939910888672,
+        "std": 0.08880002051591873,
+        "adjacent_pixel_correlation": 0.9891856934844127,
+        "shape": [
+          1773,
+          1773
+        ],
+        "identifier": "M019650752SE",
+        "incidence_angle": "81.77",
+        "resolution": "1.6338",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2023/079/M019650752S/M019650752S_map_raw.tif"
+      }
+    ]
+  },
+  "SP_809570_2454450": {
+    "n_frames": 4,
+    "extracted": [
+      {
+        "n_valid": 2237917,
+        "pct_valid": 91.72,
+        "mean": 0.31441420316696167,
+        "std": 0.0742422416806221,
+        "adjacent_pixel_correlation": 0.9907930252665335,
+        "shape": [
+          1562,
+          1562
+        ],
+        "identifier": "M078043805SE",
+        "incidence_angle": "81.256",
+        "resolution": "1.8799",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2025/024/M078043805S/M078043805S_map_raw.tif"
+      },
+      {
+        "n_valid": 2558680,
+        "pct_valid": 99.2,
+        "mean": 0.30645647644996643,
+        "std": 0.07596595585346222,
+        "adjacent_pixel_correlation": 0.9883340674982591,
+        "shape": [
+          1606,
+          1606
+        ],
+        "identifier": "M016666798SE",
+        "incidence_angle": "81.931",
+        "resolution": "1.8327",
+        "cog_url": "https://pds.shadowcam.im-ldi.com/observation/2023/044/M016666798S/M016666798S_map_raw.tif"
+      }
+    ]
+  }
+}

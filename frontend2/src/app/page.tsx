@@ -642,10 +642,10 @@ export default function HomePage() {
               }}
             >
               <img
-                src={PRIMARY.images.radar}
+                src="/assets/prism/radar_only/SP_840980_0797630.png"
                 alt="Chandrayaan-2 DFSAR Radar Composite — SP_840980_0797630"
                 className="scientific-image"
-                style={{ width: "100%", aspectRatio: "16/10", objectFit: "cover" }}
+                style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover" }}
               />
               <div style={{ marginTop: "10px", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
@@ -707,8 +707,8 @@ export default function HomePage() {
           {/* Terrain */}
           <div style={{ position: "relative", minHeight: "480px", overflow: "hidden" }}>
             <img
-              src={PRIMARY.images.terrain}
-              alt="LOLA DEM Terrain Analysis — Slope, Roughness, Illumination"
+              src="/assets/prism/elevation_only/SP_840980_0797630.png"
+              alt="LOLA DEM Terrain Analysis — Elevation"
               style={{
                 width: "100%",
                 height: "100%",
@@ -763,7 +763,7 @@ export default function HomePage() {
           {/* Hazard map */}
           <div style={{ position: "relative", minHeight: "480px", overflow: "hidden" }}>
             <img
-              src={PRIMARY.images.hazard}
+              src="/assets/prism/hazard_only/SP_840980_0797630.png"
               alt="Hazard Classification Map — SP_840980_0797630"
               style={{
                 width: "100%",

@@ -45,11 +45,12 @@ from rasterio.features import geometry_mask
 from rasterio.transform import from_bounds
 from rasterio.windows import from_bounds as window_from_bounds
 
-L4_DIR = r"C:\Users\radhe\PRISM_local_data\l4_mosaic"
-L3C_DIR = r"C:\Users\radhe\PRISM_local_data\l3c_cpr"
-PSR_SHP = r"C:\Users\radhe\PRISM_local_data\psr_south\LOLA_PSR_75S_120M_82S_060M_5KM2_FINAL.shp"
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+L4_DIR = os.path.join(REPO, "data", "raw", "l4_mosaic")
+L3C_DIR = os.path.join(REPO, "data", "raw", "l3c_cpr")
+PSR_SHP = os.path.join(REPO, "data", "raw", "psr_south", "LOLA_PSR_75S_120M_82S_060M_5KM2_FINAL.shp")
 
-OUT_DIR = r"C:\Users\radhe\OneDrive\Documents\GitHub\SIH-26-internal-round\PRISM\outputs\objective1"
+OUT_DIR = os.path.join(REPO, "PRISM", "outputs", "objective1")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 CANDIDATE_ID = "SP_840980_0797630"
@@ -58,6 +59,12 @@ SHORTLIST_IDS = [
     "SP_817950_1586580", "SP_840980_0797630", "SP_819860_1568660",
     "SP_809570_2454450",
 ]
+# Faustini's own PSR (externally published ice evidence, Sinha et al. 2026) and
+# Cabeus's own PSR (LCROSS in-situ water detection, Colaprete et al. 2010) —
+# added as featured external-validation sites, not part of the 7 screened candidates.
+FAUSTINI_ID = "SP_871460_0840750"
+CABEUS_ID = "SP_844580_3134320"
+FULL_RES_IDS = SHORTLIST_IDS + [FAUSTINI_ID, CABEUS_ID]
 
 Y4R_PATHS = {
     L: os.path.join(L4_DIR, f"ch2_sar_ndxl_20250630my4rspwest_d_{L}_xx_fp_xx_xxx.tif")
@@ -167,7 +174,7 @@ def main():
 
     full_res_rows = []
     serd_nan_report = []
-    for psr_id in SHORTLIST_IDS:
+    for psr_id in FULL_RES_IDS:
         row = psr_aligned[psr_aligned.PSR_ID == psr_id].iloc[0]
         minx, miny, maxx, maxy = row.geometry.bounds
         buffer = 1000
@@ -239,8 +246,10 @@ def main():
             "raster_nodata_metadata": srd_nodata,
         })
 
-        if psr_id == CANDIDATE_ID:
-            # Save RGB + Pv/CPR/SERD figure for the candidate specifically
+        if True:
+            # Save RGB + Pv/CPR/SERD figure for every candidate processed
+            # (previously only the primary candidate got one — the other 6
+            # shortlist members had no radar composite image at all)
             def norm_db(arr):
                 with np.errstate(divide="ignore", invalid="ignore"):
                     db = 10 * np.log10(arr)
@@ -264,10 +273,19 @@ def main():
             im3 = axes[3].imshow(np.where(valid_srd, srd_fr, np.nan), cmap="viridis", vmin=0, vmax=1)
             axes[3].contour(psr_mask_fr, colors="cyan", linewidths=1.2)
             axes[3].set_title("SERD"); plt.colorbar(im3, ax=axes[3], shrink=0.7)
-            plt.suptitle(f"{CANDIDATE_ID} -- lat {row.latitude}, lon {row.longitude}, area {row.area:.1f} km^2 (Phase 1 reproduction)")
+            plt.suptitle(f"{psr_id} -- lat {row.latitude}, lon {row.longitude}, area {row.area:.1f} km^2 (Phase 1 reproduction)")
             plt.tight_layout()
-            fig.savefig(os.path.join(OUT_DIR, f"{CANDIDATE_ID}_radar_composite.png"), dpi=150)
+            fig.savefig(os.path.join(OUT_DIR, f"{psr_id}_radar_composite.png"), dpi=150)
             plt.close(fig)
+
+            # Single-panel crop (no title/colorbar) -- for use as a 3D mesh texture
+            fig2, ax2 = plt.subplots(figsize=(6, 6))
+            ax2.imshow(rgb)
+            ax2.contour(psr_mask_fr, colors="cyan", linewidths=1.0)
+            ax2.axis("off")
+            fig2.savefig(os.path.join(OUT_DIR, f"{psr_id}_radar_only.png"), dpi=150,
+                         bbox_inches="tight", pad_inches=0)
+            plt.close(fig2)
 
     full_res_df = pd.DataFrame(full_res_rows)
     full_res_df.to_csv(os.path.join(OUT_DIR, "shortlist_full_res_comparison.csv"), index=False)

@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useTexture } from "@react-three/drei";
-import { PRIMARY, CANDIDATES } from "@/data/prism";
+import { PRIMARY, CANDIDATES, FAUSTINI, CABEUS, spIdLabel } from "@/data/prism";
 import * as THREE from "three";
 
 // ── 3D Parametric Crater ──────────────────────────────────────────
@@ -84,19 +84,21 @@ function sampleElevationGrid(grid: number[][], gridSize: number, u: number, v: n
   return top + (bottom - top) * fv;
 }
 
-// 1x1 transparent pixel — keeps useTexture's hook call unconditional even
-// when the active layer has no real cropped texture to show (radar, pending
-// raw SAR source data for non-primary candidates).
-const BLANK_TEXTURE_URL =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
-
 function CraterMesh({
-  candidateId, elevRange, activeLayer, shadowcamUrl,
+  candidateId, elevRange, activeLayer, shadowcamUrl, textureHalfM,
 }: {
   candidateId: string;
   elevRange: number;
   activeLayer: "shadowcam" | "radar" | "hazard" | "terrain";
-  shadowcamUrl: string;
+  shadowcamUrl?: string;
+  // Real per-layer crop buffer for this specific site, when it differs from
+  // the fixed defaults (see TEXTURE_SOURCE_HALF_M) -- e.g. Faustini/Cabeus's
+  // real PSR polygons are much bigger than the 7 screened candidates', so
+  // their hazard/terrain crops were regenerated at a bigger real buffer,
+  // while their real ShadowCam crop is a normal single-frame ~1.5km window
+  // (an orbital swath can't be arbitrarily widened the way a LOLA DEM read
+  // can) -- far smaller than their crater, unlike the other 7 candidates.
+  textureHalfM?: Partial<Record<"hazard" | "terrain" | "shadowcam", number>>;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [boundary, setBoundary] = useState<BoundaryJSON | null>(null);
@@ -203,71 +205,138 @@ function CraterMesh({
   // (never the old multi-panel wallpaper), scaled so its real-world footprint
   // lines up with the mesh's own real-world size.
   const textureUrl =
-    activeLayer === "shadowcam" ? shadowcamUrl :
+    activeLayer === "shadowcam" && shadowcamUrl ? shadowcamUrl :
     activeLayer === "hazard" ? `/assets/prism/hazard_only/${candidateId}.png` :
     activeLayer === "terrain" ? `/assets/prism/elevation_only/${candidateId}.png` :
-    BLANK_TEXTURE_URL; // radar: no cropped texture yet — raw SAR source pending
+    activeLayer === "radar" ? `/assets/prism/radar_only/${candidateId}.png` :
+    `/assets/prism/hazard_only/${candidateId}.png`;
 
   const texture = useTexture(textureUrl);
   texture.wrapS = THREE.ClampToEdgeWrapping;
   texture.wrapT = THREE.ClampToEdgeWrapping;
-  const halfM = TEXTURE_SOURCE_HALF_M[activeLayer] ?? 5000;
+  // radar_only crops come from radar_pipeline.py's own PSR-bbox + 1000m buffer
+  // window (not a fixed BUFFER_M like hazard/terrain), so its real-world
+  // half-width varies per candidate — derive it from the same rim polygon
+  // already loaded for the mesh geometry instead of a fixed constant.
+  const halfM = activeLayer === "radar"
+    ? (scale > 0 ? AVG_RIM_UNITS / scale + 1000 : 5000)
+    : (textureHalfM?.[activeLayer as "hazard" | "terrain" | "shadowcam"] ?? TEXTURE_SOURCE_HALF_M[activeLayer] ?? 5000);
   const meshHalfExtentM = MESH_HALF / (scale || 1);
-  const repeatFrac = Math.min(meshHalfExtentM / halfM, 1);
+  // Not capped at 1: when a real crop covers *less* than the mesh's real
+  // footprint (e.g. a single ShadowCam frame on Faustini/Cabeus's much
+  // bigger real crater), forcing repeatFrac to 1 would stretch that small
+  // real patch across the entire mesh and misrepresent it as full coverage.
+  // Left uncapped, ClampToEdgeWrapping instead shows the real patch at its
+  // true relative scale, positioned correctly, with the rest of the mesh
+  // reading as a plain surface -- honest about what the data actually covers.
+  const repeatFrac = meshHalfExtentM / halfM;
   texture.offset.set((1 - repeatFrac) / 2, (1 - repeatFrac) / 2);
   texture.repeat.set(repeatFrac, repeatFrac);
   texture.needsUpdate = true;
 
   return (
     <mesh ref={meshRef} geometry={geometry}>
-      <meshStandardMaterial
-        map={activeLayer === "radar" ? null : texture}
-        color={activeLayer === "radar" ? "#8c877e" : "#ffffff"}
-        roughness={0.94}
-        metalness={0.02}
-      />
+      <meshStandardMaterial map={texture} color="#ffffff" roughness={0.94} metalness={0.02} />
     </mesh>
   );
 }
+
+type TerrainSite = {
+  id: string;
+  label: string;
+  dropdownLabel: string;
+  isPrimary: boolean;
+  isFeatured?: boolean;
+  terrain: { elevMin: number; elevMax: number; elevRange: number };
+  hazardImage: string;
+  terrainImage: string;
+  radarImage: string;
+  shadowcamImage?: string;
+  textureHalfM?: Partial<Record<"hazard" | "terrain" | "shadowcam", number>>;
+};
+
+// Faustini and Cabeus: featured external-validation sites (real, independently
+// published ice evidence — LCROSS direct detection at Cabeus, M3 spectral
+// detection at Faustini), not part of PRISM's own 7-candidate screening.
+// Real single-frame ShadowCam crops now exist for both (PRISM/src/
+// shadowcam_featured_sites.py, real ASU/im-ldi PDS archive search).
+// Listed first below (not a separate dropdown subsection) like any other site.
+const FEATURED_SITES: TerrainSite[] = [FAUSTINI, CABEUS].map((s) => ({
+  id: s.id, label: s.label, dropdownLabel: `${spIdLabel(s.id)} ${s.label}`, isPrimary: false, isFeatured: true,
+  terrain: s.terrain, hazardImage: s.hazardImage, terrainImage: s.terrainImage, radarImage: s.radarImage,
+  shadowcamImage: s.shadowcamImage,
+  textureHalfM: s.textureHalfM,
+}));
+
+const ALL_SITES: TerrainSite[] = [
+  ...FEATURED_SITES,
+  ...CANDIDATES.map((c): TerrainSite => ({
+    id: c.id, label: c.label, dropdownLabel: c.isPrimary ? `${c.label} (Primary)` : c.label,
+    isPrimary: c.isPrimary, terrain: c.terrain,
+    hazardImage: c.isPrimary ? PRIMARY.images.hazard : c.hazardImage,
+    terrainImage: c.isPrimary ? PRIMARY.images.terrain : c.terrainImage,
+    radarImage: c.isPrimary ? PRIMARY.images.radar : c.radarImage,
+    shadowcamImage: c.isPrimary ? PRIMARY.images.shadowcam : c.shadowcamImage,
+    // The 6 non-primary candidates' hazard_only/elevation_only crops were
+    // regenerated at a real 5000m buffer (PRISM/outputs/objective2/shortlist/
+    // *_terrain_stats.json: window_buffer_m=5000), same as hazard's own
+    // default -- but the fixed TEXTURE_SOURCE_HALF_M.terrain=3300 below was
+    // tuned for the primary's own narrower 3300m crop (export_elevation_
+    // only_crops.py), so without this override their terrain-layer texture
+    // was reading the wrong real-world footprint and rendering over-zoomed.
+    textureHalfM: c.isPrimary ? undefined : { hazard: 5000, terrain: 5000 },
+  })),
+];
 
 export default function TerrainPage() {
   const [activeLayer, setActiveLayer] = useState<"shadowcam" | "radar" | "hazard" | "terrain">("hazard");
   const [selectedCandidateId, setSelectedCandidateId] = useState<string>("SP_840980_0797630");
 
-  const selectedCandidate = CANDIDATES.find(c => c.id === selectedCandidateId) || CANDIDATES[0];
+  const selectedCandidate = ALL_SITES.find(c => c.id === selectedCandidateId) || ALL_SITES[0];
+  const hasShadowcam = !!selectedCandidate.shadowcamImage;
 
-  // Radar composites only exist for the primary candidate (raw DFSAR source
-  // data for the other 6 isn't available yet) — auto-fallback off that tab
-  // instead of silently showing the primary candidate's image.
+  // No ShadowCam imagery for Faustini/Cabeus — fall back off that tab instead
+  // of showing a broken image.
   useEffect(() => {
-    if (!selectedCandidate.isPrimary && activeLayer === "radar") {
+    if (!hasShadowcam && activeLayer === "shadowcam") {
       setActiveLayer("hazard");
     }
-  }, [selectedCandidate, activeLayer]);
+  }, [hasShadowcam, activeLayer]);
 
-  const shadowcamUrl = selectedCandidate.id === "SP_840980_0797630"
-    ? PRIMARY.images.shadowcam
-    : selectedCandidate.shadowcamImage;
+  const shadowcamUrl = selectedCandidate.shadowcamImage;
 
-  const getLayerImage = () => {
-    if (selectedCandidate.id === "SP_840980_0797630") {
-      switch (activeLayer) {
-        case "shadowcam": return PRIMARY.images.shadowcam;
-        case "radar":     return PRIMARY.images.radar;
-        case "hazard":    return PRIMARY.images.hazard;
-        case "terrain":   return PRIMARY.images.terrain;
-        default:          return PRIMARY.images.hazard;
-      }
-    } else {
-      switch (activeLayer) {
-        case "shadowcam": return selectedCandidate.shadowcamImage;
-        case "hazard":    return selectedCandidate.hazardImage;
-        case "terrain":   return selectedCandidate.terrainImage;
-        case "radar":     return selectedCandidate.hazardImage; // radar unavailable — see useEffect fallback above
-        default:          return selectedCandidate.hazardImage;
-      }
-    }
-  };
+  // Real individual per-metric crops (PRISM/src/split_hazard_terrain_panels.py,
+  // split_radar_panels.py) -- one file per metric, re-derived from the same
+  // LDEM/DFSAR reads as each layer's composite figure, instead of squeezing
+  // one wide multi-panel strip into a single small box. Panel lists mirror
+  // each composite's own real panels exactly (hazard: slope/roughness/
+  // illumination/combined; terrain: slope/elevation/TRI; radar: Y4R RGB/
+  // Pv/CPR/SERD) -- present for all 9 sites.
+  const panel = (metric: "pv" | "cpr" | "serd" | "tratio" | "slope" | "roughness" | "illum" | "tri") =>
+    `/assets/prism/panels/${selectedCandidate.id}_${metric}_only.png`;
+
+  const layerPanels: { src: string; label: string }[] =
+    activeLayer === "shadowcam"
+      ? [{ src: selectedCandidate.shadowcamImage ?? "", label: "ShadowCam" }]
+      : activeLayer === "hazard"
+      ? [
+          { src: panel("slope"), label: "Slope" },
+          { src: panel("roughness"), label: "Roughness (RMS)" },
+          { src: panel("illum"), label: "Illumination" },
+          { src: selectedCandidate.hazardImage, label: "Combined Hazard" },
+        ]
+      : activeLayer === "terrain"
+      ? [
+          { src: `/assets/prism/elevation_only/${selectedCandidate.id}.png`, label: "Elevation" },
+          { src: panel("slope"), label: "Slope" },
+          { src: panel("tri"), label: "Roughness (TRI)" },
+        ]
+      : [
+          { src: `/assets/prism/radar_only/${selectedCandidate.id}.png`, label: "Y4R RGB" },
+          { src: panel("pv"), label: "Pv" },
+          { src: panel("cpr"), label: "CPR" },
+          { src: panel("serd"), label: "SERD" },
+        ];
 
   return (
     <main style={{ minHeight: "100dvh", paddingTop: "var(--nav-h)", background: "var(--void)", display: "flex", flexDirection: "column" }}>
@@ -289,13 +358,13 @@ export default function TerrainPage() {
             <div>
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                 {(["hazard", "terrain", "shadowcam", "radar"] as const).map(layer => {
-                  const disabled = layer === "radar" && !selectedCandidate.isPrimary;
+                  const disabled = layer === "shadowcam" && !hasShadowcam;
                   return (
                     <button
                       key={layer}
                       onClick={() => !disabled && setActiveLayer(layer)}
                       disabled={disabled}
-                      title={disabled ? "Radar composite available for primary target only" : undefined}
+                      title={disabled ? "ShadowCam imagery not available for this reference site" : undefined}
                       style={{
                         padding: "6px 12px",
                         fontFamily: "var(--font-mono)",
@@ -308,7 +377,7 @@ export default function TerrainPage() {
                         border: `1px solid ${activeLayer === layer ? "transparent" : "var(--border)"}`,
                         borderRadius: "4px",
                         cursor: disabled ? "not-allowed" : "pointer",
-                        opacity: disabled ? 0.45 : 1,
+                        opacity: disabled ? 0.4 : 1,
                         transition: "all 0.2s ease",
                       }}
                     >
@@ -317,11 +386,6 @@ export default function TerrainPage() {
                   );
                 })}
               </div>
-              {!selectedCandidate.isPrimary && (
-                <div style={{ marginTop: "8px", fontFamily: "var(--font-mono)", fontSize: "9px", color: "var(--text-muted)", letterSpacing: "0.06em", textAlign: "right" }}>
-                  Radar composite available for primary target only — pending additional source data.
-                </div>
-              )}
             </div>
           </div>
 
@@ -342,22 +406,43 @@ export default function TerrainPage() {
                 cursor: "pointer",
               }}
             >
-              {CANDIDATES.map(c => (
-                <option key={c.id} value={c.id} style={{ background: "var(--surface)" }}>
-                  {c.label} {c.isPrimary ? "(Primary)" : ""}
+              {ALL_SITES.map(s => (
+                <option key={s.id} value={s.id} style={{ background: "var(--surface)" }}>
+                  {s.dropdownLabel}
                 </option>
               ))}
             </select>
           </div>
 
-          <div style={{ flex: 1, position: "relative", padding: "32px 40px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ width: "100%", maxWidth: "560px", position: "relative", border: "1px solid var(--border)", borderRadius: "4px", overflow: "hidden", background: "#000" }}>
-              <img
-                key={getLayerImage()}
-                src={getLayerImage()}
-                alt={`${activeLayer} map`}
-                style={{ width: "100%", display: "block", objectFit: "contain", transition: "opacity 0.3s ease" }}
-              />
+          <div style={{ flex: 1, position: "relative", padding: "32px 40px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "auto" }}>
+            <div
+              key={activeLayer}
+              style={{
+                width: "100%",
+                maxWidth: "640px",
+                display: "grid",
+                gridTemplateColumns: layerPanels.length > 1 ? "1fr 1fr" : "1fr",
+                gap: "10px",
+              }}
+            >
+              {layerPanels.map((p) => (
+                <div key={p.label} style={{ position: "relative", border: "1px solid var(--border)", borderRadius: "4px", overflow: "hidden", background: "#000" }}>
+                  <img
+                    src={p.src}
+                    alt={p.label}
+                    style={{ width: "100%", aspectRatio: "1/1", display: "block", objectFit: "cover" }}
+                  />
+                  <span
+                    style={{
+                      position: "absolute", bottom: "6px", left: "6px",
+                      fontFamily: "var(--font-mono)", fontSize: "8px", letterSpacing: "0.08em", textTransform: "uppercase",
+                      color: "#fff", background: "rgba(0,0,0,0.55)", padding: "2px 6px", borderRadius: "2px",
+                    }}
+                  >
+                    {p.label}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -410,7 +495,7 @@ export default function TerrainPage() {
 
           {/* 3D Canvas */}
           <div style={{ flex: 1, position: "relative", cursor: "grab", minHeight: "400px" }}>
-            <Canvas camera={{ position: [12, 9, 12], fov: 42 }}>
+            <Canvas camera={{ position: [19, 14, 19], fov: 42 }}>
               {/* Cinematic lighting */}
               <ambientLight intensity={0.9} />
               {/* Primary key light — slightly warm */}
@@ -427,13 +512,14 @@ export default function TerrainPage() {
                 elevRange={selectedCandidate.terrain.elevRange}
                 activeLayer={activeLayer}
                 shadowcamUrl={shadowcamUrl}
+                textureHalfM={selectedCandidate.textureHalfM}
               />
 
               <OrbitControls
                 enablePan={false}
                 maxPolarAngle={Math.PI / 2 - 0.02}
-                minDistance={6}
-                maxDistance={28}
+                minDistance={8}
+                maxDistance={44}
                 autoRotate={false}
               />
 

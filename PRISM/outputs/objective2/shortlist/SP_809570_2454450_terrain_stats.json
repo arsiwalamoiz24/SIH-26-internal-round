@@ -1,0 +1,46 @@
+{
+  "candidate_id": "SP_809570_2454450",
+  "candidate_lat": -80.957,
+  "candidate_lon": 245.445,
+  "window_buffer_m": 5000,
+  "pixel_size_m": 20.0,
+  "dem_source": {
+    "elevation_product": "LDEM_80S_20MPP_ADJ.TIF",
+    "provider": "NASA GSFC PGDA",
+    "resolution_m_per_px": 20,
+    "access_method": "GDAL /vsicurl/ windowed remote read"
+  },
+  "slope_stats": {
+    "label": "Sobel-gradient slope from LDEM",
+    "n_px": 250000,
+    "min": 0.008915780500049446,
+    "max": 36.7216557393157,
+    "mean": 12.361753819017416,
+    "median": 11.219301083955669,
+    "std": 7.697444075876828
+  },
+  "elevation_stats": {
+    "n_px": 250000,
+    "min_m": -5303.92333984375,
+    "max_m": -4093.455810546875,
+    "mean_m": -4565.291938691406,
+    "std_m": 229.54529359389323,
+    "elevation_range_m": 1210.467529296875
+  },
+  "roughness_tri_stats": {
+    "label": "Riley et al. 1999 TRI, native 20 m/px LDEM",
+    "n_px": 250000,
+    "min": 0.02960205078125,
+    "max": 11.36724853515625,
+    "mean": 3.4636577854329427,
+    "median": 3.083709716796875,
+    "std": 2.1939941331173
+  },
+  "psr_interior_vs_approach": {
+    "n_px_inside_psr": 22997,
+    "mean_slope_deg_inside_psr": 21.418997839124035,
+    "mean_tri_m_inside_psr": 6.0901031434424535,
+    "n_px_outside_psr_in_window": 227003,
+    "mean_slope_deg_outside_psr_in_window": 11.444191316625854
+  }
+}
