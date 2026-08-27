@@ -426,7 +426,7 @@ function createRoutePoint(
   heading: number,
   terrain: TerrainData,
   rimLookup: RimLookup,
-  telemetry?: { batterySoc: number; speedMs: number; illumination: number }
+  telemetry?: { batterySoc: number; speedMs: number; illumination: number; slopeDeg: number }
 ): RoutePoint {
   const groundY = sampleTerrainY(
     x,
@@ -434,7 +434,14 @@ function createRoutePoint(
     terrain
   );
 
-  const slopeDeg = sampleSlopeDeg(
+  // Real slope from the A* plan (src/lib/traversePlanner.ts -- a real Sobel
+  // gradient on real LOLA elevation meters) when available. The local
+  // fallback below instead differentiates the *visual* mesh in mesh-space
+  // units, mixing the mesh's own vertical exaggeration with its per-candidate
+  // horizontal scale factor -- not a real angle, only a rough shading cue,
+  // and one that can read wildly higher than the real slope the rover
+  // actually planned against. Only used before the real plan has loaded.
+  const slopeDeg = telemetry?.slopeDeg ?? sampleSlopeDeg(
     x,
     z,
     terrain
@@ -501,7 +508,7 @@ function buildRouteFromRealPlan(
       : (wp.heading * Math.PI) / 180;
 
     route.push(createRoutePoint(x, z, heading, terrain, rimLookup, {
-      batterySoc: wp.batterySoc, speedMs: wp.speedMs, illumination: wp.illumination,
+      batterySoc: wp.batterySoc, speedMs: wp.speedMs, illumination: wp.illumination, slopeDeg: wp.slopeDeg,
     }));
   }
 
