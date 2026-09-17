@@ -1,0 +1,13 @@
+site_id,lookup_lat,lookup_lon,coord_provenance,new_temp_max_K,new_gate_status,existing_temp_max_K,existing_temperature_status,existing_source_file,delta_K,match,note
+SP_840980_0797630,-84.098,79.764,canonical_site_id,84.257,PASS,84.3,PASS,outputs/objective1/pm4w_v2/site_summary.csv,-0.042999999999992156,MATCH,
+SP_832640_0090770,-83.264,9.077,canonical_site_id,135.019,FAIL,135.0,FAIL,outputs/objective1/pm4w_v2/site_summary.csv,0.019000000000005457,MATCH,
+SP_830080_0535120,-83.008,53.512,canonical_site_id,156.683,FAIL,156.7,FAIL,outputs/objective1/pm4w_v2/site_summary.csv,-0.016999999999995907,MATCH,
+SP_842420_0421060,-84.242,42.106,canonical_site_id,134.069,FAIL,134.1,FAIL,outputs/objective1/pm4w_v2/site_summary.csv,-0.03100000000000591,MATCH,
+SP_817950_1586580,-81.795,158.658,canonical_site_id,118.853,FAIL,118.9,FAIL,outputs/objective1/pm4w_v2/site_summary.csv,-0.047000000000011255,MATCH,
+SP_819860_1568660,-81.986,156.866,canonical_site_id,102.672,PASS,102.7,PASS,outputs/objective1/pm4w_v2/site_summary.csv,-0.028000000000005798,MATCH,
+SP_809570_2454450,-80.957,245.445,canonical_site_id,144.327,FAIL,144.3,FAIL,outputs/objective1/pm4w_v2/site_summary.csv,0.026999999999986812,MATCH,
+Faustini,-87.146,84.075,canonical_site_id,66.882,PASS,51.833,PASS,outputs/objective1/pm4w_v2/faustini_results.json,15.049000000000007,"N/A (different coordinate, see note)","Canonical PSR-ID centroid differs from the legacy ad hoc coordinate that produced the existing value -- delta expected, not a bug."
+LCROSS_Cabeus,-84.458,-46.568,canonical_site_id,63.486,PASS,45.8,PASS,outputs/objective1/pm4w_v2/site_summary.csv,17.686,"N/A (different coordinate, see note)","Canonical PSR-ID centroid differs from the legacy ad hoc coordinate that produced the existing value -- delta expected, not a bug."
+Wiechert,-84.5,165.0,canonical_site_id,267.171,FAIL,267.2,FAIL,outputs/objective1/pm4w_v2/site_summary.csv,-0.028999999999996362,MATCH,
+Faustini,-87.3,77.0,legacy_pm4w_v2_faustini_adhoc,51.833,PASS,51.833,PASS,outputs/objective1/pm4w_v2/faustini_results.json,0.0,MATCH,
+LCROSS_Cabeus,-84.6796,-48.7093,legacy_pm4w_v2_lcross_impact_point,45.78,PASS,45.8,PASS,outputs/objective1/pm4w_v2/site_summary.csv,-0.01999999999999602,MATCH,
